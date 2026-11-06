@@ -1,0 +1,15 @@
+/* Original recognition scene follows the work pin spacer. */
+main > #recognitions { display: block !important; order: 4; flex-shrink: 0; }
+#recognitions img, #recognitions video { filter: invert(1) !important; }
+/* Cancel the global inversion for the red footer type and accents only. */
+main > footer {
+  display: flex !important; order: 5; flex-shrink: 0;
+  background-color: #fff !important; filter: invert(1); box-sizing: border-box;
+}
+main > footer > video,
+main > footer > div[style*="background"] { filter: invert(1); }
+main > footer img { filter: none !important; }/* Monochrome marks follow the white-page palette. */
+#recognitions img[alt="SoDA"] { filter: none !important; }
+/* Keep the glass background faint on both desktop and mobile. */
+main > footer > video { opacity: .12 !important; }
+main > footer > div[style*="background"][style*="position"] { display: none !important; }

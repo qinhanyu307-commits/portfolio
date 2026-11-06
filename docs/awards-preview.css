@@ -1,0 +1,94 @@
+/* The awards scene replaces capabilities and remains within About. */
+main > #capabilities { display: none !important; }
+main > #awards {
+  display: block !important;
+  min-height: 100svh;
+  box-sizing: border-box;
+  padding-top: max(88px, 6vw) !important;
+  background: #000 !important;
+  filter: none;
+}
+/* Hide the preceding oversized section title and all pointer-following media. */
+
+#awards > div[style*="position:fixed"],
+#awards > div[style*="position: fixed"] { display: none !important; }
+#awards img { filter: invert(1) !important; }
+html[data-preview-theme="awards"] main > nav { filter: none; }
+@media (max-width: 639px) {
+  main > #awards { padding-top: 90px !important; }
+}#awards > div[style*="border-top"] { display: none !important; }
+html[data-preview-theme="awards"] main > nav { mix-blend-mode: difference !important; }/* Two-column service directory; the left awards summary stays in place. */
+#awards .award-directory-row {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  gap: max(20px, 1.39vw) !important;
+  padding-top: max(16px, 1.11vw) !important;
+  padding-bottom: max(16px, 1.11vw) !important;
+  min-height: 5.6vw;
+  box-sizing: border-box;
+}
+#awards .award-directory-row > span {
+  font-size: max(20px, 1.4vw) !important;
+  white-space: normal !important;
+  line-height: 1.2 !important;
+  text-align: left !important;
+}
+#awards .award-directory-row > span:nth-child(1) { color: #fafafa !important; }
+#awards .award-directory-row > span:nth-child(2) { color: #777 !important; }
+#awards .award-directory-row > span:nth-child(3) { display: none !important; }/* Project catalog heading and three categories. */
+#awards > div[style*="grid"] > div:first-child > div:first-child::before {
+  content: "Contents";
+  display: block;
+  font-family: 'NHG Display', 'Helvetica Neue', Arial, sans-serif;
+  font-size: clamp(32px, 3.4vw, 64px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: #fafafa;
+}
+#awards > div[style*="grid"] > div:first-child > div:first-child > div:first-child,
+
+#awards > div[style*="grid"] > div:first-child > div:nth-child(3),
+#awards > div:has(> img[alt="SoDA"]) { display: none !important; }
+#awards img, #awards video { display: none !important; }
+@media (max-width: 639px) {
+  #awards > div:has(> p):not([style*="border-top"]) > p:first-child {
+    font-size: 0 !important;
+  }
+  #awards > div:has(> p):not([style*="border-top"]) > p:first-child::before {
+    content: "Contents"; font-size: 40px; line-height: 1; display: block;
+  }
+
+}
+#awards .award-directory-row > span:first-child { white-space: pre-line !important; }
+/* Restore the original transition heading between About and the catalog. */
+#awards > div[style*="border-top"] {
+  display: block !important;
+  border-top: 1px solid #fff !important;
+}
+#awards > div[style*="border-top"] p,
+#awards > div[style*="border-top"] p * {
+  color: #fff !important;
+}/* One stable row state. Fade the row, rather than transitioning each glyph. */
+#awards .award-directory-row {
+  cursor: pointer; outline: none;
+  opacity: 1;
+  transition: opacity 220ms cubic-bezier(.2,.65,.3,1) !important;
+}
+#awards .award-directory-row span { transition: none !important; }
+#awards .project-directory-group[data-project-emphasis="true"] > .award-directory-row { opacity: .32; }
+#awards .project-directory-group[data-project-emphasis="true"] > .award-directory-row[data-project-active="true"] { opacity: 1; }
+#awards .project-directory-group > .award-directory-row[data-project-active="true"] span { color: #fafafa !important; }
+#awards .award-directory-row:focus-visible { outline: 1px solid #fafafa; outline-offset: 4px; }
+@media (max-width: 639px) {
+  #awards .award-directory-row { display: flex !important; flex-direction: column; gap: 10px !important; }
+  #awards .award-directory-row > div > span:first-child { font-size: 18px !important; white-space: pre-line !important; }
+  #awards .award-directory-row > div > span:last-child { display: none !important; }
+  #awards .award-directory-row > span { margin-top: 0 !important; font-size: 15px !important; }
+}
+@media (prefers-reduced-motion: reduce) { #awards .award-directory-row { transition: none !important; } }
+/* Place the categories directly beneath Contents, in the former subtitle slot. */
+#awards > div[style*="grid"] > div:first-child { gap: max(8px, 0.56vw) !important; }
+#awards > div[style*="grid"] > div:first-child > div:first-child > p { display: none !important; }
+@media (max-width: 639px) {
+  #awards > div:has(> p):not([style*="border-top"]) > p:nth-child(2) { display: none !important; }
+}

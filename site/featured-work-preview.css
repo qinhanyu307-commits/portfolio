@@ -1,0 +1,18 @@
+/* Keep page order consistent before and after ScrollTrigger inserts pin spacers. */
+main { display: flex; flex-direction: column; }
+main > [data-section="hero"] { order: 0; flex-shrink: 0; }
+main > #about, main > .pin-spacer:has(#about) { order: 1; flex-shrink: 0; }
+main > #awards { order: 2; flex-shrink: 0; }
+main > #work, main > .pin-spacer:has(#work) { order: 3; display: block !important; flex-shrink: 0; }
+#work { display: block !important; }
+#work img, #work video { filter: invert(1) !important; }
+#work div:has(> img[src*="/assets/images/work/"]) { filter: invert(1); }
+#work div:has(> img[src*="/assets/images/work/"]) > img { filter: none !important; }
+/* Cover images also have div wrappers; keep compensation at the wrapper level. */
+.work-view-cursor { filter: invert(1); }
+html[data-preview-section="work"] main > nav span[data-preview-label="About"] { color: #777 !important; }
+html[data-preview-section="work"] main > nav span[data-preview-label="About"]::before { display: none; }
+html[data-preview-section="work"] main > nav span[data-preview-label="Work"] { color: #fafafa !important; }
+html[data-preview-section="work"] main > nav span[data-preview-label="Work"]::before {
+  content: ''; display: inline-block; width: 8px; height: 8px; margin-right: 5px; border-radius: 50%; background: #fafafa;
+}

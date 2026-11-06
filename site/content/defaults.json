@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "updatedAt": "2026-10-28T08:02:09.334Z",
+  "projects": [
+    {
+      "id": "aiid",
+      "title1": "AI in Design",
+      "title2": "Report 2026",
+      "description": "AI and design is the defining conversation in the industry right now. Designer Fund set out to lead it with an authoritative research report on how AI is reshaping design practice, featuring leaders from Anthropic, Linear, Notion, Stripe, and Slack.",
+      "catalogTitle": "走起GO\nAPP改版升级",
+      "catalogDescription": "链路，社区，迭代升级，Version Iteration",
+      "cover": "/assets/images/work/aiid/aiid-cover-1.jpg",
+      "icon": "/assets/images/work/aiid/aiid-icon.svg",
+      "video": "/assets/images/work/aiid/aiid-cover-compatible.mp4",
+      "href": "https://www.hellohello.is/case-studies/stateofai"
+    },
+    {
+      "id": "passkeys",
+      "title1": "Passkeys",
+      "title2": "Developer Kit",
+      "description": "A developer-first authentication product that needed to evolve its brand from a technical tool to an enterprise platform, without losing developer trust.",
+      "catalogTitle": "番茄小说\nAPP运营活动",
+      "catalogDescription": "运营，种花，引流，Tomato，番茄",
+      "cover": "/assets/images/work/passkeys/passkeys-cover-1.jpg",
+      "icon": "/assets/images/work/passkeys/passkeys-icon.svg",
+      "video": "/assets/images/work/passkeys/passkeys-cover-2.mp4",
+      "href": "https://www.hellohello.is/case-studies/passkeys"
+    },
+    {
+      "id": "grateful",
+      "title1": "Grateful",
+      "title2": "Payments",
+      "description": "Exodus wanted to move stablecoin payments into the mainstream. Brand strategy, positioning, and go-to-market messaging for Exodus Pay, plus full brand identity and product experience for Grateful.",
+      "catalogTitle": "雅迪\n车机壁纸设计",
+      "catalogDescription": "风格探索，个性表达，Wallpaper design",
+      "cover": "/assets/images/work/grateful/grateful-cover-1.jpg",
+      "icon": "/assets/images/work/grateful/grateful-icon.svg",
+      "video": "/assets/images/work/grateful/grateful-cover-2.mp4",
+      "href": "https://www.hellohello.is/case-studies/grateful"
+    },
+    {
+      "id": "alchemy",
+      "title1": "Alchemy",
+      "title2": "Blockchain",
+      "description": "One of the world's largest blockchain infrastructure platforms had a vision: a new generation of builders was coming. The challenge was translating that belief into a brand that developers and enterprise teams would actually trust.",
+      "catalogTitle": "设计之外\nMY HOBBY",
+      "catalogDescription": "生活诗意，记录，My hobby diary，光影",
+      "cover": "/assets/images/work/alchemy/alchemy-cover-1.jpg",
+      "icon": "/assets/images/work/alchemy/alchemy-icon.svg",
+      "video": "/assets/images/work/alchemy/alchemy-cover-2.mp4",
+      "href": "https://www.hellohello.is/case-studies/alchemy"
+    }
+  ]
+}

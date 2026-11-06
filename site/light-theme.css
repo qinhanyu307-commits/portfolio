@@ -1,0 +1,33 @@
+/* Reverse the original monochrome composition, including video and preloader.
+   Hue rotation keeps the interactive accent in the red family. */
+html {
+  background: #fff !important;
+  color-scheme: light;
+  filter: invert(1);
+}
+
+/* Album artwork stays in its original colors. The ++ logo follows the theme. */
+img:not([src*="logo.svg"]) {
+  filter: hue-rotate(-180deg) invert(1);
+}
+
+/* Keep removed music widgets hidden when their animation resets inline styles. */
+[data-preview-removed] {
+  display: none !important;
+}
+
+/* The music provider also creates a separate animated copy of this widget. */
+div:has(> div > div > img[alt="Album art"]) {
+  display: none !important;
+}
+
+/* Give the name the same visual height as the previous symbol. */
+img[src="/assets/logos/logo.svg"] {
+  width: max(132px, 9.17vw) !important;
+  height: auto !important;
+}
+
+/* Keep the original hero/intro tint local so About photos avoid hue clipping. */
+[data-section="hero"], div:has(> video > source[src*="preloader"]) {
+  filter: invert(1) hue-rotate(180deg) invert(1);
+}

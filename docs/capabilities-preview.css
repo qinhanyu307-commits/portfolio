@@ -1,0 +1,18 @@
+/* Third scene: retain the original React categories and GSAP row transitions. */
+main > #capabilities {
+  display: flex !important;
+  flex-direction: column;
+  min-height: 100svh;
+  box-sizing: border-box;
+  padding-top: 18.4vh !important;
+  padding-bottom: 20vh !important;
+  gap: 0 !important;
+  border-bottom: 1px solid #2e2e2e;
+}
+#capabilities > :first-child { display: none !important; }
+#capabilities .cap-row { min-height: 5.6vw; box-sizing: border-box; }
+#capabilities button:focus-visible { outline: 1px solid #fafafa; outline-offset: 6px; }
+@media (max-width: 639px) {
+  main > #capabilities { padding: 100px 16px 64px !important; }
+  #capabilities .cap-row { min-height: 88px; }
+}

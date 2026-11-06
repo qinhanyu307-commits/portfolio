@@ -1,0 +1,27 @@
+export const readPath=(value,path)=>path.split('.').reduce((v,k)=>v[k],value);
+export function writePath(value,path,next){const keys=path.split('.'),last=keys.pop();readPath(value,keys.join('.'))[last]=next;}
+const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
+export function createPagesEditor({getContent,media}){
+ let mode='about',selected='overview';const $=s=>document.querySelector(s);
+ const field=(path,label,rows=0,hint='')=>`<label for="page-${path}">${label}</label>${rows?`<textarea id="page-${path}" data-page-field="${path}" rows="${rows}">${esc(readPath(getContent(),path))}</textarea>`:`<input id="page-${path}" data-page-field="${path}" value="${esc(readPath(getContent(),path))}">`}${hint?`<p class="hint">${hint}</p>`:''}`;
+ const image=(path,label)=>`<label>${label}</label><div class="page-image-field"><img src="${esc(media(readPath(getContent(),path)))}" alt="${label}"><input type="file" data-image-path="${path}" accept="image/jpeg,image/png,image/webp"></div>`;
+ function nav(){const options=mode==='about'?[['overview','标题与三张照片'],['resume','履历文字']]:mode==='catalog'?[['overview','标题与分类'],...getContent().projects.map((p,i)=>[String(i),p.catalogTitle])]:[['overview','标题与左侧信息'],...getContent().pages.recognitions.entries.map((p,i)=>[String(i),p.award])];$('#projects').innerHTML=options.map(([id,label],i)=>`<button data-page-tab="${id}" class="${id===selected?'active':''}"><small>${id==='overview'||id==='resume'?'PAGE SETTINGS':'ITEM '+String(i).padStart(2,'0')}</small><b>${esc(label)}</b></button>`).join('');}
+ function render(nextMode=mode,tab=selected){mode=nextMode;selected=tab;let html='';
+  if(mode==='about'&&selected==='overview')html='<h3>自我介绍 · 标题与图片</h3>'+field('pages.about.titleMuted','浅色标题')+field('pages.about.title','黑色标题',3)+image('pages.about.photos.0','主肖像照片')+image('pages.about.photos.1','叠放的第二张照片')+image('pages.about.photos.2','叠放的第三张图片');
+  if(mode==='about'&&selected==='resume')html='<h3>履历文字</h3><p class="hint">修改后会以可编辑文字显示，保留随滚动逐字出现和消失的动效。</p>'+field('pages.about.resume.educationTitle','教育经历 · 标题')+field('pages.about.resume.school','学校 / 专业 / 年级')+field('pages.about.resume.honors','教育经历与获奖（每条一行）',5)+field('pages.about.resume.projectsTitle','项目经历 · 标题')+field('pages.about.resume.projects','项目经历（每条一行）',4,'格式：日期 | 项目名称；竖线分隔左右两列。')+field('pages.about.resume.internshipTitle','实习经历 · 标题')+field('pages.about.resume.internships','实习经历（每条一行）',3,'格式：日期 | 公司与岗位')+field('pages.about.resume.skillsTitle','专业技能 · 标题')+field('pages.about.resume.skills','技能（每行四列）',3,'同一行的技能用 | 分隔，回车增加一行。');
+  if(mode==='catalog'&&selected==='overview')html='<h3>目录页 · 标题与分类</h3>'+field('pages.catalog.title','页面大标题')+field('pages.catalog.heading','左侧目录标题')+field('pages.catalog.categories','左侧分类（固定三项，每项一行）',3);
+  if(mode==='catalog'&&selected!=='overview'){const i=Number(selected);html='<h3>目录条目 '+(i+1)+'</h3>'+field('projects.'+i+'.catalogTitle','条目标题（回车换行）',2)+field('projects.'+i+'.catalogDescription','右侧说明',4)+'<p class="hint">这里与作品展示中的目录文字保持同步。</p>';}
+  if(mode==='recognitions'&&selected==='overview')html='<h3>荣誉页 · 页面信息</h3>'+field('pages.recognitions.title','页面大标题')+field('pages.recognitions.number','左侧大数字（0–99，可加 +）')+field('pages.recognitions.subtitle','数字下方的标题')+field('pages.recognitions.summary','左侧统计说明（固定七项，每项一行）',7)+image('pages.recognitions.logo','左下方标志')+field('pages.recognitions.memberText','标志旁的文字',4);
+  if(mode==='recognitions'&&selected!=='overview'){const prefix='pages.recognitions.entries.'+selected;html='<h3>荣誉条目 '+(Number(selected)+1)+'</h3>'+field(prefix+'.award','荣誉名称',2)+field(prefix+'.project','项目名称')+field(prefix+'.date','时间')+image(prefix+'.image','鼠标悬停时显示的图片');}
+  $('#editor').innerHTML=html;nav();preview();
+ }
+ function preview(){const content=getContent(),p=content.pages;let html='';
+  if(mode==='about'&&selected==='overview')html=`<h3><span class="muted">${esc(p.about.titleMuted)}</span> ${esc(p.about.title)}</h3><div class="photo-preview">${p.about.photos.map((path,i)=>`<img src="${esc(media(path))}" alt="照片 ${i+1}">`).join('')}</div>`;
+  if(mode==='about'&&selected==='resume'){const r=p.about.resume;html=`<div class="resume-preview"><h3>${esc(r.educationTitle)}</h3><b>${esc(r.school)}</b><p>${esc(r.honors)}</p><h3>${esc(r.projectsTitle)}</h3><p>${esc(r.projects)}</p><h3>${esc(r.internshipTitle)}</h3><p>${esc(r.internships)}</p><h3>${esc(r.skillsTitle)}</h3><p>${esc(r.skills)}</p></div>`;}
+  if(mode==='catalog')html=`<h3>${esc(p.catalog.title)}</h3><h3>${esc(p.catalog.heading)}</h3><p>${esc(p.catalog.categories)}</p>${content.projects.map(x=>`<div class="catalog-preview"><b>${esc(x.catalogTitle)}</b><p>${esc(x.catalogDescription)}</p></div>`).join('')}`;
+  if(mode==='recognitions'&&selected==='overview')html=`<h3>${esc(p.recognitions.title)}</h3><h3 class="big-number">${esc(p.recognitions.number)}</h3><b>${esc(p.recognitions.subtitle)}</b><p>${esc(p.recognitions.summary)}</p><img class="membership-logo" src="${esc(media(p.recognitions.logo))}" alt="标志"><p>${esc(p.recognitions.memberText)}</p>`;
+  if(mode==='recognitions'&&selected!=='overview'){const r=p.recognitions.entries[Number(selected)];html=`<img src="${esc(media(r.image))}" alt="荣誉配图"><div class="catalog-preview"><b>${esc(r.award)}</b><p>${esc(r.project)}<br>${esc(r.date)}</p></div>`;}
+  $('#preview').innerHTML=html;
+ }
+ return {render,preview,nav,select:(tab)=>render(mode,tab),reset:(next)=>render(next,'overview')};
+}

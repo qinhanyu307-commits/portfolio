@@ -1,0 +1,123 @@
+html, body {
+  height: auto !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+main {
+  height: auto !important;
+  overflow: visible !important;
+}
+main > nav {
+  display: flex !important;
+}
+main > nav span { color: #777 !important; }
+main > nav span[data-preview-label="About"] { color: #fafafa !important; }
+main > nav span[data-preview-label="About"]::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 5px;
+  border-radius: 50%;
+  background: #fafafa;
+}
+main > nav div[style*="border-radius"] { display: none !important; }
+.preview-mobile-about { display: none; }
+main > .pin-spacer:has(#about),
+#about {
+  display: block !important;
+}
+/* Use the same white background and black type as the homepage. */
+#about {
+  filter: none;
+}
+/* Compensate only the photographs so they keep their original colors. */
+#about img {
+  filter: invert(1) !important;
+}
+@media (max-width: 639px) {
+  .preview-mobile-about {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    position: absolute;
+    right: 16px;
+    bottom: 24px;
+    z-index: 30;
+    padding: 10px 0 10px 16px;
+    border: 0;
+    background: #000;
+    color: #fafafa;
+    font: 700 14px Arial, sans-serif;
+    cursor: pointer;
+  }
+  #about {
+    min-height: 100svh !important;
+  }
+}
+
+/* Keep the animated photo stack on the left without the side descriptions. */
+#about p {
+  display: none !important;
+}
+#about > div:has(> img[src*="lu-kehao-portrait"]) {
+  left: calc(clamp(16px, 1.67vw, 24px) + clamp(16px, 4vw, 64px)) !important;
+  margin-left: 0 !important;
+}
+#about > div:has(> img[src*="lu-kehao-event"]) {
+  left: calc(clamp(16px, 1.67vw, 24px) + 88px + clamp(16px, 4vw, 64px)) !important;
+  margin-left: 0 !important;
+}
+#about > div:has(> img[src*="lu-kehao-contact"]) {
+  left: calc(clamp(16px, 1.67vw, 24px) + 49.5px + clamp(16px, 4vw, 64px)) !important;
+  margin-left: 0 !important;
+}
+@media (max-width: 639px) {
+  #about > div:has(> img[src*="lu-kehao-event"]) {
+    left: 16px !important;
+  }
+  #about > div:has(> img[src*="lu-kehao-contact"]) {
+    left: 42px !important;
+  }
+}
+/* The supplied transparent artwork preserves exact glyphs, spacing and colors. */
+.about-resume-artwork {
+  position: absolute; z-index: 6; left: 39.5%; top: 26.7%;
+  width: 31.3%; aspect-ratio: 767 / 756;
+}
+.resume-reference-plane {
+  position: absolute; width: 767px; height: 756px; transform-origin: top left;
+  filter: invert(1);
+}
+.resume-reference-mask { position: absolute; display: block; overflow: hidden; }
+.resume-reference-glyph {
+  display: block; width: 100%; height: 100%;
+  background-image: url('/assets/images/about-resume-reference.png');
+  background-size: 767px 756px; background-repeat: no-repeat;
+  transform: translateY(120%); opacity: 0; will-change: transform;
+}
+@media (min-width: 640px) {
+  #about > div:has(> img[src*="lu-kehao-portrait"]) {
+    width: min(493px, 30vw) !important; height: min(620px, 37.73vw) !important;
+    margin-top: max(-310px, -18.865vw) !important;
+  }
+  #about > div:has(> img[src*="lu-kehao-event"]) {
+    width: min(373px, 22.7vw) !important; height: min(257px, 15.65vw) !important;
+    margin-top: max(-128.5px, -7.825vw) !important;
+    left: calc(clamp(16px, 1.67vw, 24px) + min(88px, 5.35vw) + clamp(16px, 4vw, 64px)) !important;
+  }
+  #about > div:has(> img[src*="lu-kehao-contact"]) {
+    width: min(215px, 13.08vw) !important; height: min(305px, 18.56vw) !important;
+    margin-top: max(-152.5px, -9.28vw) !important;
+    left: calc(clamp(16px, 1.67vw, 24px) + min(49.5px, 3vw) + clamp(16px, 4vw, 64px)) !important;
+  }
+}
+@media (max-width: 639px) {
+  #about { min-height: 1450px !important; }
+  .about-resume-artwork { top: 870px; left: 24px; width: calc(100% - 48px); }
+  #about > div:has(> img[src*="lu-kehao-portrait"]) { top: 200px !important; margin-top: 0 !important; }
+  #about > div:has(> img[src*="lu-kehao-event"]) { top: 400px !important; margin-top: 0 !important; }
+  #about > div:has(> img[src*="lu-kehao-contact"]) { top: 520px !important; bottom: auto !important; margin-top: 0 !important; }
+}
+/* One responsive image and SVG clipping avoid transformed bitmap tile layers. */
+.resume-reference-svg { display:block; width:100%; height:auto; overflow:visible; filter:invert(1); }
