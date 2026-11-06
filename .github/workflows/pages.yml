@@ -1,0 +1,80 @@
+name: Publish portfolio
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Import original portfolio once
+        if: hashFiles('site/index.html') == ''
+        env:
+          SOURCE_COMMIT: 07ac0d202b4ba301c2643f076443305a6b416489
+        run: |
+          set -euo pipefail
+          source_dir="$(mktemp -d)"
+          git clone https://github.com/lindaprice-wq/port.git "$source_dir"
+          git -C "$source_dir" checkout "$SOURCE_COMMIT"
+          SOURCE_DIR="$source_dir" python3 - <<'PY'
+          import os, pathlib, shutil
+          source = pathlib.Path(os.environ['SOURCE_DIR'])
+          for item in source.iterdir():
+              if item.name in ('.git', '.github', 'docs'):
+                  continue
+              target = pathlib.Path(item.name)
+              if item.is_dir():
+                  shutil.copytree(item, target, dirs_exist_ok=True)
+              else:
+                  shutil.copy2(item, target)
+          files = [*pathlib.Path('site').rglob('*'), *pathlib.Path('scripts').rglob('*'), pathlib.Path('README.md'), pathlib.Path('ADMIN.md')]
+          for file in files:
+              if not file.is_file() or file.suffix not in ('.js', '.mjs', '.html', '.css', '.json', '.md', '.svg'):
+                  continue
+              text = file.read_text()
+              text = text.replace('lindaprice-wq/port', 'qinhanyu307-commits/portfolio')
+              text = text.replace('lindaprice-wq.github.io/port', 'qinhanyu307-commits.github.io/portfolio')
+              text = text.replace('target_name=lindaprice-wq', 'target_name=qinhanyu307-commits')
+              text = text.replace('/port/', '/portfolio/').replace("'/port'", "'/portfolio'").replace('"/port"', '"/portfolio"')
+              file.write_text(text)
+          PY
+          echo "MIGRATED=true" >> "$GITHUB_ENV"
+      - name: Build and validate
+        run: |
+          set -euo pipefail
+          npm run build
+          node scripts/test-content.mjs
+          node scripts/test-pages.mjs
+          npm run check
+      - name: Save imported source and generated website
+        if: env.MIGRATED == 'true'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site scripts docs package.json .gitignore README.md ADMIN.md
+          git commit -m "Import portfolio and configure new account"
+          git push origin HEAD:main
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload website
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: docs
+      - name: Deploy website
+        id: deployment
+        uses: actions/deploy-pages@v4
