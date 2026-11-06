@@ -1,12 +1,14 @@
 (() => {
  const config=window.__MANAGED_ABOUT__;
- if(!config||JSON.stringify(config.about.resume)===JSON.stringify(config.defaults.resume))return;
+ if(!config)return;
  window.__USE_MANAGED_RESUME__=true;
  const data=config.about.resume,ns='http://www.w3.org/2000/svg';let resume,characters=[],queued=false;
  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
  function mount(){
-  if(resume||!window.__previewAboutReady)return;
-  const about=document.getElementById('about');if(!about)return;
+  const about=document.getElementById('about');if(!about||(!window.__lenis&&!window.__portfolioHeroStarted))return;
+  if(resume&&resume.isConnected&&resume.parentElement===about)return;
+  resume?.remove();resume=null;characters=[];
+  
   resume=document.createElement('aside');resume.className='about-resume about-resume-artwork';resume.setAttribute('aria-label','个人履历');
   const svg=document.createElementNS(ns,'svg');svg.classList.add('resume-reference-svg');svg.setAttribute('viewBox','0 0 767 756');svg.setAttribute('role','img');
   const title=document.createElementNS(ns,'title');title.textContent=Object.values(data).join('。');svg.append(title);
@@ -25,5 +27,7 @@
   characters.forEach((glyph,i)=>{const begin=i/Math.max(1,characters.length-1)*.86,amount=reduced?1:Math.max(0,Math.min(1,(progress-begin)/.065));glyph.style.opacity=amount;glyph.setAttribute('transform','translate(0 '+(1-amount)*20+')');});
  }
  function schedule(){mount();if(!queued){queued=true;requestAnimationFrame(update);}}
- schedule();window.addEventListener('hero-start',()=>requestAnimationFrame(schedule),{once:true});window.addEventListener('load',()=>setTimeout(schedule,5700),{once:true});window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);
+ const observer=new MutationObserver(schedule);observer.observe(document.body,{childList:true,subtree:true});
+ const startup=setInterval(schedule,250);setTimeout(()=>clearInterval(startup),15000);
+ schedule();window.addEventListener('hero-start',()=>requestAnimationFrame(schedule),{once:true});window.addEventListener('DOMContentLoaded',schedule,{once:true});window.addEventListener('load',schedule,{once:true});window.addEventListener('scroll',schedule,{passive:true});window.addEventListener('resize',schedule);
 })();

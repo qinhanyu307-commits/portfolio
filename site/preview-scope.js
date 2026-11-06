@@ -65,3 +65,39 @@
     }
   }, true);
 })();
+
+// Keep background playback recoverable when a browser blocks autoplay.
+(() => {
+  const bound=new WeakSet();
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function bind(){
+    if(!window.__lenis&&!window.__portfolioHeroStarted)return;
+    const hero=document.querySelector('[data-section="hero"]');
+    const video=hero?.querySelector('video');
+    if(!video||bound.has(video))return;
+    bound.add(video);
+    video.muted=true;video.playsInline=true;video.preload='auto';
+    const button=document.createElement('button');
+    button.type='button';button.textContent='播放动画';button.hidden=true;
+    button.setAttribute('aria-label','播放首页背景动画');
+    button.style.cssText='position:absolute;left:24px;bottom:80px;z-index:40;border:1px solid #777;border-radius:4px;padding:10px 16px;background:#111;color:#fafafa;font:600 14px Arial,sans-serif;cursor:pointer';
+    hero.append(button);
+    function show(){if(!reduced&&video.paused)button.hidden=false;}
+    function play(){
+      if(reduced||document.hidden||!video.isConnected)return;
+      try{const result=video.play();if(result?.catch)result.catch(show);}catch{show();}
+    }
+    button.addEventListener('click',()=>{if(video.error)video.load();play();});
+    video.addEventListener('playing',()=>{button.hidden=true;});
+    video.addEventListener('canplay',play);
+    video.addEventListener('error',show);
+    document.addEventListener('visibilitychange',play);
+    document.addEventListener('pointerdown',play,{once:true});
+    play();setTimeout(show,2000);
+  }
+  const startup=setInterval(bind,250);setTimeout(()=>clearInterval(startup),15000);
+  window.addEventListener('hero-start',bind);
+  window.addEventListener('pageshow',bind);
+  new MutationObserver(bind).observe(document.body,{childList:true,subtree:true});
+  bind();
+})();
