@@ -37,3 +37,27 @@ jobs:
       - name: Deploy website
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Verify published pages and scripts
+        env:
+          SITE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          python3 - <<'PY'
+          import os, time, urllib.request, urllib.parse, hashlib, pathlib
+          base = os.environ['SITE_URL'].rstrip('/') + '/'
+          paths = ['index.html', 'admin/index.html', '_next/static/chunks/app/layout-6d0f10cc5e82d4d4.js']
+          for path in paths:
+              expected = pathlib.Path('docs', path).read_bytes()
+              for attempt in range(12):
+                  try:
+                      url = urllib.parse.urljoin(base, path) + '?verify=' + os.environ['GITHUB_SHA']
+                      with urllib.request.urlopen(url, timeout=30) as response:
+                          actual = response.read()
+                      if actual != expected:
+                          raise RuntimeError('Published file does not yet match this build')
+                      print('Verified HTTP 200 and build content: ' + path)
+                      break
+                  except Exception:
+                      if attempt == 11:
+                          raise
+                      time.sleep(5)
+          PY
