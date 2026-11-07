@@ -31,6 +31,7 @@ export const DEFAULT_PAGES = {
     }
   },
   "catalog": {
+    "entries": [],
     "title": "Experience & Practice",
     "heading": "Contents",
     "categories": "项目运营\n改版升级\nAIGC"

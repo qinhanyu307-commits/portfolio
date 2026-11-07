@@ -21,6 +21,14 @@ export function validateContent(value) {
   limit(about.titleMuted,200,'自我介绍浅色标题',false);limit(about.title,350,'自我介绍标题');
   if(!Array.isArray(about.photos)||about.photos.length!==3)throw Error('自我介绍需要三张图片。');about.photos.forEach(v=>media(v,'自我介绍图片'));
   for(const k of Object.keys(DEFAULT_PAGES.about.resume))limit(about.resume[k],4000,'履历 '+k,false);
+  if(catalog.entries===undefined)catalog.entries=[];
+  if(!Array.isArray(catalog.entries)||catalog.entries.length>100)throw Error('最多可新增 100 个目录条目。');
+  const catalogIds=new Set();
+  for(const entry of catalog.entries){
+    if(!entry||typeof entry!=='object')throw Error('目录条目格式不正确。');
+    limit(entry.id,80,'目录标识');limit(entry.title,160,'目录标题');limit(entry.description,600,'目录说明',false);
+    if(catalogIds.has(entry.id))throw Error('目录标识不能重复。');catalogIds.add(entry.id);
+  }
   for(const k of ['title','heading','categories'])limit(catalog[k],500,'目录 '+k,k!=='categories');
   if(catalog.categories.split('\n').length!==3||catalog.categories.split('\n').some(v=>!v.trim()))throw Error('目录分类需要填写三项，每项一行。');
   for(const k of ['title','number','subtitle','summary','memberText'])limit(recognitions[k],2000,'荣誉 '+k,k==='title');

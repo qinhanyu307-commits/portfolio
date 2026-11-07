@@ -7,7 +7,7 @@ const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll
 let content,baseline,index=0,token='',fileSha='',dirty=false,busy=false,connected=false,poll;
 let mode='projects';
 const uploads=new Map();
-const pagesEditor=createPagesEditor({getContent:()=>content,media});
+const pagesEditor=createPagesEditor({getContent:()=>content,media,onChange:()=>{markDirty();status('目录已修改，保存并发布后会更新到网站。');}});
 const status=(message,error=false)=>{ $('#status').textContent=message;$('#status').classList.toggle('error',error); };
 function markDirty(){dirty=true;$('#save-state').textContent='有未发布修改';syncButtons();}
 function syncButtons(){ $('#publish').disabled=busy||!connected||!dirty;$('#publish').textContent=busy?'正在保存…':connected?'保存并发布':'连接后发布';$('#connect').disabled=busy;$('#reset').disabled=busy||!dirty;$('#logout').disabled=busy; }
@@ -87,3 +87,6 @@ try{const res=await fetch(new URL('content/projects.json?t='+Date.now(),root),{c
 $('#sections').addEventListener('click',e=>{const tab=e.target.closest('[data-mode]');if(!tab||busy||!content)return;mode=tab.dataset.mode;$('#sections').querySelectorAll('button').forEach(b=>b.classList.toggle('active',b===tab));if(mode==='projects')drawEditor();else pagesEditor.reset(mode);});
 $('#projects').addEventListener('click',e=>{const item=e.target.closest('[data-page-tab]');if(item&&!busy)pagesEditor.select(item.dataset.pageTab);});
 $('#editor').addEventListener('input',e=>{if(e.target.dataset.pageField){writePath(content,e.target.dataset.pageField,e.target.value);markDirty();pagesEditor.nav();pagesEditor.preview();}});
+
+$('#projects').addEventListener('click',e=>{if(e.target.closest('[data-catalog-add]')&&!busy&&content)pagesEditor.addCatalog();});
+$('#editor').addEventListener('click',e=>{if(e.target.closest('[data-catalog-remove]')&&!busy&&content)pagesEditor.removeCatalog();});

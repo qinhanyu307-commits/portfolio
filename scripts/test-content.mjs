@@ -18,3 +18,19 @@ const works=arrayAt(js,'g=',';function h()',js.indexOf('4312:')).data;
 assert.deepEqual(works[0].titleLines,[sample.projects[0].title1,sample.projects[0].title2]);assert.equal(works[0].cover,sample.projects[0].cover);assert.equal(works[0].video,'');assert.equal(works[0].href,'');
 const invalid=structuredClone(sample);invalid.projects[0].href='javascript:alert(1)';assert.throws(()=>validateContent(invalid));invalid.projects[0].href='https://example.com';invalid.projects[0].cover='/assets/../admin/index.html';assert.throws(()=>validateContent(invalid));
 console.log('Content tests passed: SSR/client parity, Chinese and HTML escaping, image replacement, disabled video/link and unsafe data rejection.');
+
+// Additional catalog entries must survive old data, SSR and client hydration.
+const expanded=structuredClone(sample);
+expanded.pages.catalog.entries=[{id:'new-one',title:'新增目录\n<设计>',description:'中文说明 & "引号"'},{id:'new-two',title:'第二个目录',description:''}];
+validateContent(expanded);
+const expandedHtml=renderContent(await fs.readFile(new URL('index.html',root),'utf8'),'index.html',expanded,base);
+const start=expandedHtml.indexOf('<section id="awards"'),section=expandedHtml.slice(start,expandedHtml.indexOf('</section>',start));
+assert.equal((section.match(/class="award-directory-row"/g)||[]).length,6);
+assert(section.includes('新增目录\n&lt;设计&gt;'));assert(section.includes('中文说明 &amp; &quot;引号&quot;'));
+const expandedJs=renderContent(await fs.readFile(new URL(rel,root),'utf8'),rel,expanded,base);new vm.Script(expandedJs);
+const catalog=arrayAt(expandedJs,'f=',',p=[',expandedJs.indexOf('6527:')).data;
+assert.equal(catalog.length,6);assert.equal(catalog[4].award,expanded.pages.catalog.entries[0].title);assert.equal(catalog[5].project,'');
+assert.equal(expanded.projects.length,4);
+const legacy=structuredClone(expanded);delete legacy.pages.catalog.entries;assert.deepEqual(validateContent(legacy).pages.catalog.entries,[]);
+const duplicate=structuredClone(expanded);duplicate.pages.catalog.entries[1].id='new-one';assert.throws(()=>validateContent(duplicate));
+console.log('Catalog additions passed: legacy migration, multiple entries, SSR/client parity, escaped text, empty descriptions and duplicate rejection.');

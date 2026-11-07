@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import {catalogEntries} from '../site/catalog-content.mjs';
 import {validateContent} from '../site/content-schema.mjs';
 const chunk='_next/static/chunks/app/page-52bc2242563ce759.js';
 const esc=s=>s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#x27;');
@@ -13,7 +14,7 @@ export function renderContent(text,rel,content,defaults){
     const next=works.data.map((p,i)=>({...p,titleLines:[projects[i].title1,projects[i].title2],description:projects[i].description,cover:projects[i].cover,icon:projects[i].icon,video:projects[i].video,href:projects[i].href}));
     text=text.slice(0,works.from)+JSON.stringify(next)+text.slice(works.end);
     const catalog=arrayAt(text,'f=',',p=[',text.indexOf('6527:'));
-    text=text.slice(0,catalog.from)+JSON.stringify(projects.map(p=>({award:p.catalogTitle,project:p.catalogDescription,date:''})))+text.slice(catalog.end);
+    text=text.slice(0,catalog.from)+JSON.stringify(catalogEntries(content).map(p=>({award:p.title,project:p.description,date:''})))+text.slice(catalog.end);
     text=text.replace('src:e.video,muted:!0','src:e.video||void 0,muted:!0');
     text=text.replaceAll('window.open("https://www.hellohello.is"+e.href','window.open(e.href');
     text=text.replace('onClick:()=>window.open(e.href,"_blank","noopener,noreferrer")','onClick:()=>{e.href&&window.open(e.href,"_blank","noopener,noreferrer")}');
@@ -27,6 +28,14 @@ export function renderContent(text,rel,content,defaults){
     defaults.projects.forEach((old,i)=>{const p=projects[i];for(const k of ['title1','title2','description','cover','icon'])if(old[k])pairs.push([esc(old[k]),esc(p[k])]);if(old.video)pairs.push(['src="'+esc(old.video)+'"',p.video?'src="'+esc(p.video)+'"':'']);pairs.push([esc(old.title1+' '+old.title2),esc(p.title1+' '+p.title2)]);});
     return swap(part,pairs);
   });
-  section('awards',part=>swap(part,defaults.projects.flatMap((old,i)=>['catalogTitle','catalogDescription'].map(k=>[esc(old[k]),esc(projects[i][k])]))));
+  section('awards',part=>{
+    part=swap(part,defaults.projects.flatMap((old,i)=>['catalogTitle','catalogDescription'].map(k=>[esc(old[k]),esc(projects[i][k])])));
+    const extras=content.pages?.catalog?.entries||[];if(!extras.length)return part;
+    const rows=[...part.matchAll(/<div\b[^>]*class="award-directory-row"[^>]*>(?:<span\b[^>]*>[\s\S]*?<\/span>){3}<\/div>/g)];
+    if(rows.length!==projects.length)throw Error('目录行模板数量不一致。');
+    const last=rows.at(-1),at=last.index+last[0].length;
+    const added=extras.map(entry=>{let i=0;const values=[entry.title,entry.description,''];return last[0].replace(/(<span\b[^>]*>)[\s\S]*?(<\/span>)/g,(_,a,b)=>a+esc(values[i++])+b);}).join('');
+    return part.slice(0,at)+added+part.slice(at);
+  });
   return text;
 }
