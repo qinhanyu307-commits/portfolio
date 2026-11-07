@@ -1,3 +1,11 @@
+/* Bundled Simplified Chinese bold face for the reference resume lettering. */
+@font-face {
+  font-family: 'Portfolio Resume';
+  src: url('/assets/fonts/portfolio-resume-bold.woff') format('woff');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
 html, body {
   height: auto !important;
   overflow-x: hidden !important;
