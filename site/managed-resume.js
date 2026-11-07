@@ -17,7 +17,10 @@
   const title=document.createElementNS(ns,'title');title.textContent=Object.values(data).join('。');svg.append(title);
   const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');let y=34;
   function line(text,x,baseline,size=24,color='#8a8a8a',weight=700){
-   ctx.font=weight+' '+size+'px '+family;let cursor=x;
+   ctx.font=weight+' '+size+'px '+family;
+   // Align the visible ink, including opening quotes with a large side bearing.
+   const bearing=ctx.measureText(text).actualBoundingBoxLeft;
+   let cursor=x+(Number.isFinite(bearing)?bearing:0);
    for(const char of text){const group=document.createElementNS(ns,'g'),glyph=document.createElementNS(ns,'text');glyph.textContent=char;glyph.setAttribute('x',cursor);glyph.setAttribute('y',baseline);glyph.setAttribute('fill',color);glyph.setAttribute('font-family',family);glyph.setAttribute('font-size',size);glyph.setAttribute('font-weight',weight);group.append(glyph);svg.append(group);characters.push(group);cursor+=ctx.measureText(char).width;}
   }
   function heading(label){line(label,0,y,36,'#000',700);y+=67;}
