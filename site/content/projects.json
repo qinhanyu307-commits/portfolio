@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-07T13:14:40.942Z",
+  "updatedAt": "2026-11-07T14:13:22.807Z",
   "projects": [
     {
       "id": "aiid",
@@ -43,8 +43,8 @@
       "title1": "Alchemy",
       "title2": "Blockchain",
       "description": "One of the world's largest blockchain infrastructure platforms had a vision: a new generation of builders was coming. The challenge was translating that belief into a brand that developers and enterprise teams would actually trust.",
-      "catalogTitle": "设计之外\nMY HOBBY",
-      "catalogDescription": "生活诗意，记录，My hobby diary，光影",
+      "catalogTitle": "LOOKIE\n品牌升级视频",
+      "catalogDescription": "AE，时尚，LOGO，UIUX，分镜",
       "cover": "/assets/images/work/alchemy/alchemy-cover-1.jpg",
       "icon": "/assets/images/work/alchemy/alchemy-icon.svg",
       "video": "/assets/images/work/alchemy/alchemy-cover-2.mp4",
@@ -74,8 +74,15 @@
     },
     "catalog": {
       "title": "Experience & Practice",
-      "heading": "Contents",
-      "categories": "项目运营\n改版升级\nAIGC"
+      "heading": "目录",
+      "categories": "项目运营\n改版升级\nAIGC",
+      "entries": [
+        {
+          "id": "34cfd16c-1d01-4808-b20d-31a90a69bf80",
+          "title": "获奖作品及其他项目",
+          "description": "米兰设计周，好创意，计算机设计大赛，KV，视觉"
+        }
+      ]
     },
     "recognitions": {
       "title": "Awards & Recognition",
