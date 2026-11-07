@@ -27,6 +27,7 @@ jobs:
           npm run build
           node scripts/test-content.mjs
           node scripts/test-pages.mjs
+          node scripts/test-home.mjs
           npm run check
       - name: Configure Pages
         uses: actions/configure-pages@v5

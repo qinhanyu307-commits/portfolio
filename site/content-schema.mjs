@@ -12,7 +12,11 @@ export function validateContent(value) {
     if(p.href){let u;try{u=new URL(p.href)}catch{throw Error('作品链接必须是完整的 https 地址。')}if(u.protocol!=='https:')throw Error('作品链接必须以 https:// 开头。');}
   });
   if(!value.pages)value.pages=structuredClone(DEFAULT_PAGES);
-  const {about,catalog,recognitions}=value.pages;
+  if(value.pages.home===undefined)value.pages.home=structuredClone(DEFAULT_PAGES.home);
+  const {home,about,catalog,recognitions}=value.pages;
+  if(!home||typeof home!=='object'||Array.isArray(home))throw Error('首页管理数据不完整。');
+  for(const [key,max] of [['name',80],['label',80],['copyright',40],['categoryLeft',80],['categoryMiddle',80],['categoryRight',80],['greetings',240],['intro',1000],['introMuted',500]])limit(home[key],max,'首页 '+key,key==='name'||key==='greetings'||key==='intro');
+  if(home.greetings.split('\n').length!==4||home.greetings.split('\n').some(line=>!line.trim()||line.length>60))throw Error('首页大标题需要四行，每行 1–60 个字符。');
   if(!about?.resume||!catalog||!recognitions)throw Error('页面管理数据不完整。');
   limit(about.titleMuted,200,'自我介绍浅色标题',false);limit(about.title,350,'自我介绍标题');
   if(!Array.isArray(about.photos)||about.photos.length!==3)throw Error('自我介绍需要三张图片。');about.photos.forEach(v=>media(v,'自我介绍图片'));

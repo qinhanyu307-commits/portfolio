@@ -4,6 +4,7 @@ import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {loadContent,renderContent} from './content.mjs';
 import {renderPages} from './pages.mjs';
+import {renderHome} from './home.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const source=path.join(root,'site'),output=path.join(root,'docs');
 const content=await loadContent(source);
@@ -15,11 +16,13 @@ async function walk(dir,rel=''){for(const entry of await fs.readdir(dir,{withFil
 await walk(source);await fs.mkdir(output,{recursive:true});
 const fingerprint=createHash('sha256');
 for(const rel of [...files].sort())if(/\.(?:html|css|js|mjs|json)$/.test(rel))fingerprint.update(rel).update(await fs.readFile(path.join(source,rel)));
-for(const script of ['build.mjs','content.mjs','pages.mjs'])fingerprint.update(await fs.readFile(path.join(root,'scripts',script)));
+for(const script of ['build.mjs','content.mjs','pages.mjs','home.mjs'])fingerprint.update(await fs.readFile(path.join(root,'scripts',script)));
 const revision=fingerprint.digest('hex').slice(0,12);
 function transform(text,rel){
   text=renderContent(text,rel,content,defaults);
   text=renderPages(text,rel,content);
+  text=renderHome(text,rel,content);
+  if(rel.endsWith('.html')||rel.endsWith('.js'))text=text.replace(/(?<![A-Za-z0-9_])\/assets\/logos\/logo\.svg/g,'/assets/logos/logo.svg?v='+revision);
   if(rel.endsWith('.js')){
     text=text.replaceAll('unoptimized:!1','unoptimized:!0');
     text=text.replace('t.GoogleAnalytics=function(e){','t.GoogleAnalytics=function(e){return null;');
