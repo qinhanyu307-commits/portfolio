@@ -66,38 +66,61 @@
   }, true);
 })();
 
-// Keep background playback recoverable when a browser blocks autoplay.
+// Resume media after autoplay rejection, tab suspension and back/forward restore.
 (() => {
-  const bound=new WeakSet();
-  const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const bound=new WeakSet(),motion=matchMedia('(prefers-reduced-motion: reduce)');
   function bind(){
-    if(!window.__lenis&&!window.__portfolioHeroStarted)return;
-    const hero=document.querySelector('[data-section="hero"]');
-    const video=hero?.querySelector('video');
+    if(!window.__portfolioHeroStarted)return;
+    const hero=document.querySelector('[data-section="hero"]'),video=hero?.querySelector('video');
     if(!video||bound.has(video))return;
-    bound.add(video);
-    video.muted=true;video.playsInline=true;video.preload='auto';
+    bound.add(video);video.muted=true;video.playsInline=true;video.preload='auto';
+    let inView=true,lastTime=video.currentTime,idleSince=performance.now(),lastAttempt=-Infinity,lastReload=-Infinity,reloads=0;
     const button=document.createElement('button');
     button.type='button';button.textContent='播放动画';button.hidden=true;
     button.setAttribute('aria-label','播放首页背景动画');
     button.style.cssText='position:absolute;left:24px;bottom:80px;z-index:40;border:1px solid #777;border-radius:4px;padding:10px 16px;background:#111;color:#fafafa;font:600 14px Arial,sans-serif;cursor:pointer';
     hero.append(button);
-    function show(){if(!reduced&&video.paused)button.hidden=false;}
-    function play(){
-      if(reduced||document.hidden||!video.isConnected)return;
-      try{const result=video.play();if(result?.catch)result.catch(show);}catch{show();}
+    const eligible=()=>!motion.matches&&!document.hidden&&inView&&video.isConnected;
+    function show(){if(eligible())button.hidden=false;}
+    function attempt(force=false){
+      if(!eligible())return;
+      const now=performance.now();if(!force&&now-lastAttempt<1000)return;lastAttempt=now;
+      try{const result=video.play();if(result?.catch)result.catch(error=>{if(error.name!=='AbortError')show();});}catch{show();}
     }
-    button.addEventListener('click',()=>{if(video.error)video.load();play();});
-    video.addEventListener('playing',()=>{button.hidden=true;});
-    video.addEventListener('canplay',play);
+    function reload(){
+      const now=performance.now();if(reloads>=2||now-lastReload<15000)return;
+      lastReload=now;reloads++;idleSince=now;
+      const time=video.currentTime;
+      video.addEventListener('loadedmetadata',()=>{try{if(time>0&&time<video.duration)video.currentTime=time;}catch{}},{once:true});
+      video.load();attempt(true);
+    }
+    function resume(){lastTime=video.currentTime;idleSince=performance.now();if(eligible())attempt(true);}
+    button.addEventListener('click',()=>{if(video.error||performance.now()-idleSince>5000){reloads=0;lastReload=-Infinity;reload();}attempt(true);});
+    video.addEventListener('playing',()=>{if(video.currentTime!==lastTime){button.hidden=true;idleSince=performance.now();lastTime=video.currentTime;}});
+    video.addEventListener('timeupdate',()=>{if(video.currentTime!==lastTime){lastTime=video.currentTime;idleSince=performance.now();button.hidden=true;}});
+    video.addEventListener('canplay',()=>attempt());
+    video.addEventListener('pause',()=>{if(eligible())attempt();});
     video.addEventListener('error',show);
-    document.addEventListener('visibilitychange',play);
-    document.addEventListener('pointerdown',play,{once:true});
-    play();setTimeout(show,2000);
+    document.addEventListener('visibilitychange',resume);
+    window.addEventListener('pageshow',resume);window.addEventListener('focus',resume);
+    document.addEventListener('pointerdown',()=>attempt(true),{passive:true});
+    motion.addEventListener('change',()=>{if(motion.matches){video.pause();button.hidden=true;}else resume();});
+    if('IntersectionObserver' in window)new IntersectionObserver(entries=>{
+      inView=entries[0].isIntersecting;
+      if(inView)resume();else video.pause();
+    },{threshold:0}).observe(hero);
+    // A lost WebGL context must leave the ordinary background video visible.
+    hero.addEventListener('webglcontextlost',event=>{event.target.style.display='none';attempt(true);},true);
+    setInterval(()=>{
+      if(!eligible())return;
+      if(video.currentTime!==lastTime){lastTime=video.currentTime;idleSince=performance.now();return;}
+      const idle=performance.now()-idleSince;
+      if(idle>3000){show();attempt();}
+      if(idle>8000&&(video.error||video.readyState>=2||video.networkState===3))reload();
+    },1500);
+    if(motion.matches)video.pause();else attempt(true);
   }
   const startup=setInterval(bind,250);setTimeout(()=>clearInterval(startup),15000);
-  window.addEventListener('hero-start',bind);
-  window.addEventListener('pageshow',bind);
-  new MutationObserver(bind).observe(document.body,{childList:true,subtree:true});
-  bind();
+  window.addEventListener('hero-start',bind);window.addEventListener('pageshow',bind);
+  new MutationObserver(bind).observe(document.body,{childList:true,subtree:true});bind();
 })();
