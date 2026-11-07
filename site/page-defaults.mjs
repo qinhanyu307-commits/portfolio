@@ -1,4 +1,15 @@
 export const DEFAULT_PAGES = {
+  "home": {
+    "name": "Lu Kehao",
+    "label": "Portfolio",
+    "copyright": "©2026",
+    "categoryLeft": "Design",
+    "categoryMiddle": "UI/UX",
+    "categoryRight": "Technology",
+    "greetings": "Hello\nBonjour\nHola\nOlá",
+    "intro": "Every project by Lu Kehao starts from chaos and grows into",
+    "introMuted": "something cool."
+  },
   "about": {
     "titleMuted": "An endless process of",
     "title": "learning, exploring, creating and evolving.",

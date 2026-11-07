@@ -22,7 +22,7 @@ div:has(> div > div > img[alt="Album art"]) {
 }
 
 /* Give the name the same visual height as the previous symbol. */
-img[src="/assets/logos/logo.svg"] {
+img[src*="/assets/logos/logo.svg"] {
   width: max(132px, 9.17vw) !important;
   height: auto !important;
 }

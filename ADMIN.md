@@ -2,8 +2,9 @@
 
 地址：https://qinhanyu307-commits.github.io/portfolio/admin/
 
-后台顶部可以切换“作品展示”“自我介绍 / 履历”“目录页”和“荣誉页”。使用同一个 GitHub 连接统一保存发布。
+后台顶部可以切换“首页”“作品展示”“自我介绍 / 履历”“目录页”和“荣誉页”。使用同一个 GitHub 连接统一保存发布。
 
+- 首页：左上角姓名、顶部 Portfolio 标签、版权文字、三项分类、四行大标题，以及左下角黑色和灰色介绍文字。大标题每行一项，保持四行；建议使用简短文字。右侧可即时预览，保存并发布后同步更新首页。
 - 自我介绍：浅色和黑色标题、三张叠放照片，以及教育经历、项目经历、实习经历和技能。未修改履历时保留原图；修改后使用可编辑的 SVG 文字，继续随滚动逐字显示。
 - 目录页：大标题、左侧标题、三项分类，以及四个目录条目的标题和说明。
 - 荣誉页：大标题、数字、数字下方标题、七项统计说明、标志与旁边的文字，以及现有每个荣誉条目的名称、项目、时间和悬停配图。
@@ -34,4 +35,4 @@
 
 内容的唯一编辑入口是 `site/content/projects.json`；不要直接改 `docs`。`scripts/build.mjs` 将内容同时写入页面 SSR 与客户端作品数据，避免刷新后出现旧文字或水合不一致。`site/content/defaults.json` 为源模板映射基准，不随后台编辑变化。
 
-运行 `node scripts/test-content.mjs`、`npm run build` 和 `npm run check`。`site` 下新文件会进入 Pages 构建；GitHub Actions 中的动态构建产物不回写仓库的 `docs`，本地开发时先拉取 main 再构建。
+运行 `node scripts/test-content.mjs`、`node scripts/test-home.mjs`、`npm run build` 和 `npm run check`。`site` 下新文件会进入 Pages 构建；GitHub Actions 中的动态构建产物不回写仓库的 `docs`，本地开发时先拉取 main 再构建。
