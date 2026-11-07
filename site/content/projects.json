@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-28T08:02:09.334Z",
+  "updatedAt": "2026-11-07T12:26:18.307Z",
   "projects": [
     {
       "id": "aiid",
@@ -247,9 +247,9 @@
       "name": "Lu Kehao",
       "label": "Portfolio",
       "copyright": "©2026",
-      "categoryLeft": "Design",
+      "categoryLeft": "视觉",
       "categoryMiddle": "UI/UX",
-      "categoryRight": "Technology",
+      "categoryRight": "AIGC",
       "greetings": "Hello\nBonjour\nHola\nOlá",
       "intro": "Every project by Lu Kehao starts from chaos and grows into",
       "introMuted": "something cool."
