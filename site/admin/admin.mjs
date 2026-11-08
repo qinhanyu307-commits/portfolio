@@ -7,7 +7,7 @@ const esc=s=>String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll
 let content,baseline,index=0,token='',fileSha='',dirty=false,busy=false,connected=false,poll;
 let mode='projects';
 const uploads=new Map();
-const pagesEditor=createPagesEditor({getContent:()=>content,media,onChange:()=>{markDirty();status('目录已修改，保存并发布后会更新到网站。');}});
+const pagesEditor=createPagesEditor({getContent:()=>content,media,onChange:()=>{markDirty();status('内容已修改，保存并发布后会更新到网站。');}});
 const status=(message,error=false)=>{ $('#status').textContent=message;$('#status').classList.toggle('error',error); };
 function markDirty(){dirty=true;$('#save-state').textContent='有未发布修改';syncButtons();}
 function syncButtons(){ $('#publish').disabled=busy||!connected||!dirty;$('#publish').textContent=busy?'正在保存…':connected?'保存并发布':'连接后发布';$('#connect').disabled=busy;$('#reset').disabled=busy||!dirty;$('#logout').disabled=busy; }
@@ -92,3 +92,23 @@ $('#projects').addEventListener('click',e=>{if(e.target.closest('[data-catalog-a
 $('#editor').addEventListener('click',e=>{if(e.target.closest('[data-catalog-remove]')&&!busy&&content)pagesEditor.removeCatalog();});
 
 $('#view-site').addEventListener('click',()=>{const url=new URL(root);url.searchParams.set('preview',String(Date.now()));$('#view-site').href=url.href;});
+
+async function uploadGallery(input){
+ const row=content.pages.recognitions.entries[Number(input.dataset.galleryUpload)],files=[...input.files];if(!row||!files.length)return;
+ if(row.images.length+files.length>20){status('每个目录最多上传 20 张图片。',true);input.value='';return;}
+ busy=true;document.body.classList.add('busy');syncButtons();const staged=[];
+ try{
+  for(let i=0;i<files.length;i++){status('正在处理图片 '+(i+1)+' / '+files.length+'…');const result=await optimize(files[i],'page');staged.push({path:'/assets/uploads/recognition-'+row.id+'-'+crypto.randomUUID()+'.webp',result});}
+  for(const {path,result} of staged){uploads.set(path,result);row.images.push(path);}row.image=row.images[0]||'';markDirty();drawEditor();status('图片已加入图集，保存并发布后可在网站中切换。');
+ }catch(error){for(const {result} of staged)URL.revokeObjectURL(result.url);status(error.message,true);input.value='';}
+ finally{busy=false;document.body.classList.remove('busy');syncButtons();}
+}
+$('#editor').addEventListener('change',e=>{if(e.target.hasAttribute('data-gallery-upload')&&!busy)uploadGallery(e.target);});
+for(const area of [$('#projects'),$('#editor')])area.addEventListener('click',e=>{if(e.target.closest('[data-recognition-add]')&&!busy&&content)pagesEditor.addRecognition();});
+$('#editor').addEventListener('click',e=>{
+ if(busy||!content)return;
+ if(e.target.closest('[data-recognition-remove]'))pagesEditor.removeRecognition();
+ const remove=e.target.closest('[data-gallery-remove]'),move=e.target.closest('[data-gallery-move]');
+ if(remove)pagesEditor.editGallery(Number(remove.dataset.galleryRemove),null);
+ if(move)pagesEditor.editGallery(Number(move.dataset.galleryMove),Number(move.dataset.direction));
+});

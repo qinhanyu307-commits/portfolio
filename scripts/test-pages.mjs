@@ -2,6 +2,7 @@ import fs from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {renderPages} from './pages.mjs';
+import {renderRecognitions} from './recognitions.mjs';
 import {renderContent,arrayAt} from './content.mjs';
 import {validateContent} from '../site/content-schema.mjs';
 import {DEFAULT_PAGES} from '../site/page-defaults.mjs';
@@ -13,16 +14,18 @@ sample.pages.catalog={title:'我的实践',heading:'目录',categories:'运营�
 sample.pages.recognitions.title='荣誉与记录';sample.pages.recognitions.number='18';sample.pages.recognitions.subtitle='设计奖项';sample.pages.recognitions.summary='第一项\n第二项\n第三项\n第四项\n第五项\n第六项\n第七项';sample.pages.recognitions.memberText='新的标志说明';sample.pages.recognitions.entries[0]={award:'测试设计奖',project:'测试项目',date:'2026年10月',image:'/assets/uploads/award-new.webp'};
 validateContent(sample);
 const rel='_next/static/chunks/app/page-52bc2242563ce759.js',raw=await fs.readFile(new URL(rel,root),'utf8');
-const js=renderPages(raw,rel,sample);new vm.Script(js);assert(js.includes('持续学习'));assert(js.includes('左侧介绍 < & >'));assert(js.includes('右侧介绍与合作'));assert(js.includes('/assets/uploads/new-portrait.webp'));assert(js.includes('i=[1,8].map'));const awards=arrayAt(js,'f=',',p=[',js.indexOf('16527:')).data;assert.equal(awards[0].award,'测试设计奖');assert.equal(awards[0].image,'/assets/uploads/award-new.webp');assert(js.includes('r.current.src=f[n].image'));
+const js=renderRecognitions(renderPages(raw,rel,sample),rel,sample);new vm.Script(js);assert(js.includes('持续学习'));assert(js.includes('左侧介绍 < & >'));assert(js.includes('右侧介绍与合作'));assert(js.includes('/assets/uploads/new-portrait.webp'));assert(js.includes('测试设计奖'));assert(js.includes('/assets/uploads/award-new.webp'));
 const defaults=JSON.parse(await fs.readFile(new URL('content/defaults.json',root),'utf8'));
-const html=renderPages(renderContent(await fs.readFile(new URL('index.html',root),'utf8'),'index.html',sample,defaults),'index.html',sample);
-for(const text of ['持续学习','左侧介绍 &lt; &amp; &gt;','右侧介绍与合作','探索与成长 &lt; &amp; &gt;','我的实践','运营项目','测试设计奖','新的标志说明','测试美术学院 新专业','/managed-resume.js'])assert(html.includes(text),text);
+const html=renderRecognitions(renderPages(renderContent(await fs.readFile(new URL('index.html',root),'utf8'),'index.html',sample,defaults),'index.html',sample),'index.html',sample);
+for(const text of ['持续学习','左侧介绍 &lt; &amp; &gt;','右侧介绍与合作','探索与成长 &lt; &amp; &gt;','我的实践','运营项目','测试设计奖','测试美术学院 新专业','/managed-resume.js'])assert(html.includes(text),text);
 const aboutStart=html.indexOf('<section id="about"'),aboutHtml=html.slice(aboutStart,html.indexOf('</section>',aboutStart));
 assert.equal((aboutHtml.match(/about-copy-columns/g)||[]).length,2);assert.equal((aboutHtml.match(/about-copy-skills/g)||[]).length,1);assert(aboutHtml.includes('about-copy-quoted'));
 const recognitionStart=html.indexOf('<section id="recognitions"');assert(!html.slice(recognitionStart,html.indexOf('</section>',recognitionStart)).includes('>+</span>'));
-assert(html.includes('设计奖项'));
-const old={version:1,projects:structuredClone(content.projects)};validateContent(old);assert.deepEqual(old.pages,DEFAULT_PAGES);
+assert(!html.slice(recognitionStart,html.indexOf('</section>',recognitionStart)).includes('设计奖项'));
+const old={version:1,projects:structuredClone(content.projects)};validateContent(old);assert.deepEqual(old.pages,validateContent({version:1,projects:structuredClone(content.projects),pages:structuredClone(DEFAULT_PAGES)}).pages);
 console.log('Page tests passed: legacy migration, About photos/title/resume, catalog labels, award text/images/count, SSR/client parity and escaped content.');
 
 // Footer content shares the page settings and publish pipeline.
 await import('./test-footer.mjs');
+
+await import('./test-recognitions.mjs');

@@ -38,11 +38,18 @@ export function validateContent(value) {
   }
   for(const k of ['title','heading','categories'])limit(catalog[k],500,'目录 '+k,k!=='categories');
   if(catalog.categories.split('\n').length!==3||catalog.categories.split('\n').some(v=>!v.trim()))throw Error('目录分类需要填写三项，每项一行。');
-  for(const k of ['title','number','subtitle','summary','memberText'])limit(recognitions[k],2000,'荣誉 '+k,k==='title');
-  if(!/^\d{1,2}\+?$/.test(recognitions.number))throw Error('荣誉数字请输入 0–99，可以在末尾加 +。');
-  if(recognitions.summary.split('\n').length!==7||recognitions.summary.split('\n').some(v=>!v.trim()))throw Error('荣誉统计说明需要填写七项，每项一行。');
-  media(recognitions.logo,'荣誉页标志');
-  if(!Array.isArray(recognitions.entries)||recognitions.entries.length!==DEFAULT_PAGES.recognitions.entries.length)throw Error('荣誉条目数量无效。');
-  for(const row of recognitions.entries){limit(row.award,300,'荣誉名称');limit(row.project,300,'荣誉项目',false);limit(row.date,100,'荣誉时间',false);media(row.image,'荣誉配图');}
+  limit(recognitions.title,2000,'荣誉页标题');
+  if(!Array.isArray(recognitions.entries)||recognitions.entries.length>100)throw Error('荣誉页最多 100 个目录条目。');
+  const recognitionIds=new Set();
+  recognitions.entries.forEach((row,index)=>{
+    if(!row||typeof row!=='object'||Array.isArray(row))throw Error('荣誉目录格式无效。');
+    if(row.id===undefined)row.id='recognition-'+(index+1);
+    limit(row.id,80,'荣誉目录标识');if(!/^[a-zA-Z0-9_-]+$/.test(row.id)||recognitionIds.has(row.id))throw Error('荣誉目录标识无效或重复。');recognitionIds.add(row.id);
+    limit(row.award,500,'目录名称');limit(row.project,600,'项目说明',false);limit(row.date,150,'时间',false);
+    if(row.images===undefined)row.images=row.image?[row.image]:[];
+    if(!Array.isArray(row.images)||row.images.length>20)throw Error('每个目录最多上传 20 张图片。');
+    row.images.forEach(src=>media(src,'荣誉作品图片'));
+    row.image=row.images[0]||'';
+  });
   return value;
 }
