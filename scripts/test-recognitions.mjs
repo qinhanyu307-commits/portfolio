@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';import assert from 'node:assert/strict';import vm from 'node:vm';
+import {galleryView} from '../site/recognitions-gallery.mjs';
 import {validateContent} from '../site/content-schema.mjs';import {renderRecognitions} from './recognitions.mjs';
 const root=new URL('../site/',import.meta.url),original=JSON.parse(await fs.readFile(new URL('content/projects.json',root),'utf8'));
 // Migration needs a deliberately old-format fixture. Published content may
@@ -18,3 +19,13 @@ const rel='_next/static/chunks/app/page-52bc2242563ce759.js';const js=renderReco
 const empty=structuredClone(sample);empty.pages.recognitions.entries=[];validateContent(empty);assert(renderRecognitions(await fs.readFile(new URL('index.html',root),'utf8'),'index.html',empty).includes('暂无目录'));
 for(const change of [v=>v.pages.recognitions.entries.push({...v.pages.recognitions.entries[0]}),v=>v.pages.recognitions.entries[0].images=['/assets/../bad.png'],v=>v.pages.recognitions.entries[0].images=Array(21).fill('/assets/test.jpg'),v=>v.pages.recognitions.entries=Array(101).fill(v.pages.recognitions.entries[0])]){const bad=structuredClone(sample);change(bad);assert.throws(()=>validateContent(bad));}
 console.log('Recognition gallery tests passed: legacy image migration, add/delete counts, multiple images, empty states, multiline and escaping, client syntax and upload validation.');
+
+// A single-image directory must keep its thumbnail and visible disabled arrows.
+const viewData=structuredClone(sample.pages.recognitions);viewData.entries.push({id:'single-image',award:'单图',project:'',date:'',images:['/assets/images/awards/awards-img-3.jpg']});
+const h=(tag,props,...children)=>({tag,props,children});
+const flatten=node=>node&&typeof node==='object'?[node,...node.children.flat(Infinity).flatMap(flatten)]:[];
+const single=flatten(galleryView(h,viewData,2));
+assert.equal(single.filter(n=>n.props?.className==='recognition-thumbs')[0].children.length,1);
+assert.equal(single.filter(n=>n.props?.['aria-label']==='上一张图片'||n.props?.['aria-label']==='下一张图片').filter(n=>n.props.disabled).length,2);
+const multi=flatten(galleryView(h,viewData,0));assert.equal(multi.filter(n=>n.props?.['aria-label']==='下一张图片')[0].props.disabled,false);
+console.log('Single-image controls passed: thumbnail present, arrows visible and disabled; multi-image arrows remain enabled.');
