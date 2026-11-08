@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-08T16:38:14.222Z",
+  "updatedAt": "2026-11-08T16:42:55.708Z",
   "projects": [
     {
       "id": "aiid",
@@ -267,15 +267,15 @@
     },
     "footer": {
       "title": "This is the end",
-      "year": "©26",
-      "description": "Drop us a line to talk about your project.",
+      "year": "-",
+      "description": "Thanks",
       "button": "Hurry up, offer!",
       "privacyLabel": "Privacy Policy",
       "homeLabel": "Home",
       "careersLabel": "Careers",
       "contactLabel": "Contact",
-      "address": "卢 科皓\n18015291367\n江苏-常州",
-      "copyright": "All rights reserved ©2026"
+      "address": "电话/180-1529-1367\n邮箱/1810434804@qq.com\n微信/_51sleeeeeep",
+      "copyright": "江苏-常州"
     }
   }
 }
