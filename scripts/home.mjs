@@ -9,6 +9,7 @@ const char=letter=>'<span style="display:inline-block;overflow:hidden;vertical-a
 
 export function renderHome(text,rel,content){
   const h=content.pages?.home||DEFAULT_PAGES.home,d=DEFAULT_PAGES.home;
+  const portrait={className:'home-portrait',src:'/assets/images/entry-portrait.png',alt:h.name+' portrait',width:1254,height:1254,decoding:'async',fetchPriority:'low'};
   // Keep the existing image dimensions and font at the default name. Longer
   // names get enough SVG canvas space rather than being clipped by the image.
   if(rel==='assets/logos/logo.svg'){
@@ -19,6 +20,8 @@ export function renderHome(text,rel,content){
     text=replace(text,'S=["Hello","Bonjour","Hola","Ol\\xe1"]','S='+JSON.stringify(h.greetings.split('\n')));
     text=replace(text,'let E='+JSON.stringify(d.intro),'let E='+JSON.stringify(h.intro));
     text=replace(text,'children:[E," ","something cool."]','children:[E," ",'+JSON.stringify(h.introMuted)+']');
+    const intro='children:[E," ",'+JSON.stringify(h.introMuted)+']})';
+    text=replace(text,intro,intro+',(0,n.jsx)("img",'+JSON.stringify(portrait)+')');
     const labels=new Map([[d.label,h.label],[d.categoryLeft,h.categoryLeft],[d.categoryMiddle,h.categoryMiddle],[d.categoryRight,h.categoryRight]]);
     text=text.replace(/children:("Portfolio"|"Design"|"UI\/UX"|"Technology")/g,(_,label)=>'children:'+JSON.stringify(labels.get(JSON.parse(label))));
     text=text.replaceAll('children:"\\xa92026"','children:'+JSON.stringify(h.copyright));
@@ -40,5 +43,7 @@ export function renderHome(text,rel,content){
   if(first<0||last<0)throw Error('首页四行标题模板缺失。');
   hero=hero.slice(0,first)+h.greetings.split('\n').map(line=>'<div style="display:flex;align-items:flex-end">'+Array.from(line).map(char).join('')+'</div>').join('')+hero.slice(last+6);
   hero=replace(hero,esc(d.intro)+'<!-- --> <!-- -->'+esc(d.introMuted),esc(h.intro)+'<!-- --> <!-- -->'+esc(h.introMuted));
+  const introHtml=esc(h.intro)+'<!-- --> <!-- -->'+esc(h.introMuted)+'</div>';
+  hero=replace(hero,introHtml,introHtml+'<img class="home-portrait" src="'+portrait.src+'" alt="'+esc(portrait.alt)+'" width="1254" height="1254" decoding="async" fetchpriority="low">');
   return text.slice(0,start)+hero+text.slice(end);
 }

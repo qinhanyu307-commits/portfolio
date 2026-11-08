@@ -31,3 +31,21 @@ img[src*="/assets/logos/logo.svg"] {
 [data-section="hero"], div:has(> video > source[src*="preloader"]) {
   filter: invert(1) hue-rotate(180deg) invert(1);
 }
+/* Align the square portrait with the homepage introduction and right edge. */
+[data-section="hero"] .home-portrait {
+  position: absolute;
+  top: calc(29.5vw + 24px);
+  right: clamp(16px, 1.67vw, 24px);
+  width: clamp(64px, 7vw, 104px);
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  z-index: 2;
+}
+@media (max-width: 639px) {
+  [data-section="hero"] .home-portrait {
+    top: 110px;
+    right: 16px;
+    width: 56px;
+  }
+}
