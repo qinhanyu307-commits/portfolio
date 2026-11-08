@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-08T14:22:49.004Z",
+  "updatedAt": "2026-11-08T14:38:50.139Z",
   "projects": [
     {
       "id": "aiid",
@@ -53,8 +53,8 @@
   ],
   "pages": {
     "about": {
-      "titleMuted": "What we do.",
-      "title": "We design memorable experiences with forward-thinking brands.",
+      "titleMuted": "Made it this far?",
+      "title": "Might as well keep scrolling.",
       "photos": [
         "/assets/uploads/pages-about-photos-0-70075a13-07f8-4e99-9a0a-2bda7edd8e24.webp",
         "/assets/uploads/pages-about-photos-1-c8cf3869-0af0-4766-bae0-afe8d877871a.webp",
