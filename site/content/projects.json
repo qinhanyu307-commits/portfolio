@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-08T12:58:15.322Z",
+  "updatedAt": "2026-11-08T13:14:30.705Z",
   "projects": [
     {
       "id": "aiid",
@@ -9,9 +9,9 @@
       "description": "全流程参与走起APP的优化改版计划，协助完成前期用户调研与分析页面逻辑规划和视觉风格定位，配合团队完成高保真原型图落地。参与购票核心链路深度优化，聚焦三条链路推动设计与业务数据深度协同。参与重构页面布局，优化用户操作流程及链路，提高用户留存率及购买率。",
       "catalogTitle": "走起GO\nAPP改版升级",
       "catalogDescription": "链路，社区，迭代升级，Version Iteration",
-      "cover": "/assets/images/work/aiid/aiid-cover-1.jpg",
+      "cover": "/assets/uploads/aiid-cover-1654d8ca-ee81-497b-af6e-df8f8b1c45b7.webp",
       "icon": "/assets/images/work/aiid/aiid-icon.svg",
-      "video": "/assets/images/work/aiid/aiid-cover-compatible.mp4",
+      "video": "",
       "href": "https://www.hellohello.is/case-studies/stateofai"
     },
     {
@@ -21,9 +21,9 @@
       "description": "参与雅迪智能电动车HMI视觉设计，前期针对两轮车及四轮车车机壁纸开展竞品调研与趋势分析，建立视觉分类体系并提炼设计方向；基于调研结果进行多主题、多风格视觉探索，结合AI生成工具持续优化Prompt与画面表现，根据仪表盘实际显示效果及市场竞争力筛选方案，并完成系列化壁纸设计。",
       "catalogTitle": "雅迪\n车机壁纸设计",
       "catalogDescription": "风格探索，个性表达，Wallpaper design",
-      "cover": "/assets/images/work/passkeys/passkeys-cover-1.jpg",
+      "cover": "/assets/uploads/passkeys-cover-5b582ed3-746e-4c36-8983-1de412285646.webp",
       "icon": "/assets/images/work/passkeys/passkeys-icon.svg",
-      "video": "/assets/images/work/passkeys/passkeys-cover-2.mp4",
+      "video": "",
       "href": "https://www.hellohello.is/case-studies/passkeys"
     },
     {
@@ -33,9 +33,9 @@
       "description": "负责多个专题页面的视觉方案执行，结合数据反馈不断优化设计细节，提升页面视觉吸引力与点击率。\n使用MJ、ChatGPT等AI工具进行页面视觉元素的产出以及后期图像调整，最终产出高质量视觉元素素材。通过ComfyUI等主流AIGC工具进行FLUX模型训练集收集、标注、调参、整理、测试等，参与团队内素材生成及产出。\n与产品、运营、开发等部门协作，推动设计需求从概念到上线的完整流程，参与设计评审与方案复盘，输出视觉设计规范文档，增强设计协同效率。",
       "catalogTitle": "番茄小说\nAPP运营活动",
       "catalogDescription": "运营，种花，引流，Tomato，番茄",
-      "cover": "/assets/images/work/grateful/grateful-cover-1.jpg",
+      "cover": "/assets/uploads/grateful-cover-87de5cee-55c3-40cc-8031-d22a9d17bc8d.webp",
       "icon": "/assets/images/work/grateful/grateful-icon.svg",
-      "video": "/assets/images/work/grateful/grateful-cover-2.mp4",
+      "video": "",
       "href": "https://www.hellohello.is/case-studies/grateful"
     },
     {
@@ -45,9 +45,9 @@
       "description": "在lookie 的视觉升级中，运用AfterEffects制作互动动效，设计宝箱开启、组件展示等反馈动画、优化交互体验",
       "catalogTitle": "LOOKIE\n品牌升级视频",
       "catalogDescription": "AE，时尚，LOGO，UIUX，分镜",
-      "cover": "/assets/images/work/alchemy/alchemy-cover-1.jpg",
+      "cover": "/assets/uploads/alchemy-cover-3cd40cb6-4c29-42b8-814c-e60e357e6894.webp",
       "icon": "/assets/images/work/alchemy/alchemy-icon.svg",
-      "video": "/assets/images/work/alchemy/alchemy-cover-2.mp4",
+      "video": "",
       "href": "https://www.hellohello.is/case-studies/alchemy"
     }
   ],
