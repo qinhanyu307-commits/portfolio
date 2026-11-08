@@ -49,3 +49,8 @@ img[src*="/assets/logos/logo.svg"] {
     width: 56px;
   }
 }
+
+/* Preserve the LOOKIE preview colors through the inverted portfolio theme. */
+#work video[src*="/assets/videos/lookie-brand-upgrade.mp4"] {
+  filter: invert(1);
+}

@@ -16,7 +16,8 @@ export function renderContent(text,rel,content,defaults){
     const catalog=arrayAt(text,'f=',',p=[',text.indexOf('6527:'));
     text=text.slice(0,catalog.from)+JSON.stringify(catalogEntries(content).map(p=>({award:p.title,project:p.description,date:''})))+text.slice(catalog.end);
     text=text.replace('src:e.video,muted:!0','src:e.video||void 0,muted:!0');
-    text=text.replace('r&&(r.currentTime=0,r.play().catch(()=>{}),l.Ay.to(r,{opacity:1,duration:.4})),n&&l.Ay.to(n,{opacity:0,duration:.4})','r&&g[e].video&&(r.currentTime=0,r.play().catch(()=>{}),l.Ay.to(r,{opacity:1,duration:.4})),g[e].video&&n&&l.Ay.to(n,{opacity:0,duration:.4})');
+    text=text.replace('r&&(r.currentTime=0,r.play().catch(()=>{}),l.Ay.to(r,{opacity:1,duration:.4})),n&&l.Ay.to(n,{opacity:0,duration:.4})','r&&g[e].video&&(l.Ay.killTweensOf(r),n&&l.Ay.killTweensOf(n),r.muted=!0,r.currentTime=0,r.play().catch(()=>{}),l.Ay.to(r,{opacity:1,duration:.4})),g[e].video&&n&&l.Ay.to(n,{opacity:0,duration:.4})');
+    text=text.replace('t&&l.Ay.to(t,{opacity:0,duration:.4,onComplete:()=>t.pause()}),r&&l.Ay.to(r,{opacity:1,duration:.4})','t&&(l.Ay.killTweensOf(t),t.pause(),t.currentTime=0,l.Ay.to(t,{opacity:0,duration:.4})),r&&(l.Ay.killTweensOf(r),l.Ay.to(r,{opacity:1,duration:.4}))');
     text=text.replaceAll('window.open("https://www.hellohello.is"+e.href','window.open(e.href');
     text=text.replaceAll('onClick:()=>window.open(e.href,"_blank","noopener,noreferrer")','onClick:()=>{e.href&&window.open(e.href,e.linkTarget||"_blank","noopener,noreferrer")}');
     text=text.replaceAll('window.open(e.href,"_blank","noopener,noreferrer")','window.open(e.href,e.linkTarget||"_blank","noopener,noreferrer")');
