@@ -11,12 +11,12 @@ export const DEFAULT_PAGES = {
     "introMuted": "something cool."
   },
   "about": {
-    "titleMuted": "An endless process of",
-    "title": "learning, exploring, creating and evolving.",
+    "titleMuted": "What we do.",
+    "title": "We design memorable experiences with forward-thinking brands.",
     "photos": [
-      "/assets/images/whatwedo/lu-kehao-portrait.jpg",
-      "/assets/images/whatwedo/lu-kehao-event.jpg",
-      "/assets/images/whatwedo/lu-kehao-contact.png"
+      "/assets/images/whatwedo/whatwedo-img-1.jpg",
+      "/assets/images/whatwedo/whatwedo-img-2.jpg",
+      "/assets/images/whatwedo/whatwedo-img-3.jpg"
     ],
     "resume": {
       "educationTitle": "教育经历",
@@ -28,7 +28,10 @@ export const DEFAULT_PAGES = {
       "internships": "2026年7月–2026年10月 | 雅迪科技集团有限公司新业务部门实习",
       "skillsTitle": "专业技能",
       "skills": "UI/UX设计 | 视觉设计 | 动效设计 | 运营设计\nvibe coding | AIGC | IP设计 | 设计体系搭建"
-    }
+    },
+    "layout": "reference",
+    "bodyLeft": "We are obsessed with design and technology that makes life easier and more beautiful. Brand identity, product design, and engineering: connected with intention, built to last.",
+    "bodyRight": "Because obsession isn't selfish. There's nothing we love more than to share it. With industry pioneers in fintech, Web3, AI, and beyond. With you."
   },
   "catalog": {
     "entries": [],

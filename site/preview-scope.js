@@ -16,7 +16,8 @@
     document.documentElement.dataset.previewSection = workBounds && workBounds.top <= innerHeight * .5 && workBounds.bottom > 0 ? 'work' : 'about';
     const awards = document.getElementById('awards');
     const awardBounds = awards?.getBoundingClientRect();
-    document.documentElement.dataset.previewTheme = awardBounds && awardBounds.top <= 80 && awardBounds.bottom > 80 ? 'awards' : 'light';
+    const aboutBounds=document.getElementById('about')?.getBoundingClientRect();
+    document.documentElement.dataset.previewTheme = aboutBounds&&aboutBounds.top<=80&&aboutBounds.bottom>80?'reference-about':awardBounds && awardBounds.top <= 80 && awardBounds.bottom > 80 ? 'awards' : 'light';
     const hero = document.querySelector('[data-section="hero"]');
     if (hero && !hero.id) hero.id = 'hero';
     if (hero && !hero.querySelector('.preview-mobile-about')) {

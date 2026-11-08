@@ -18,6 +18,9 @@ export function validateContent(value) {
   for(const [key,max] of [['name',80],['label',80],['copyright',40],['categoryLeft',80],['categoryMiddle',80],['categoryRight',80],['greetings',240],['intro',1000],['introMuted',500]])limit(home[key],max,'首页 '+key,key==='name'||key==='greetings'||key==='intro');
   if(home.greetings.split('\n').length!==4||home.greetings.split('\n').some(line=>!line.trim()||line.length>60))throw Error('首页大标题需要四行，每行 1–60 个字符。');
   if(!about?.resume||!catalog||!recognitions)throw Error('页面管理数据不完整。');
+  if(about.layout===undefined)about.layout='reference';
+  if(!['reference','resume'].includes(about.layout))throw Error('自我介绍页面样式无效。');
+  for(const key of ['bodyLeft','bodyRight']){if(about[key]===undefined)about[key]=DEFAULT_PAGES.about[key];limit(about[key],2000,'自我介绍正文',false);}
   limit(about.titleMuted,200,'自我介绍浅色标题',false);limit(about.title,350,'自我介绍标题');
   if(!Array.isArray(about.photos)||about.photos.length!==3)throw Error('自我介绍需要三张图片。');about.photos.forEach(v=>media(v,'自我介绍图片'));
   for(const k of Object.keys(DEFAULT_PAGES.about.resume))limit(about.resume[k],4000,'履历 '+k,false);

@@ -1,16 +1,17 @@
 import {DEFAULT_PAGES as D} from '../site/page-defaults.mjs';
+// The retained source template is independent of editable About defaults.
+const T={...D.about,titleMuted:"An endless process of",title:"learning, exploring, creating and evolving.",photos:["/assets/images/whatwedo/lu-kehao-portrait.jpg", "/assets/images/whatwedo/lu-kehao-event.jpg", "/assets/images/whatwedo/lu-kehao-contact.png"]};
 const esc=s=>s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#x27;');
 function swap(s,pairs){const map=new Map(pairs.filter(([a])=>a.length));if(!map.size)return s;const re=new RegExp([...map.keys()].sort((a,b)=>b.length-a.length).map(v=>v.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|'),'g');return s.replace(re,v=>map.get(v));}
 function spanReplace(row,values){let i=0;return row.replace(/(<span\b[^>]*>)[\s\S]*?(<\/span>)/g,(_,a,b)=>a+esc(values[i++]||'')+b);}
 export function renderPages(text,rel,content){
  const pages=content.pages||D,{about,catalog,recognitions:a}=pages;
- if(rel==='about-preview.css')return swap(text,D.about.photos.map((p,i)=>['src*="'+p.split('/').pop().replace(/\.[^.]+$/,'')+'"','src*="'+about.photos[i].split('/').pop()+'"']));
  if(rel==='awards-preview.css')text=text.replaceAll("content: 'Contents'",'content: '+JSON.stringify(catalog.heading));
  if(rel==='bottom-sections-preview.css'&&a.logo!==D.recognitions.logo)text+='\n#recognitions img[alt="SoDA"] { filter: invert(1) !important; }\n';
  if(rel==='bottom-sections-preview.css'&&a.number.replace('+','').length===1)text+='\n#recognitions > div[style*="grid"] > div:first-child > div:first-child > div:first-child > div:first-child { display:none !important; }\n';
  if(rel==='_next/static/chunks/app/page-52bc2242563ce759.js'){
   const module=(start,end,fn)=>{const s=text.indexOf(start),e=text.indexOf(end,s);if(s<0||e<0)throw Error('页面组件模板缺失');text=text.slice(0,s)+fn(text.slice(s,e))+text.slice(e);};
-  text=swap(text,[[JSON.stringify(D.about.titleMuted),JSON.stringify(about.titleMuted)],[JSON.stringify(D.about.title),JSON.stringify(about.title)],...D.about.photos.map((p,i)=>[JSON.stringify(p),JSON.stringify(about.photos[i])])]);
+  text=swap(text,[[JSON.stringify(T.titleMuted),JSON.stringify(about.titleMuted)],[JSON.stringify(T.title),JSON.stringify(about.title)],...['bodyLeft','bodyRight'].map(k=>[JSON.stringify(D.about[k]),JSON.stringify(about[k])]),...T.photos.map((p,i)=>[JSON.stringify(p),JSON.stringify(about.photos[i])])]);
   module('6527:','16527:',part=>{part=part.replace(JSON.stringify(D.catalog.title),JSON.stringify(catalog.title));const s=part.indexOf('p=['),e=part.indexOf(',m=[',s);return part.slice(0,s)+'p='+JSON.stringify(catalog.categories.split('\n').filter(Boolean))+part.slice(e);});
   module('16527:','7924:',part=>{
    const s=part.indexOf('f=['),e=part.indexOf(',m=[',s);part=part.slice(0,s)+'f='+JSON.stringify(a.entries)+',p='+JSON.stringify(a.summary.split('\n').filter(Boolean))+part.slice(e);
@@ -24,7 +25,7 @@ export function renderPages(text,rel,content){
  }
  if(rel==='index.html'){
   const section=(id,fn)=>{const s=text.indexOf('<section id="'+id+'"'),e=text.indexOf('</section>',s)+10;if(s<0)throw Error('页面区块缺失：'+id);text=text.slice(0,s)+fn(text.slice(s,e))+text.slice(e);};
-  section('about',part=>swap(part,[[esc(D.about.titleMuted),esc(about.titleMuted)],[esc(D.about.title),esc(about.title)],...D.about.photos.map((p,i)=>[p,about.photos[i]])]));
+  section('about',part=>swap(part,[[esc(T.titleMuted),esc(about.titleMuted)],[esc(T.title),esc(about.title)],...['bodyLeft','bodyRight'].flatMap(k=>[[esc(D.about[k]),esc(about[k])],[esc(D.about[k]).replaceAll('&#x27;',"'"),esc(about[k])]]),...T.photos.map((p,i)=>[p,about.photos[i]])]));
   section('awards',part=>{
    part=part.replace(esc(D.catalog.title),esc(catalog.title));
    const original=D.catalog.categories.split('\n').map(v=>esc(v));let i=0;

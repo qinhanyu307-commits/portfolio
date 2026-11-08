@@ -2,6 +2,7 @@
  const config=window.__MANAGED_ABOUT__;
  if(!config)return;
  window.__USE_MANAGED_RESUME__=true;
+ if(config.about.layout==='reference')return;
  const data=config.about.resume,ns='http://www.w3.org/2000/svg';let resume,characters=[],queued=false;
  const family='"Portfolio Resume", Arial, "Microsoft YaHei", sans-serif';
  let fontReady=false;
