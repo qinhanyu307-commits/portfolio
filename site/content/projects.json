@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-08T17:53:31.179Z",
+  "updatedAt": "2026-11-08T18:18:21.199Z",
   "projects": [
     {
       "id": "aiid",
@@ -108,13 +108,15 @@
           ]
         },
         {
-          "award": "Framer Site of the Year",
-          "project": "Seb® Website",
-          "date": "Feb, 2024",
-          "image": "/assets/images/awards/awards-img-2.jpg",
+          "award": "米兰设计周视觉传达三等奖\n新质点奖",
+          "project": "《镂光剪影》",
+          "date": "Feb, 2026",
+          "image": "/assets/uploads/recognition-recognition-2-c2c77d80-e67a-4ee5-b8e0-4afbde0c3c00.webp",
           "id": "recognition-2",
           "images": [
-            "/assets/images/awards/awards-img-2.jpg"
+            "/assets/uploads/recognition-recognition-2-c2c77d80-e67a-4ee5-b8e0-4afbde0c3c00.webp",
+            "/assets/uploads/recognition-recognition-2-0fecd505-1aa5-447e-abcc-dc2c3ce1bf74.webp",
+            "/assets/uploads/recognition-recognition-2-43c81db2-4764-4fd7-9d63-78370d882aa6.webp"
           ]
         },
         {
