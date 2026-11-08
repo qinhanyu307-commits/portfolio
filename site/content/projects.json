@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-08T17:48:14.751Z",
+  "updatedAt": "2026-11-08T17:53:31.179Z",
   "projects": [
     {
       "id": "aiid",
@@ -104,7 +104,7 @@
           "id": "recognition-1",
           "images": [
             "/assets/images/awards/awards-img-1.jpg",
-            "/assets/uploads/recognition-recognition-1-677d8d55-ca28-4ef7-9045-e89230892728.webp"
+            "/assets/uploads/recognition-recognition-1-25326a21-11ce-4c46-9783-9a6998e0c198.webp"
           ]
         },
         {
@@ -295,36 +295,6 @@
           "id": "recognition-20",
           "images": [
             "/assets/images/awards/awards-img-20.jpg"
-          ]
-        },
-        {
-          "award": "Awwwards Site of the Day",
-          "project": "Museums for the 21st Century",
-          "date": "Feb, 2024",
-          "image": "/assets/images/awards/awards-img-21.jpg",
-          "id": "recognition-21",
-          "images": [
-            "/assets/images/awards/awards-img-21.jpg"
-          ]
-        },
-        {
-          "award": "Awwwards Developer Award",
-          "project": "Museums for the 21st Century",
-          "date": "Feb, 2024",
-          "image": "/assets/images/awards/awards-img-22.jpg",
-          "id": "recognition-22",
-          "images": [
-            "/assets/images/awards/awards-img-22.jpg"
-          ]
-        },
-        {
-          "award": "Awwwards Developer of the Year Nomination",
-          "project": "Cine Casero",
-          "date": "Dec, 2022",
-          "image": "/assets/images/awards/awards-img-23.jpg",
-          "id": "recognition-23",
-          "images": [
-            "/assets/images/awards/awards-img-23.jpg"
           ]
         }
       ]
