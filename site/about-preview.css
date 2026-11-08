@@ -70,6 +70,13 @@ html[data-preview-theme="reference-about"] main > nav { filter: none; }
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: 'Portfolio Name';
+  src: url('/assets/fonts/portfolio-name-bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 #about p {
   font-family: 'Portfolio Resume', 'NHG Text', Arial, sans-serif !important;
   font-size: clamp(13px, .98vw, 20px) !important;
@@ -79,6 +86,12 @@ html[data-preview-theme="reference-about"] main > nav { filter: none; }
 }
 #about .about-copy-row { display:flex; gap:clamp(6px,.55vw,12px); color:#494949; }
 #about .about-copy-heading { color:#050505; margin-bottom:clamp(4px,.3vw,6px); }
+#about .about-copy-name {
+  font-family:'Portfolio Name','Portfolio Resume',sans-serif;
+  font-size:clamp(24px,1.76vw,36px);
+  line-height:1.1;
+  margin-bottom:clamp(14px,1.2vw,24px);
+}
 #about .about-copy-columns { justify-content:space-between; }
 #about .about-copy-skills { justify-content:space-between; }
 #about .about-copy-cell { display:block; white-space:nowrap; }
@@ -87,11 +100,18 @@ html[data-preview-theme="reference-about"] main > nav { filter: none; }
 @media (min-width:640px) {
   #about p { top:46% !important; }
   #about p:first-child { left:4.7% !important; right:auto !important; width:27.3%; }
+  #about p:first-child:has(.about-copy-name) {
+    top:calc(46% - clamp(26.4px,1.936vw,39.6px) - clamp(14px,1.2vw,24px)) !important;
+  }
   #about p:last-child { left:66.5% !important; right:3.2% !important; }
 }
 @media (max-width:639px) {
   #about { min-height:max(100svh,844px) !important; }
   #about > div:has(> img):last-child { bottom:175px !important; }
+  #about:has(.about-copy-name) > div:has(> img):last-child { bottom:220px !important; }
+  #about p:first-child:has(.about-copy-name) + p {
+    padding-top:calc(clamp(26.4px,1.936vw,39.6px) + clamp(14px,1.2vw,24px));
+  }
   #about p { font-size:11px !important; line-height:1.35 !important; }
   #about .about-copy-row { flex-wrap:wrap; gap:2px 8px; }
   #about .about-copy-cell { white-space:normal; }

@@ -6,10 +6,12 @@ const esc=s=>s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&g
 function swap(s,pairs){const map=new Map(pairs.filter(([a])=>a.length));if(!map.size)return s;const re=new RegExp([...map.keys()].sort((a,b)=>b.length-a.length).map(v=>v.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|'),'g');return s.replace(re,v=>map.get(v));}
 function spanReplace(row,values){let i=0;return row.replace(/(<span\b[^>]*>)[\s\S]*?(<\/span>)/g,(_,a,b)=>a+esc(values[i++]||'')+b);}
 function bodyRows(value,side){
- return value.split('\n').map((line,index)=>{
+ const lines=value.split('\n'),hasName=side==='bodyLeft'&&/^(?:\[[^\]]+\]|@.+)$/.test(lines[0].trim());
+ return lines.map((line,index)=>{
+  const name=hasName&&index===0,bodyIndex=index-(hasName?1:0);
   const cells=line.split('|').map(s=>s.trim());
-  const heading=index===0||line==='项目经历'||(side==='bodyLeft'&&index===1);
-  return {cells,className:!line.trim()?'about-copy-gap':'about-copy-row'+(heading?' about-copy-heading':'')+(cells.length>2?' about-copy-skills':cells.length===2?' about-copy-columns':'')};
+  const heading=name||bodyIndex===0||line==='项目经历'||(side==='bodyLeft'&&bodyIndex===1);
+  return {cells,className:!line.trim()?'about-copy-gap':'about-copy-row'+(name?' about-copy-name':'')+(heading?' about-copy-heading':'')+(cells.length>2?' about-copy-skills':cells.length===2?' about-copy-columns':'')};
  });
 }
 function bodyHtml(value,side){return bodyRows(value,side).map(row=>'<span class="'+row.className+'">'+row.cells.map(cell=>'<span class="about-copy-cell'+(/^[“‘「『]/.test(cell)?' about-copy-quoted':'')+'">'+esc(cell)+'</span>').join('')+'</span>').join('');}
