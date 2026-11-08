@@ -41,6 +41,7 @@ function transform(text,rel){
   text=text.replaceAll('++hellohello — Design & Technology Agency','Lu Kehao — Portfolio').replaceAll('++hellohello — Design &amp; Technology Agency','Lu Kehao — Portfolio');
   text=text.replace(/\+\+hellohello[^\"\n<>]{0,30}Technology Agency/g,'Lu Kehao — Portfolio');
   if(rel.endsWith('.mjs'))text=text.replace(/(from\s*['"])(\.[^'"]+\.mjs)(['"])/g,(_,a,b,c)=>a+b+'?v='+revision+c);
+  if(rel==='index.html')text=text.replace('</head>','<script src="'+base+'/project-player.js" defer></script></head>');
   if(rel.endsWith('.html'))text=text.replace(/((?:src|href)=")([^"\s]+\.(?:js|mjs|css)(?:\?[^"\s]*)?)(")/g,(_,a,url,c)=>url.startsWith('http')?a+url+c:a+url+(url.includes('?')?'&amp;':'?')+'v='+revision+c);
   if(rel==='index.html'){
     text=text.replace(/\s+(?:srcset|sizes)="[^"]*"/gi,'');

@@ -20,6 +20,7 @@ export function renderContent(text,rel,content,defaults){
     text=text.replaceAll('window.open("https://www.hellohello.is"+e.href','window.open(e.href');
     text=text.replaceAll('onClick:()=>window.open(e.href,"_blank","noopener,noreferrer")','onClick:()=>{e.href&&window.open(e.href,e.linkTarget||"_blank","noopener,noreferrer")}');
     text=text.replaceAll('window.open(e.href,"_blank","noopener,noreferrer")','window.open(e.href,e.linkTarget||"_blank","noopener,noreferrer")');
+    text=text.replaceAll('window.open(e.href,e.linkTarget||"_blank","noopener,noreferrer")','((e.linkTarget==="_self"&&window.__PORTFOLIO_OPEN_VIDEO__?.(e.href))||window.open(e.href,e.linkTarget||"_blank","noopener,noreferrer"))');
     return text;
   }
   text=text.replace(/\/_next\/image\?url=([^&"'<>\s]+)(?:(?:&amp;|&)(?:w|q)=\d+)*/g,(_,encoded)=>decodeURIComponent(encoded));
