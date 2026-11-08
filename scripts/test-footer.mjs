@@ -14,7 +14,9 @@ const html=renderFooter(await fs.readFile(new URL('../site/index.html',import.me
 assert(html.includes('Home\n一起做 &lt;设计&gt; &amp; &quot;作品&quot;'));
 assert(html.includes('上海 &lt;工作室&gt;'));
 assert.equal((html.match(/data-footer-field="address"/g)||[]).length,4);
-assert(html.includes('data-footer-link="careers">加入我们'));
+const footerHtml=html.slice(html.indexOf('<footer'),html.indexOf('</footer>'));
+assert(!footerHtml.includes('data-footer-link'));assert(!/<(?:a|button)\b/.test(footerHtml));
+assert(!footerHtml.includes('cursor:pointer'));assert(!footerHtml.includes('arrow-contact-icn'));assert(!footerHtml.includes('加入我们'));
 assert(!html.slice(html.indexOf('<footer'),html.indexOf('</footer>')).includes('Libertad')); 
 function render(mobile){
  const self={webpackChunk_N_E:[]};vm.runInNewContext(js,{self});
@@ -27,12 +29,13 @@ function flatten(node){if(!node||typeof node!=='object')return [];return [node,.
 for(const mobile of [false,true]){
  const nodes=flatten(render(mobile));
  for(const [key,value] of Object.entries(sample.pages.footer)){
-  const matches=nodes.filter(n=>n.props?.['data-footer-field']===key);if(mobile&&key.endsWith('Label'))continue;
+  const matches=nodes.filter(n=>n.props?.['data-footer-field']===key);if(key.endsWith('Label')){assert.equal(matches.length,0);continue;}
   assert(matches.length,key+' missing in '+(mobile?'mobile':'desktop'));
   if(key==='address')assert.deepEqual(matches.map(n=>n.props.children),value.split('\n'));
   else assert(matches.every(n=>n.props.children===value),key+' changed by another field');
  }
- if(!mobile)for(const link of ['privacy-policy','careers'])assert(nodes.find(n=>n.props?.['data-footer-link']===link));
+ for(const node of nodes){assert(!['a','button'].includes(node.type));assert(!node.props?.onClick);assert(!node.props?.onMouseEnter);assert(!node.props?.onMouseLeave);assert(!node.props?.['data-footer-link']);assert.notEqual(node.props?.style?.cursor,'pointer');}
+ assert(!nodes.some(n=>n.type==='img'&&n.props.src.includes('arrow-contact-icn')));
 }
 for(const footer of [null,[],{}, {...sample.pages.footer,title:''},{...sample.pages.footer,year:123},{...sample.pages.footer,address:'x'.repeat(1001)}]){const bad=structuredClone(sample);bad.pages.footer=footer;assert.throws(()=>validateContent(bad));}
-console.log('Footer tests passed: legacy migration, desktop/mobile rendering, multiline address/title, label collisions, special characters, stable link identities and invalid data rejection.');
+console.log('Footer tests passed: legacy migration, desktop/mobile rendering, multiline address/title, label collisions, special characters, static footer without links, click or hover handlers and invalid data rejection.');
