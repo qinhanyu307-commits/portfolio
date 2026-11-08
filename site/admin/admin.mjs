@@ -90,3 +90,5 @@ $('#editor').addEventListener('input',e=>{if(e.target.dataset.pageField){writePa
 
 $('#projects').addEventListener('click',e=>{if(e.target.closest('[data-catalog-add]')&&!busy&&content)pagesEditor.addCatalog();});
 $('#editor').addEventListener('click',e=>{if(e.target.closest('[data-catalog-remove]')&&!busy&&content)pagesEditor.removeCatalog();});
+
+$('#view-site').addEventListener('click',()=>{const url=new URL(root);url.searchParams.set('preview',String(Date.now()));$('#view-site').href=url.href;});
