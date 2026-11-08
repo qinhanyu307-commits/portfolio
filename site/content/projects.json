@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-07T14:13:22.807Z",
+  "updatedAt": "2026-11-08T07:14:24.105Z",
   "projects": [
     {
       "id": "aiid",
@@ -56,8 +56,8 @@
       "titleMuted": "What we do.",
       "title": "We design memorable experiences with forward-thinking brands.",
       "photos": [
-        "/assets/images/whatwedo/whatwedo-img-1.jpg",
-        "/assets/images/whatwedo/whatwedo-img-2.jpg",
+        "/assets/uploads/pages-about-photos-0-70075a13-07f8-4e99-9a0a-2bda7edd8e24.webp",
+        "/assets/uploads/pages-about-photos-1-c9160938-36cd-44bd-a4d2-d260f58ee9a7.webp",
         "/assets/images/whatwedo/whatwedo-img-3.jpg"
       ],
       "resume": {
