@@ -23,3 +23,6 @@ const recognitionStart=html.indexOf('<section id="recognitions"');assert(!html.s
 assert(html.includes('设计奖项'));
 const old={version:1,projects:structuredClone(content.projects)};validateContent(old);assert.deepEqual(old.pages,DEFAULT_PAGES);
 console.log('Page tests passed: legacy migration, About photos/title/resume, catalog labels, award text/images/count, SSR/client parity and escaped content.');
+
+// Footer content shares the page settings and publish pipeline.
+await import('./test-footer.mjs');

@@ -4,3 +4,5 @@
 .connect-input button { white-space: nowrap; flex-shrink: 0; }
 
 .home-preview-top,.home-preview-categories{display:flex;justify-content:space-between;gap:12px;font-size:11px;overflow-wrap:anywhere}.home-preview-top b{font-size:15px}.home-preview-categories{margin:35px 0 22px}#preview .home-preview h3{font-size:clamp(32px,4vw,66px);line-height:.95;overflow-wrap:anywhere;margin:0 0 30px}.home-preview-intro{font-weight:700;font-size:19px!important;line-height:1.1!important;color:#17191a;overflow-wrap:anywhere}
+
+.footer-preview{color:#d83831;border-top:3px solid;padding-top:20px;overflow-wrap:anywhere}.footer-preview-top{display:flex;justify-content:space-between;gap:16px}.footer-preview-top h3{flex:1;min-width:0}.footer-preview-top strong{font-size:36px;white-space:pre-line}.footer-preview p{color:inherit}.footer-preview-button{display:flex;justify-content:space-between;gap:10px;background:#d83831;color:#fff;padding:16px;font-weight:700;white-space:pre-line}

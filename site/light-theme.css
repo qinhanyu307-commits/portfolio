@@ -54,3 +54,6 @@ img[src*="/assets/logos/logo.svg"] {
 #work video[src*="/assets/videos/lookie-brand-upgrade.mp4"] {
   filter: invert(1);
 }
+
+/* Editable footer copy keeps manual line breaks and wraps long words. */
+footer [data-footer-field] { white-space: pre-line; overflow-wrap: anywhere; }

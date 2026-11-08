@@ -5,6 +5,7 @@ import {fileURLToPath} from 'node:url';
 import {loadContent,renderContent} from './content.mjs';
 import {renderPages} from './pages.mjs';
 import {renderHome} from './home.mjs';
+import {renderFooter} from './footer.mjs';
 const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const source=path.join(root,'site'),output=path.join(root,'docs');
 const content=await loadContent(source);
@@ -16,12 +17,13 @@ async function walk(dir,rel=''){for(const entry of await fs.readdir(dir,{withFil
 await walk(source);await fs.mkdir(output,{recursive:true});
 const fingerprint=createHash('sha256');
 for(const rel of [...files].sort())if(/\.(?:html|css|js|mjs|json)$/.test(rel))fingerprint.update(rel).update(await fs.readFile(path.join(source,rel)));
-for(const script of ['build.mjs','content.mjs','pages.mjs','home.mjs'])fingerprint.update(await fs.readFile(path.join(root,'scripts',script)));
+for(const script of ['build.mjs','content.mjs','pages.mjs','home.mjs','footer.mjs'])fingerprint.update(await fs.readFile(path.join(root,'scripts',script)));
 const revision=fingerprint.digest('hex').slice(0,12);
 function transform(text,rel){
   text=renderContent(text,rel,content,defaults);
   text=renderPages(text,rel,content);
   text=renderHome(text,rel,content);
+  text=renderFooter(text,rel,content);
   if(rel.endsWith('.html')||rel.endsWith('.js'))text=text.replace(/(?<![A-Za-z0-9_])\/assets\/logos\/logo\.svg/g,'/assets/logos/logo.svg?v='+revision);
   if(rel.endsWith('.js')){
     text=text.replaceAll('unoptimized:!1','unoptimized:!0');
@@ -47,7 +49,7 @@ function transform(text,rel){
     text=text.replace(/\s+(?:srcset|sizes)="[^"]*"/gi,'');
     text=text.replace(/<link\b[^>]*href="https:\/\/www\.googletagmanager\.com[^>]*>/gi,'');
     text=text.replace(/<link rel="canonical"[^>]*>/,'<link rel="canonical" href="https://qinhanyu307-commits.github.io/portfolio/">');
-    text=text.replace('</head>','<script src="'+base+'/deployment.js"></script></head>');
+    text=text.replace('</head>','<script src="'+base+'/deployment.js?v='+revision+'"></script></head>');
   }
   return text;
 }
@@ -55,6 +57,6 @@ for(const rel of files){const src=path.join(source,rel),dest=path.join(output,re
 await fs.writeFile(path.join(output,'.nojekyll'),'');
 await fs.writeFile(path.join(output,'now-playing.json'),'null\n');
 await fs.writeFile(path.join(output,'site.webmanifest'),JSON.stringify({name:'Lu Kehao Portfolio',short_name:'Lu Kehao',start_url:base+'/',display:'browser',background_color:'#ffffff',theme_color:'#ffffff'}));
-await fs.writeFile(path.join(output,'deployment.js'),`(()=>{document.addEventListener('click',event=>{const button=event.target.closest('button');const label=event.target.closest('a,span,div')?.textContent.trim();if(button?.getAttribute('aria-label')?.includes('Go to homepage')){event.preventDefault();event.stopImmediatePropagation();if(window.__lenis)window.__lenis.scrollTo(0,{duration:1});else window.scrollTo({top:0,behavior:'smooth'});}if(label==='Privacy Policy'||label==='Careers'){event.preventDefault();event.stopImmediatePropagation();window.open('https://www.hellohello.is/'+(label==='Careers'?'careers':'privacy-policy'),'_blank','noopener,noreferrer');}},true);})();`);
+await fs.writeFile(path.join(output,'deployment.js'),`(()=>{document.addEventListener('click',event=>{const button=event.target.closest('button');const label=event.target.closest('a,span,div')?.textContent.trim();if(button?.getAttribute('aria-label')?.includes('Go to homepage')){event.preventDefault();event.stopImmediatePropagation();if(window.__lenis)window.__lenis.scrollTo(0,{duration:1});else window.scrollTo({top:0,behavior:'smooth'});}const footerLink=event.target.closest('[data-footer-link]')?.dataset.footerLink;const destination=footerLink||(!event.target.closest('footer')&&(label==='Privacy Policy'?'privacy-policy':label==='Careers'?'careers':null));if(destination){event.preventDefault();event.stopImmediatePropagation();window.open('https://www.hellohello.is/'+destination,'_blank','noopener,noreferrer');}},true);})();`);
 await fs.copyFile(path.join(output,'index.html'),path.join(output,'404.html'));
 console.log(JSON.stringify({files:files.length,basePath:base,output}));

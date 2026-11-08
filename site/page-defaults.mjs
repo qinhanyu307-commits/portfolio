@@ -1,4 +1,16 @@
 export const DEFAULT_PAGES = {
+  "footer": {
+  "title": "Let's make it happen.",
+  "year": "©26",
+  "description": "Drop us a line to talk about your project.",
+  "button": "Let's Talk",
+  "privacyLabel": "Privacy Policy",
+  "homeLabel": "Home",
+  "careersLabel": "Careers",
+  "contactLabel": "Contact",
+  "address": "Libertad 2529\nOffice 102\nMontevideo, Uruguay",
+  "copyright": "All rights reserved ©2026"
+},
   "home": {
     "name": "Lu Kehao",
     "label": "Portfolio",

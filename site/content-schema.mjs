@@ -14,7 +14,10 @@ export function validateContent(value) {
   });
   if(!value.pages)value.pages=structuredClone(DEFAULT_PAGES);
   if(value.pages.home===undefined)value.pages.home=structuredClone(DEFAULT_PAGES.home);
-  const {home,about,catalog,recognitions}=value.pages;
+  if(value.pages.footer===undefined)value.pages.footer=structuredClone(DEFAULT_PAGES.footer);
+  const {footer,home,about,catalog,recognitions}=value.pages;
+  if(!footer||typeof footer!=='object'||Array.isArray(footer))throw Error('尾页管理数据不完整。');
+  for(const [key,max] of [['title',240],['year',24],['description',1000],['button',80],['privacyLabel',80],['homeLabel',80],['careersLabel',80],['contactLabel',80],['address',1000],['copyright',300]])limit(footer[key],max,'尾页 '+key,!['year','description','address','copyright'].includes(key));
   if(!home||typeof home!=='object'||Array.isArray(home))throw Error('首页管理数据不完整。');
   for(const [key,max] of [['name',80],['label',80],['copyright',40],['categoryLeft',80],['categoryMiddle',80],['categoryRight',80],['greetings',240],['intro',1000],['introMuted',500]])limit(home[key],max,'首页 '+key,key==='name'||key==='greetings'||key==='intro');
   if(home.greetings.split('\n').length!==4||home.greetings.split('\n').some(line=>!line.trim()||line.length>60))throw Error('首页大标题需要四行，每行 1–60 个字符。');
