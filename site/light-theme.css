@@ -57,3 +57,6 @@ img[src*="/assets/logos/logo.svg"] {
 
 /* Editable footer copy keeps manual line breaks and wraps long words. */
 footer [data-footer-field] { white-space: pre-line; overflow-wrap: anywhere; }
+
+/* Personal signature in place of the old footer symbol. */
+footer .footer-name { display:block; flex-shrink:0; font-family:"Portfolio Name","Portfolio Resume",Arial,sans-serif; font-size:clamp(20px,1.5vw,30px); font-weight:700; line-height:1.2; white-space:nowrap; }
