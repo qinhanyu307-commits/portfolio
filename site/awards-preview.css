@@ -92,3 +92,12 @@ html[data-preview-theme="awards"] main > nav { mix-blend-mode: difference !impor
 @media (max-width: 639px) {
   #awards > div:has(> p):not([style*="border-top"]) > p:nth-child(2) { display: none !important; }
 }
+/* Align the visible title glyphs with the category text below. */
+#awards > div[style*="grid"] > div:first-child,
+#awards > div:has(> p):not([style*="border-top"]) {
+  text-align: left;
+}
+#awards > div[style*="grid"] > div:first-child > div:first-child::before,
+#awards > div:has(> p):not([style*="border-top"]) > p:first-child::before {
+  transform: translateX(var(--catalog-heading-shift, 0px));
+}
