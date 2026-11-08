@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-08T14:55:18.753394Z",
+  "updatedAt": "2026-11-08T16:38:14.222Z",
   "projects": [
     {
       "id": "aiid",
@@ -266,15 +266,15 @@
       "introMuted": "something cool."
     },
     "footer": {
-      "title": "Let's make it happen.",
+      "title": "This is the end",
       "year": "©26",
       "description": "Drop us a line to talk about your project.",
-      "button": "Let's Talk",
+      "button": "Hurry up, offer!",
       "privacyLabel": "Privacy Policy",
       "homeLabel": "Home",
       "careersLabel": "Careers",
       "contactLabel": "Contact",
-      "address": "Libertad 2529\nOffice 102\nMontevideo, Uruguay",
+      "address": "卢 科皓\n18015291367\n江苏-常州",
       "copyright": "All rights reserved ©2026"
     }
   }
