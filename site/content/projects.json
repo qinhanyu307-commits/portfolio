@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-08T14:38:50.139Z",
+  "updatedAt": "2026-11-08T14:55:18.753394Z",
   "projects": [
     {
       "id": "aiid",
@@ -48,7 +48,8 @@
       "cover": "/assets/uploads/alchemy-cover-3cd40cb6-4c29-42b8-814c-e60e357e6894.webp",
       "icon": "/assets/images/work/alchemy/alchemy-icon.svg",
       "video": "",
-      "href": "https://www.hellohello.is/case-studies/alchemy"
+      "href": "https://qinhanyu307-commits.github.io/portfolio/watch/lookie/",
+      "linkTarget": "_self"
     }
   ],
   "pages": {

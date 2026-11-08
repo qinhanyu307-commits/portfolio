@@ -11,13 +11,15 @@ export function renderContent(text,rel,content,defaults){
   const projects=content.projects;
   if(rel===chunk){
     const works=arrayAt(text,'g=',';function h()',text.indexOf('4312:'));
-    const next=works.data.map((p,i)=>({...p,titleLines:[projects[i].title1,projects[i].title2],description:projects[i].description,cover:projects[i].cover,icon:projects[i].icon,video:projects[i].video,href:projects[i].href}));
+    const next=works.data.map((p,i)=>({...p,titleLines:[projects[i].title1,projects[i].title2],description:projects[i].description,cover:projects[i].cover,icon:projects[i].icon,video:projects[i].video,href:projects[i].href,linkTarget:projects[i].linkTarget||'_blank'}));
     text=text.slice(0,works.from)+JSON.stringify(next)+text.slice(works.end);
     const catalog=arrayAt(text,'f=',',p=[',text.indexOf('6527:'));
     text=text.slice(0,catalog.from)+JSON.stringify(catalogEntries(content).map(p=>({award:p.title,project:p.description,date:''})))+text.slice(catalog.end);
     text=text.replace('src:e.video,muted:!0','src:e.video||void 0,muted:!0');
+    text=text.replace('r&&(r.currentTime=0,r.play().catch(()=>{}),l.Ay.to(r,{opacity:1,duration:.4})),n&&l.Ay.to(n,{opacity:0,duration:.4})','r&&g[e].video&&(r.currentTime=0,r.play().catch(()=>{}),l.Ay.to(r,{opacity:1,duration:.4})),g[e].video&&n&&l.Ay.to(n,{opacity:0,duration:.4})');
     text=text.replaceAll('window.open("https://www.hellohello.is"+e.href','window.open(e.href');
-    text=text.replace('onClick:()=>window.open(e.href,"_blank","noopener,noreferrer")','onClick:()=>{e.href&&window.open(e.href,"_blank","noopener,noreferrer")}');
+    text=text.replaceAll('onClick:()=>window.open(e.href,"_blank","noopener,noreferrer")','onClick:()=>{e.href&&window.open(e.href,e.linkTarget||"_blank","noopener,noreferrer")}');
+    text=text.replaceAll('window.open(e.href,"_blank","noopener,noreferrer")','window.open(e.href,e.linkTarget||"_blank","noopener,noreferrer")');
     return text;
   }
   text=text.replace(/\/_next\/image\?url=([^&"'<>\s]+)(?:(?:&amp;|&)(?:w|q)=\d+)*/g,(_,encoded)=>decodeURIComponent(encoded));

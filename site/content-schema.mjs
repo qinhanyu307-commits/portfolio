@@ -9,6 +9,7 @@ export function validateContent(value) {
     for(const [field,max] of [['title1',80],['title2',80],['description',2500],['catalogTitle',160],['catalogDescription',600]])limit(p[field],max,field,field!=='title2');
     media(p.cover,'封面');media(p.icon,'图标');media(p.video,'视频',true);
     limit(p.href,1000,'作品链接',false);
+    if(p.linkTarget!==undefined&&!['_self','_blank'].includes(p.linkTarget))throw Error('作品打开方式无效。');
     if(p.href){let u;try{u=new URL(p.href)}catch{throw Error('作品链接必须是完整的 https 地址。')}if(u.protocol!=='https:')throw Error('作品链接必须以 https:// 开头。');}
   });
   if(!value.pages)value.pages=structuredClone(DEFAULT_PAGES);

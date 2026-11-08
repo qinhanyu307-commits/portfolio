@@ -34,3 +34,10 @@ assert.equal(expanded.projects.length,4);
 const legacy=structuredClone(expanded);delete legacy.pages.catalog.entries;assert.deepEqual(validateContent(legacy).pages.catalog.entries,[]);
 const duplicate=structuredClone(expanded);duplicate.pages.catalog.entries[1].id='new-one';assert.throws(()=>validateContent(duplicate));
 console.log('Catalog additions passed: legacy migration, multiple entries, SSR/client parity, escaped text, empty descriptions and duplicate rejection.');
+
+const player=structuredClone(sample);player.projects[3].href='https://qinhanyu307-commits.github.io/portfolio/watch/lookie/';player.projects[3].linkTarget='_self';validateContent(player);
+const playerJs=renderContent(await fs.readFile(new URL(rel,root),'utf8'),rel,player,base);new vm.Script(playerJs);
+const playerWorks=arrayAt(playerJs,'g=',';function h()',playerJs.indexOf('4312:')).data;
+assert.equal(playerWorks[3].linkTarget,'_self');assert.equal(playerWorks[3].href,player.projects[3].href);assert(playerJs.includes('window.open(e.href,e.linkTarget||"_blank"'));assert(!playerJs.includes('window.open(e.href,"_blank","noopener,noreferrer")'));assert(playerJs.includes('g[e].video&&n&&l.Ay.to(n,{opacity:0'));
+player.projects[3].linkTarget='_top';assert.throws(()=>validateContent(player));
+console.log('Video link passed: same-tab target, saved player URL, cover preservation without hover video and invalid target rejection.');
