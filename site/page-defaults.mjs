@@ -30,8 +30,8 @@ export const DEFAULT_PAGES = {
       "skills": "UI/UX设计 | 视觉设计 | 动效设计 | 运营设计\nvibe coding | AIGC | IP设计 | 设计体系搭建"
     },
     "layout": "reference",
-    "bodyLeft": "We are obsessed with design and technology that makes life easier and more beautiful. Brand identity, product design, and engineering: connected with intention, built to last.",
-    "bodyRight": "Because obsession isn't selfish. There's nothing we love more than to share it. With industry pioneers in fintech, Web3, AI, and beyond. With you."
+    "bodyLeft": "教育经历\n湖北美术学院 艺术与科技 大三\n2025年校级一等奖学金 | 中国好创意思辨艺术类国赛三等奖\n米兰设计周视觉传达三等奖 | 计算机设计大赛三等奖\n\nUI/UX设计 | 视觉设计 | 动效设计 | IP设计 | AIGC | vibe coding",
+    "bodyRight": "实习经历\n雅迪科技集团有限公司新业务部门 | ——2026年7月–2026年10月\n\n项目经历\n“走起GO”APP版本迭代 | ——2025年6月–2025年9月\n“番茄种花季”运营活动 | ——2024年12月–2025年4月"
   },
   "catalog": {
     "entries": [],

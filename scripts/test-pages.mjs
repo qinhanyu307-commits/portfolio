@@ -8,7 +8,7 @@ import {DEFAULT_PAGES} from '../site/page-defaults.mjs';
 const root=new URL('../site/',import.meta.url);
 const content=JSON.parse(await fs.readFile(new URL('content/projects.json',root),'utf8'));
 validateContent(content);const sample=structuredClone(content);
-sample.pages.about.bodyLeft='左侧介绍 < & >';sample.pages.about.bodyRight='右侧介绍与合作';sample.pages.about.titleMuted='持续学习';sample.pages.about.title='探索与成长 < & >';sample.pages.about.photos[0]='/assets/uploads/new-portrait.webp';sample.pages.about.resume.school='测试美术学院 新专业';
+sample.pages.about.bodyLeft='左侧介绍 < & >\n奖项 | 说明\n\nUI/UX设计 | AIGC | IP设计';sample.pages.about.bodyRight='右侧介绍与合作\n“测试项目” | ——2026年7月';sample.pages.about.titleMuted='持续学习';sample.pages.about.title='探索与成长 < & >';sample.pages.about.photos[0]='/assets/uploads/new-portrait.webp';sample.pages.about.resume.school='测试美术学院 新专业';
 sample.pages.catalog={title:'我的实践',heading:'目录',categories:'运营项目\n产品升级\n人工智能'};
 sample.pages.recognitions.title='荣誉与记录';sample.pages.recognitions.number='18';sample.pages.recognitions.subtitle='设计奖项';sample.pages.recognitions.summary='第一项\n第二项\n第三项\n第四项\n第五项\n第六项\n第七项';sample.pages.recognitions.memberText='新的标志说明';sample.pages.recognitions.entries[0]={award:'测试设计奖',project:'测试项目',date:'2026年10月',image:'/assets/uploads/award-new.webp'};
 validateContent(sample);
@@ -17,6 +17,8 @@ const js=renderPages(raw,rel,sample);new vm.Script(js);assert(js.includes('持�
 const defaults=JSON.parse(await fs.readFile(new URL('content/defaults.json',root),'utf8'));
 const html=renderPages(renderContent(await fs.readFile(new URL('index.html',root),'utf8'),'index.html',sample,defaults),'index.html',sample);
 for(const text of ['持续学习','左侧介绍 &lt; &amp; &gt;','右侧介绍与合作','探索与成长 &lt; &amp; &gt;','我的实践','运营项目','测试设计奖','新的标志说明','测试美术学院 新专业','/managed-resume.js'])assert(html.includes(text),text);
+const aboutStart=html.indexOf('<section id="about"'),aboutHtml=html.slice(aboutStart,html.indexOf('</section>',aboutStart));
+assert.equal((aboutHtml.match(/about-copy-columns/g)||[]).length,2);assert.equal((aboutHtml.match(/about-copy-skills/g)||[]).length,1);assert(aboutHtml.includes('about-copy-quoted'));
 const recognitionStart=html.indexOf('<section id="recognitions"');assert(!html.slice(recognitionStart,html.indexOf('</section>',recognitionStart)).includes('>+</span>'));
 assert(html.includes('设计奖项'));
 const old={version:1,projects:structuredClone(content.projects)};validateContent(old);assert.deepEqual(old.pages,DEFAULT_PAGES);

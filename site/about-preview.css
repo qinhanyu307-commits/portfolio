@@ -62,3 +62,38 @@ main > .pin-spacer:has(#about),
 
 /* The reference About scene retains its original centered image stack. */
 html[data-preview-theme="reference-about"] main > nav { filter: none; }
+
+@font-face {
+  font-family: 'Portfolio Resume';
+  src: url('/assets/fonts/portfolio-resume-bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+#about p {
+  font-family: 'Portfolio Resume', 'NHG Text', Arial, sans-serif !important;
+  font-size: clamp(13px, .98vw, 20px) !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+  letter-spacing: -.02em !important;
+}
+#about .about-copy-row { display:flex; gap:clamp(6px,.55vw,12px); color:#494949; }
+#about .about-copy-heading { color:#050505; margin-bottom:clamp(4px,.3vw,6px); }
+#about .about-copy-columns { justify-content:space-between; }
+#about .about-copy-skills { justify-content:space-between; }
+#about .about-copy-cell { display:block; white-space:nowrap; }
+#about .about-copy-quoted { position:relative; left:-.5em; }
+#about .about-copy-gap { display:block; height:clamp(12px,1vw,22px); }
+@media (min-width:640px) {
+  #about p { top:46% !important; }
+  #about p:first-child { left:4.7% !important; right:auto !important; width:27.3%; }
+  #about p:last-child { left:66.5% !important; right:3.2% !important; }
+}
+@media (max-width:639px) {
+  #about { min-height:max(100svh,844px) !important; }
+  #about > div:has(> img):last-child { bottom:175px !important; }
+  #about p { font-size:11px !important; line-height:1.35 !important; }
+  #about .about-copy-row { flex-wrap:wrap; gap:2px 8px; }
+  #about .about-copy-cell { white-space:normal; }
+  #about .about-copy-gap { height:8px; }
+}
