@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-09T14:58:06.542Z",
+  "updatedAt": "2026-11-09T15:10:40.040Z",
   "projects": [
     {
       "id": "aiid",
@@ -97,9 +97,9 @@
       "memberText": "Proud members of SoDA, the global network of the world's leading digital agencies.",
       "entries": [
         {
-          "award": "Framer Site of the Year\n亲王若琪",
-          "project": "HiKeys—1977",
-          "date": "Feb, 2025",
+          "award": "好创意思辨艺术类国赛三等奖",
+          "project": "水生物诊断报告",
+          "date": "Feb, 2026",
           "image": "/assets/images/awards/awards-img-1.jpg",
           "id": "recognition-1",
           "images": [
@@ -120,8 +120,8 @@
           ]
         },
         {
-          "award": "Awwwards Site of the Day",
-          "project": "Outfit",
+          "award": "计算机设计大赛三等奖",
+          "project": "徽境重构",
           "date": "May, 2026",
           "image": "/assets/images/awards/awards-img-3.jpg",
           "id": "recognition-3",
@@ -137,166 +137,6 @@
           "id": "recognition-4",
           "images": [
             "/assets/images/awards/awards-img-4.jpg"
-          ]
-        },
-        {
-          "award": "FWA Site of the Day",
-          "project": "Outfit",
-          "date": "May, 2026",
-          "image": "/assets/images/awards/awards-img-5.jpg",
-          "id": "recognition-5",
-          "images": [
-            "/assets/images/awards/awards-img-5.jpg"
-          ]
-        },
-        {
-          "award": "FWA Site of the Day",
-          "project": "Alethia",
-          "date": "Apr, 2026",
-          "image": "/assets/images/awards/awards-img-6.jpg",
-          "id": "recognition-6",
-          "images": [
-            "/assets/images/awards/awards-img-6.jpg"
-          ]
-        },
-        {
-          "award": "Webby Honoree",
-          "project": "Doris Smart Mirror",
-          "date": "Dec, 2025",
-          "image": "/assets/images/awards/awards-img-7.jpg",
-          "id": "recognition-7",
-          "images": [
-            "/assets/images/awards/awards-img-7.jpg"
-          ]
-        },
-        {
-          "award": "Awwwards Studio of the Year Nomination",
-          "project": "++hellohello",
-          "date": "Dec, 2025",
-          "image": "/assets/images/awards/awards-img-8.jpg",
-          "id": "recognition-8",
-          "images": [
-            "/assets/images/awards/awards-img-8.jpg"
-          ]
-        },
-        {
-          "award": "FWA Site of the Day",
-          "project": "Doris Smart Mirror",
-          "date": "Nov, 2025",
-          "image": "/assets/images/awards/awards-img-9.jpg",
-          "id": "recognition-9",
-          "images": [
-            "/assets/images/awards/awards-img-9.jpg"
-          ]
-        },
-        {
-          "award": "Awwwards Site of the Day",
-          "project": "Superlocal Design Festival",
-          "date": "Oct, 2025",
-          "image": "/assets/images/awards/awards-img-10.jpg",
-          "id": "recognition-10",
-          "images": [
-            "/assets/images/awards/awards-img-10.jpg"
-          ]
-        },
-        {
-          "award": "Best Design Studio in Uruguay, Latin American Design Awards",
-          "project": "++hellohello",
-          "date": "Sep, 2025",
-          "image": "/assets/images/awards/awards-img-11.jpg",
-          "id": "recognition-11",
-          "images": [
-            "/assets/images/awards/awards-img-11.jpg"
-          ]
-        },
-        {
-          "award": "Rayo de Oro, Latin American Design Awards",
-          "project": "Doris Smart Mirror",
-          "date": "Sep, 2025",
-          "image": "/assets/images/awards/awards-img-12.jpg",
-          "id": "recognition-12",
-          "images": [
-            "/assets/images/awards/awards-img-12.jpg"
-          ]
-        },
-        {
-          "award": "Rayo de Plata, Latin American Design Awards",
-          "project": "Passkeys Developer Kit",
-          "date": "Sep, 2025",
-          "image": "/assets/images/awards/awards-img-13.jpg",
-          "id": "recognition-13",
-          "images": [
-            "/assets/images/awards/awards-img-13.jpg"
-          ]
-        },
-        {
-          "award": "Rayo de Plata, Latin American Design Awards",
-          "project": "HiKeys—1977",
-          "date": "Sep, 2025",
-          "image": "/assets/images/awards/awards-img-14.jpg",
-          "id": "recognition-14",
-          "images": [
-            "/assets/images/awards/awards-img-14.jpg"
-          ]
-        },
-        {
-          "award": "Awwwards Site of the Day",
-          "project": "HiKeys—1977",
-          "date": "Dec, 2024",
-          "image": "/assets/images/awards/awards-img-15.jpg",
-          "id": "recognition-15",
-          "images": [
-            "/assets/images/awards/awards-img-15.jpg"
-          ]
-        },
-        {
-          "award": "Awwwards Developer Award",
-          "project": "HiKeys—1977",
-          "date": "Dec, 2024",
-          "image": "/assets/images/awards/awards-img-16.jpg",
-          "id": "recognition-16",
-          "images": [
-            "/assets/images/awards/awards-img-16.jpg"
-          ]
-        },
-        {
-          "award": "Best Design Studio in Uruguay, Latin American Design Awards",
-          "project": "++hellohello",
-          "date": "Sep, 2024",
-          "image": "/assets/images/awards/awards-img-17.jpg",
-          "id": "recognition-17",
-          "images": [
-            "/assets/images/awards/awards-img-17.jpg"
-          ]
-        },
-        {
-          "award": "Rayo de Plata, Latin American Design Awards",
-          "project": "Agrotoken",
-          "date": "Sep, 2025",
-          "image": "/assets/images/awards/awards-img-18.jpg",
-          "id": "recognition-18",
-          "images": [
-            "/assets/images/awards/awards-img-18.jpg"
-          ]
-        },
-        {
-          "award": "Rayo de Oro, Latin American Design Awards",
-          "project": "Museums for the 21st Century",
-          "date": "Sep, 2025",
-          "image": "/assets/images/awards/awards-img-19.jpg",
-          "id": "recognition-19",
-          "images": [
-            "/assets/images/awards/awards-img-19.jpg"
-          ]
-        },
-        {
-          "award": "FWA Site of the Day",
-          "project": "Museums for the 21st Century",
-          "date": "Mar, 2024",
-          "image": "/assets/images/awards/awards-img-20.jpg",
-          "id": "recognition-20",
-          "images": [
-            "/assets/images/awards/awards-img-20.jpg"
           ]
         }
       ]
