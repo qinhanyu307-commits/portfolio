@@ -29,3 +29,21 @@ assert.equal(single.filter(n=>n.props?.className==='recognition-thumbs')[0].chil
 assert.equal(single.filter(n=>n.props?.['aria-label']==='上一张图片'||n.props?.['aria-label']==='下一张图片').filter(n=>n.props.disabled).length,2);
 const multi=flatten(galleryView(h,viewData,0));assert.equal(multi.filter(n=>n.props?.['aria-label']==='下一张图片')[0].props.disabled,false);
 console.log('Single-image controls passed: thumbnail present, arrows visible and disabled; multi-image arrows remain enabled.');
+
+// An ordered gallery can mix images and videos without discarding legacy media.
+const mixed=structuredClone(sample);
+mixed.pages.recognitions.entries[0].images=['/assets/clips/one.mp4','/assets/test.webp','/assets/clips/two.webm'];
+validateContent(mixed);assert.equal(mixed.pages.recognitions.entries[0].images.length,3);
+const mixedHtml=renderRecognitions(await fs.readFile(new URL('index.html',root),'utf8'),'index.html',mixed);
+const mixedSection=mixedHtml.slice(mixedHtml.indexOf('<section id="recognitions"'),mixedHtml.indexOf('</section>',mixedHtml.indexOf('<section id="recognitions"')));
+assert(mixedSection.includes('class="recognition-video" src="/assets/clips/one.mp4" controls="true" muted="true" loop="true" playsinline="true"'));
+assert(!mixedSection.includes('controls="false"'));
+assert(!mixedSection.includes('<img class="recognition-image" src="/assets/clips/'));
+assert.equal((mixedSection.match(/recognition-video-badge/g)||[]).length,2);
+for(const path of ['/assets/bad.html','/assets/video.mov','/assets/video.mp4?download=1']){const bad=structuredClone(mixed);bad.pages.recognitions.entries[0].images=[path];assert.throws(()=>validateContent(bad));}
+const {galleryFileKind}=await import('../site/admin/gallery-upload.mjs');
+assert.equal(galleryFileKind({name:'clip.MP4',type:'video/mp4',size:1024}),'mp4');
+assert.equal(galleryFileKind({name:'clip.webm',type:'',size:1024}),'webm');
+assert.equal(galleryFileKind({name:'photo.png',type:'image/png',size:1024}),'image');
+for(const file of [{name:'clip.mp4',type:'video/mp4',size:51*1024*1024},{name:'clip.mp4',type:'video/mp4',size:0},{name:'clip.mp4',type:'text/html',size:1024},{name:'clip.mov',type:'video/quicktime',size:1024}])assert.throws(()=>galleryFileKind(file));
+console.log('Mixed gallery passed: ordered image/video data, SSR controls, video thumbnails, supported formats and upload limits.');

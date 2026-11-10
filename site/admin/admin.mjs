@@ -1,3 +1,4 @@
+import {galleryFileKind,readGalleryVideo} from './gallery-upload.mjs';
 import {validateContent} from '../content-schema.mjs';
 import {createPagesEditor,writePath} from './pages-editor.mjs';
 const REPO='qinhanyu307-commits/portfolio',BRANCH='main',FILE='site/content/projects.json';
@@ -95,11 +96,12 @@ $('#view-site').addEventListener('click',()=>{const url=new URL(root);url.search
 
 async function uploadGallery(input){
  const row=content.pages.recognitions.entries[Number(input.dataset.galleryUpload)],files=[...input.files];if(!row||!files.length)return;
- if(row.images.length+files.length>20){status('每个目录最多上传 20 张图片。',true);input.value='';return;}
+ if(row.images.length+files.length>20){status('每个目录最多上传 20 个图片或视频。',true);input.value='';return;}
  busy=true;document.body.classList.add('busy');syncButtons();const staged=[];
  try{
-  for(let i=0;i<files.length;i++){status('正在处理图片 '+(i+1)+' / '+files.length+'…');const result=await optimize(files[i],'page');staged.push({path:'/assets/uploads/recognition-'+row.id+'-'+crypto.randomUUID()+'.webp',result});}
-  for(const {path,result} of staged){uploads.set(path,result);row.images.push(path);}row.image=row.images[0]||'';markDirty();drawEditor();status('图片已加入图集，保存并发布后可在网站中切换。');
+  const kinds=files.map(galleryFileKind);
+  for(let i=0;i<files.length;i++){status('正在处理作品 '+(i+1)+' / '+files.length+'…');const kind=kinds[i],result=kind==='image'?await optimize(files[i],'page'):await readGalleryVideo(files[i]);staged.push({path:'/assets/uploads/recognition-'+row.id+'-'+crypto.randomUUID()+'.'+(kind==='image'?'webp':kind),result});}
+  for(const {path,result} of staged){uploads.set(path,result);row.images.push(path);}row.image=row.images[0]||'';markDirty();drawEditor();status('作品已加入，保存并发布后可在网站中播放和切换。');
  }catch(error){for(const {result} of staged)URL.revokeObjectURL(result.url);status(error.message,true);input.value='';}
  finally{busy=false;document.body.classList.remove('busy');syncButtons();}
 }

@@ -47,8 +47,9 @@ export function validateContent(value) {
     limit(row.id,80,'荣誉目录标识');if(!/^[a-zA-Z0-9_-]+$/.test(row.id)||recognitionIds.has(row.id))throw Error('荣誉目录标识无效或重复。');recognitionIds.add(row.id);
     limit(row.award,500,'目录名称');limit(row.project,600,'项目说明',false);limit(row.date,150,'时间',false);
     if(row.images===undefined)row.images=row.image?[row.image]:[];
-    if(!Array.isArray(row.images)||row.images.length>20)throw Error('每个目录最多上传 20 张图片。');
-    row.images.forEach(src=>media(src,'荣誉作品图片'));
+    if(!Array.isArray(row.images)||row.images.length>20)throw Error('每个目录最多上传 20 个图片或视频。');
+    // Keep the legacy images field as the ordered mixed-media gallery.
+    row.images.forEach(src=>{media(src,'荣誉作品');if(!/\.(jpe?g|png|webp|mp4|webm)$/i.test(src))throw Error('荣誉作品仅支持 JPG、PNG、WebP 图片或 MP4、WebM 视频。');});
     row.image=row.images[0]||'';
   });
   return value;

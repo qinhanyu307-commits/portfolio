@@ -3,7 +3,7 @@
 #recognitions .recognition-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start}
 #recognitions .recognition-preview{position:sticky;top:88px;min-width:0}
 #recognitions .recognition-frame{position:relative;height:clamp(320px,65vh,760px);background:#fff;border:1px solid #fff;display:flex;align-items:center;justify-content:center;overflow:hidden;box-sizing:border-box}
-#recognitions .recognition-image{display:block;max-width:100%;width:100%;height:100%;object-fit:contain}
+#recognitions .recognition-image,#recognitions .recognition-video{display:block;max-width:100%;width:100%;height:100%;object-fit:contain}
 /* Compensate the portfolio root inversion so the glass controls stay dark. */
 #recognitions .recognition-controls{position:absolute;top:50%;left:20px;right:20px;transform:translateY(-50%);display:flex;align-items:center;justify-content:space-between;pointer-events:none;filter:invert(1)}
 #recognitions .recognition-controls button{pointer-events:auto;display:grid;place-items:center;width:70px;height:70px;flex:0 0 70px;padding:0;border:1px solid rgba(255,255,255,.16);border-radius:50%;background:linear-gradient(135deg,rgba(255,255,255,.065),rgba(255,255,255,.01) 55%),rgba(24,25,26,.82);color:#fff;box-shadow:inset 0 1px 1px rgba(255,255,255,.12),inset 0 -1px 2px rgba(0,0,0,.35),0 3px 12px rgba(0,0,0,.18);backdrop-filter:blur(18px) saturate(145%);-webkit-backdrop-filter:blur(18px) saturate(145%);transition:background-color .25s,transform .3s cubic-bezier(.22,1,.36,1),box-shadow .3s;cursor:pointer}
@@ -17,7 +17,7 @@
 #recognitions .recognition-thumbs::-webkit-scrollbar{height:2px}#recognitions .recognition-thumbs::-webkit-scrollbar-thumb{background:#ccc;border-radius:2px}
 #recognitions .recognition-thumbs button{position:relative;display:block;padding:0;background:#fff;border:0;flex:0 0 60px;height:90px;min-width:0;border-radius:8px;overflow:hidden;opacity:1;transition:flex-basis .45s cubic-bezier(.22,1,.36,1),box-shadow .3s;}
 #recognitions .recognition-thumbs button:hover,#recognitions .recognition-thumbs button:focus-visible{flex-basis:90px;box-shadow:0 0 0 1px rgba(0,0,0,.2)}
-#recognitions .recognition-thumbs img{display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit}
+#recognitions .recognition-thumbs img,#recognitions .recognition-thumbs video{display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit}
 #recognitions .recognition-directory{min-width:0;border-bottom:1px solid #292929}
 #recognitions .recognition-row{width:100%;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) minmax(0,.65fr);gap:14px;border:0;border-top:1px solid #292929;background:transparent;color:#777;padding:16px 0;text-align:left;font:700 clamp(14px,1.05vw,20px)/1.35 'NHG Text','Portfolio Resume',Arial,sans-serif}
 #recognitions .recognition-row span{white-space:pre-wrap;overflow-wrap:anywhere;min-width:0}#recognitions .recognition-row .recognition-date{text-align:right}
@@ -45,3 +45,9 @@
 #recognitions .recognition-frame[data-can-slide=false]{cursor:default}
 
 @media(max-width:767px){#recognitions .recognition-slide{padding-top:24px;padding-bottom:16px}}
+
+#recognitions .recognition-video{user-select:auto;touch-action:auto}
+#recognitions .recognition-thumbs video{pointer-events:none}
+#recognitions .recognition-video-badge{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.65);color:#fff;font-size:12px;filter:invert(1);pointer-events:none}
+
+#recognitions .recognition-video-badge::before{content:'';border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:8px solid #fff;margin-left:2px}

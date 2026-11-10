@@ -162,8 +162,11 @@
           "award": "联投城资运营动图",
           "project": " -",
           "date": "May, 2026",
-          "images": [],
-          "image": ""
+          "images": [
+            "/assets/videos/recognitions/liantou-operation-01.mp4",
+            "/assets/videos/recognitions/liantou-operation-02.mp4"
+          ],
+          "image": "/assets/videos/recognitions/liantou-operation-01.mp4"
         }
       ]
     },
