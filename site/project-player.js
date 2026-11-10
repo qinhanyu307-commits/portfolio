@@ -21,7 +21,7 @@
     }
     if(main)main.inert=true;
     if(push){
-      const current=new URL(location.href);current.hash=(url.pathname.startsWith(base+'watch/go/')?'document=':'video=')+url.pathname.split('/').filter(Boolean).at(-1);
+      const current=new URL(location.href);current.hash=(url.pathname.startsWith(base+'watch/lookie/')?'video=':'document=')+url.pathname.split('/').filter(Boolean).at(-1);
       history.pushState({...history.state,portfolioVideo:url.href,portfolioVideoPosition:{x:saved.x,y:saved.y}},'',current);
     }
     overlay=document.createElement('div');overlay.id='project-video-overlay';

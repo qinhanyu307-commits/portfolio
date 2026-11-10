@@ -25,7 +25,7 @@ async function pump(){
 function resize(){const next=pageWidth();if(Math.abs(next-width)<1)return;width=next;generation++;for(const record of records){record.task?.cancel();release(record);record.element.style.width=width+'px';if(record.near)enqueue(record);}}
 async function start(){
  try{
-  const task=pdfjs.getDocument({url:new URL('../../assets/documents/go-app-redesign.pdf',import.meta.url).href,useWasm:false,isEvalSupported:false});
+  const task=pdfjs.getDocument({url:new URL(root.dataset.pdf||'../../assets/documents/go-app-redesign.pdf',import.meta.url).href,useWasm:false,isEvalSupported:false});
   const pdf=await task.promise;width=pageWidth();
   const observer=new IntersectionObserver(entries=>{for(const entry of entries){const record=records[Number(entry.target.dataset.pageNumber)-1];if(!record)continue;record.near=entry.isIntersecting;if(record.near)enqueue(record);else release(record);}},{root,rootMargin:'900px 0px'});
   for(let number=1;number<=pdf.numPages;number++){
