@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-10T08:33:30.199Z",
+  "updatedAt": "2026-11-10T14:38:05.476Z",
   "projects": [
     {
       "id": "aiid",
@@ -10,7 +10,7 @@
       "catalogTitle": "走起GO\nAPP改版升级",
       "catalogDescription": "链路，社区，迭代升级，Version Iteration",
       "cover": "/assets/uploads/aiid-cover-1654d8ca-ee81-497b-af6e-df8f8b1c45b7.webp",
-      "icon": "/assets/images/work/aiid/aiid-icon.svg",
+      "icon": "/assets/uploads/aiid-icon-afffc228-d11d-4e1b-a7ce-6ea30f50ade5.webp",
       "video": "",
       "href": "https://qinhanyu307-commits.github.io/portfolio/watch/go/",
       "linkTarget": "_self"
@@ -23,7 +23,7 @@
       "catalogTitle": "雅迪\n车机壁纸设计",
       "catalogDescription": "风格探索，个性表达，Wallpaper design",
       "cover": "/assets/uploads/passkeys-cover-d02ef7c7-6816-4b92-93b7-3cae94ae470f.webp",
-      "icon": "/assets/images/work/passkeys/passkeys-icon.svg",
+      "icon": "/assets/uploads/passkeys-icon-05626e6b-443d-4de3-9668-58080be0bc25.webp",
       "video": "",
       "href": "https://qinhanyu307-commits.github.io/portfolio/watch/yadea/",
       "linkTarget": "_self"
@@ -36,7 +36,7 @@
       "catalogTitle": "番茄小说\nAPP运营活动",
       "catalogDescription": "运营，种花，引流，Tomato，番茄",
       "cover": "/assets/uploads/grateful-cover-87de5cee-55c3-40cc-8031-d22a9d17bc8d.webp",
-      "icon": "/assets/images/work/grateful/grateful-icon.svg",
+      "icon": "/assets/uploads/grateful-icon-eceb0163-9c81-4563-8307-53ae72009d98.webp",
       "video": "",
       "href": "https://qinhanyu307-commits.github.io/portfolio/watch/tomato/",
       "linkTarget": "_self"
@@ -49,7 +49,7 @@
       "catalogTitle": "LOOKIE\n品牌升级视频",
       "catalogDescription": "AE，时尚，LOGO，UIUX，分镜",
       "cover": "/assets/uploads/alchemy-cover-3cd40cb6-4c29-42b8-814c-e60e357e6894.webp",
-      "icon": "/assets/images/work/alchemy/alchemy-icon.svg",
+      "icon": "/assets/uploads/alchemy-icon-4d9b3f25-b091-45c4-a91c-4882f11b6148.webp",
       "video": "/assets/videos/lookie-brand-upgrade.mp4",
       "href": "https://qinhanyu307-commits.github.io/portfolio/watch/lookie/",
       "linkTarget": "_self"
