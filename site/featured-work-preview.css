@@ -16,3 +16,6 @@ html[data-preview-section="work"] main > nav span[data-preview-label="Work"] { c
 html[data-preview-section="work"] main > nav span[data-preview-label="Work"]::before {
   content: ''; display: inline-block; width: 8px; height: 8px; margin-right: 5px; border-radius: 50%; background: #fafafa;
 }
+/* The root theme is inverted: black icon holders display as white. */
+#work div:has(> img[alt=""]) { background-color:#000 !important; filter:none !important; }
+#work div:has(> img[alt=""]) > img { filter:invert(1) !important; }
