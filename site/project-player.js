@@ -21,13 +21,13 @@
     }
     if(main)main.inert=true;
     if(push){
-      const current=new URL(location.href);current.hash='video='+url.pathname.split('/').filter(Boolean).at(-1);
+      const current=new URL(location.href);current.hash=(url.pathname.startsWith(base+'watch/go/')?'document=':'video=')+url.pathname.split('/').filter(Boolean).at(-1);
       history.pushState({...history.state,portfolioVideo:url.href,portfolioVideoPosition:{x:saved.x,y:saved.y}},'',current);
     }
     overlay=document.createElement('div');overlay.id='project-video-overlay';
-    overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label','作品视频');
+    overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label','作品预览');
     overlay.style.cssText='position:fixed;inset:0;width:100%;height:100dvh;z-index:2147483647;background:#fff';
-    frame=document.createElement('iframe');frame.title='作品视频播放器';
+    frame=document.createElement('iframe');frame.title='作品预览';
     const embedded=new URL(url);embedded.searchParams.set('embedded','1');frame.src=embedded.href;
     frame.allow='autoplay; fullscreen; picture-in-picture';frame.allowFullscreen=true;
     // The portfolio root is inverted; compensate the independently rendered player.
