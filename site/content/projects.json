@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-10T14:49:39.776Z",
+  "updatedAt": "2026-11-10T15:21:03.019Z",
   "projects": [
     {
       "id": "aiid",
@@ -112,7 +112,7 @@
         },
         {
           "award": "米兰设计周视觉传达三等奖\n新质点奖",
-          "project": "《镂光剪影》",
+          "project": "镂光剪影",
           "date": "Feb, 2026",
           "image": "/assets/uploads/recognition-recognition-2-c2c77d80-e67a-4ee5-b8e0-4afbde0c3c00.webp",
           "id": "recognition-2",
@@ -156,6 +156,14 @@
             "/assets/uploads/recognition-683f98f2-7837-4ed0-9527-fed9e4e2b7d4-81232a4b-431e-4bc9-97d6-f67408394d47.webp"
           ],
           "image": "/assets/uploads/recognition-683f98f2-7837-4ed0-9527-fed9e4e2b7d4-81232a4b-431e-4bc9-97d6-f67408394d47.webp"
+        },
+        {
+          "id": "d046f7b3-167b-40d9-a002-15c77226fc17",
+          "award": "联投城资运营动图",
+          "project": " -",
+          "date": "May, 2026",
+          "images": [],
+          "image": ""
         }
       ]
     },
