@@ -5,6 +5,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
   pages: write
   id-token: write
 concurrency:
@@ -13,6 +14,8 @@ concurrency:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    env:
+      PAGES_ARTIFACT_NAME: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -29,15 +32,25 @@ jobs:
           node scripts/test-pages.mjs
           node scripts/test-home.mjs
           npm run check
+          python3 -m unittest discover -s scripts -p 'test_wait_pages_artifact.py'
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload website
+        id: upload_pages
         uses: actions/upload-pages-artifact@v4
         with:
           path: docs
+          name: ${{ env.PAGES_ARTIFACT_NAME }}
+      - name: Wait for uploaded package metadata
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PAGES_ARTIFACT_ID: ${{ steps.upload_pages.outputs.artifact_id }}
+        run: python3 scripts/wait_pages_artifact.py
       - name: Deploy website
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          artifact_name: ${{ env.PAGES_ARTIFACT_NAME }}
       - name: Verify published pages and scripts
         env:
           SITE_URL: ${{ steps.deployment.outputs.page_url }}
@@ -45,7 +58,7 @@ jobs:
           python3 - <<'PY'
           import os, time, urllib.request, urllib.parse, hashlib, pathlib
           base = os.environ['SITE_URL'].rstrip('/') + '/'
-          paths = ['index.html', 'admin/index.html', '_next/static/chunks/app/layout-6d0f10cc5e82d4d4.js']
+          paths = ['index.html', 'content/projects.json', 'admin/index.html', '_next/static/chunks/app/layout-6d0f10cc5e82d4d4.js']
           for path in paths:
               expected = pathlib.Path('docs', path).read_bytes()
               for attempt in range(12):
