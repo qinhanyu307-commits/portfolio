@@ -1,5 +1,5 @@
 (() => {
-  const base=new URL('./',document.currentScript.src).pathname;
+  const scriptUrl=new URL(document.currentScript.src),base=new URL('./',scriptUrl).pathname,revision=scriptUrl.searchParams.get('v');
   let overlay=null,frame=null,saved=null;
   function videoUrl(value){
     try{const url=new URL(value,location.href);return url.origin===location.origin&&url.pathname.startsWith(base+'watch/')?url:null;}catch{return null;}
@@ -28,7 +28,7 @@
     overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label','作品预览');
     overlay.style.cssText='position:fixed;inset:0;width:100%;height:100dvh;z-index:2147483647;background:#fff';
     frame=document.createElement('iframe');frame.title='作品预览';
-    const embedded=new URL(url);embedded.searchParams.set('embedded','1');frame.src=embedded.href;
+    const embedded=new URL(url);embedded.searchParams.set('embedded','1');if(revision)embedded.searchParams.set('v',revision);frame.src=embedded.href;
     frame.allow='autoplay; fullscreen; picture-in-picture';frame.allowFullscreen=true;
     // The portfolio root is inverted; compensate the independently rendered player.
     frame.style.cssText='display:block;width:100%;height:100%;border:0;filter:invert(1)';
