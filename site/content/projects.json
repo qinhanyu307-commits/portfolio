@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-09T15:10:40.040Z",
+  "updatedAt": "2026-11-10T08:33:30.199Z",
   "projects": [
     {
       "id": "aiid",
@@ -103,11 +103,11 @@
           "award": "好创意思辨艺术类国赛三等奖",
           "project": "水生物诊断报告",
           "date": "Feb, 2026",
-          "image": "/assets/images/awards/awards-img-1.jpg",
+          "image": "/assets/uploads/recognition-recognition-1-578aea17-cece-4163-babc-d459b1eadc0b.webp",
           "id": "recognition-1",
           "images": [
-            "/assets/images/awards/awards-img-1.jpg",
-            "/assets/uploads/recognition-recognition-1-25326a21-11ce-4c46-9783-9a6998e0c198.webp"
+            "/assets/uploads/recognition-recognition-1-578aea17-cece-4163-babc-d459b1eadc0b.webp",
+            "/assets/uploads/recognition-recognition-1-7c89cdd4-308a-420b-abd7-0144669cb4ad.webp"
           ]
         },
         {
@@ -126,21 +126,36 @@
           "award": "计算机设计大赛三等奖",
           "project": "徽境重构",
           "date": "May, 2026",
-          "image": "/assets/images/awards/awards-img-3.jpg",
+          "image": "/assets/uploads/recognition-recognition-3-904ae707-e667-499e-9271-64980e04caab.webp",
           "id": "recognition-3",
           "images": [
-            "/assets/images/awards/awards-img-3.jpg"
+            "/assets/uploads/recognition-recognition-3-904ae707-e667-499e-9271-64980e04caab.webp",
+            "/assets/uploads/recognition-recognition-3-be5d4954-ccce-4924-b05b-b08370e30052.webp"
           ]
         },
         {
-          "award": "Awwwards Developer Award",
-          "project": "Outfit",
+          "award": "剑从风中来展厅设计",
+          "project": "-",
           "date": "May, 2026",
-          "image": "/assets/images/awards/awards-img-4.jpg",
+          "image": "/assets/uploads/recognition-recognition-4-17fcca9c-da24-4b18-aef0-3c44e4d31352.webp",
           "id": "recognition-4",
           "images": [
-            "/assets/images/awards/awards-img-4.jpg"
+            "/assets/uploads/recognition-recognition-4-17fcca9c-da24-4b18-aef0-3c44e4d31352.webp",
+            "/assets/uploads/recognition-recognition-4-2c2e2722-6512-48bd-9b22-05251c9d10a1.webp",
+            "/assets/uploads/recognition-recognition-4-07033993-86ce-4a82-8899-faf3ed395c4c.webp",
+            "/assets/uploads/recognition-recognition-4-f1fab8cb-7a12-4b61-96e0-f028e0412121.webp",
+            "/assets/uploads/recognition-recognition-4-a653a173-58eb-48f6-8829-598f94db011d.webp"
           ]
+        },
+        {
+          "id": "683f98f2-7837-4ed0-9527-fed9e4e2b7d4",
+          "award": "武汉时尚季KV",
+          "project": "-",
+          "date": "May, 2026",
+          "images": [
+            "/assets/uploads/recognition-683f98f2-7837-4ed0-9527-fed9e4e2b7d4-81232a4b-431e-4bc9-97d6-f67408394d47.webp"
+          ],
+          "image": "/assets/uploads/recognition-683f98f2-7837-4ed0-9527-fed9e4e2b7d4-81232a4b-431e-4bc9-97d6-f67408394d47.webp"
         }
       ]
     },
