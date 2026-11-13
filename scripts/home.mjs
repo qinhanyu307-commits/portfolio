@@ -24,7 +24,7 @@ export function renderHome(text,rel,content){
     text=replace(text,intro,intro+',(0,n.jsx)("img",'+JSON.stringify(portrait)+')');
     const labels=new Map([[d.label,h.label],[d.categoryLeft,h.categoryLeft],[d.categoryMiddle,h.categoryMiddle],[d.categoryRight,h.categoryRight]]);
     text=text.replace(/children:("Portfolio"|"Design"|"UI\/UX"|"Technology")/g,(_,label)=>'children:'+JSON.stringify(labels.get(JSON.parse(label))));
-    text=text.replaceAll('children:"\\xa92026"','children:'+JSON.stringify(h.copyright));
+    text=text.replaceAll('children:"\\xa92026"','className:"home-copyright",children:'+JSON.stringify(h.copyright));
     text=text.replaceAll('alt:"Lu Kehao"','alt:'+JSON.stringify(h.name));
     text=replace(text,'children:e.split("").map','children:Array.from(e).map');
     text=replace(text,'transform:"translateY(200%)"},children:e','transform:"translateY(200%)"},children:e===" "?"\\u00a0":e');
@@ -37,7 +37,7 @@ export function renderHome(text,rel,content){
   // Isolate the header and categories so editing labels cannot affect links
   // or collide with another field's original text.
   const labels=new Map([[d.label,h.label],['©2026',h.copyright],[d.categoryLeft,h.categoryLeft],[d.categoryMiddle,h.categoryMiddle],[d.categoryRight,h.categoryRight]]);
-  hero=hero.replace(/(<span\b[^>]*>)(Portfolio|©2026|Design|UI\/UX|Technology)(<\/span>)/g,(_,a,label,b)=>a+esc(labels.get(label))+b);
+  hero=hero.replace(/(<span\b[^>]*>)(Portfolio|©2026|Design|UI\/UX|Technology)(<\/span>)/g,(_,a,label,b)=>(label==='©2026'?a.replace('<span','<span class="home-copyright"'):a)+esc(labels.get(label))+b);
   hero=hero.replaceAll('alt="Lu Kehao"','alt="'+esc(h.name)+'"');
   const first=hero.indexOf('<div style="display:flex;align-items:flex-end"><span'),last=hero.indexOf('</div></div><div style="position:absolute;top:calc(29.5vw',first);
   if(first<0||last<0)throw Error('首页四行标题模板缺失。');
