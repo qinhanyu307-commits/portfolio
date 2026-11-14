@@ -20,15 +20,15 @@ const empty=structuredClone(sample);empty.pages.recognitions.entries=[];validate
 for(const change of [v=>v.pages.recognitions.entries.push({...v.pages.recognitions.entries[0]}),v=>v.pages.recognitions.entries[0].images=['/assets/../bad.png'],v=>v.pages.recognitions.entries[0].images=Array(21).fill('/assets/test.jpg'),v=>v.pages.recognitions.entries=Array(101).fill(v.pages.recognitions.entries[0])]){const bad=structuredClone(sample);change(bad);assert.throws(()=>validateContent(bad));}
 console.log('Recognition gallery tests passed: legacy image migration, add/delete counts, multiple images, empty states, multiline and escaping, client syntax and upload validation.');
 
-// A single-image directory must keep its thumbnail and visible disabled arrows.
+// Galleries omit thumbnails while retaining arrow controls.
 const viewData=structuredClone(sample.pages.recognitions);viewData.entries.push({id:'single-image',award:'单图',project:'',date:'',images:['/assets/images/awards/awards-img-3.jpg']});
 const h=(tag,props,...children)=>({tag,props,children});
 const flatten=node=>node&&typeof node==='object'?[node,...node.children.flat(Infinity).flatMap(flatten)]:[];
 const single=flatten(galleryView(h,viewData,2));
-assert.equal(single.filter(n=>n.props?.className==='recognition-thumbs')[0].children.length,1);
+assert.equal(single.filter(n=>n.props?.className==='recognition-thumbs').length,0);
 assert.equal(single.filter(n=>n.props?.['aria-label']==='上一张图片'||n.props?.['aria-label']==='下一张图片').filter(n=>n.props.disabled).length,2);
 const multi=flatten(galleryView(h,viewData,0));assert.equal(multi.filter(n=>n.props?.['aria-label']==='下一张图片')[0].props.disabled,false);
-console.log('Single-image controls passed: thumbnail present, arrows visible and disabled; multi-image arrows remain enabled.');
+console.log('Single-image controls passed: thumbnails removed, arrows visible and disabled; multi-image arrows remain enabled.');
 
 // An ordered gallery can mix images and videos without discarding legacy media.
 const mixed=structuredClone(sample);
@@ -39,11 +39,11 @@ const mixedSection=mixedHtml.slice(mixedHtml.indexOf('<section id="recognitions"
 assert(mixedSection.includes('class="recognition-video" src="/assets/clips/one.mp4" controls="true" muted="true" loop="true" playsinline="true"'));
 assert(!mixedSection.includes('controls="false"'));
 assert(!mixedSection.includes('<img class="recognition-image" src="/assets/clips/'));
-assert.equal((mixedSection.match(/recognition-video-badge/g)||[]).length,2);
+assert.equal((mixedSection.match(/recognition-video-badge/g)||[]).length,0);
 for(const path of ['/assets/bad.html','/assets/video.mov','/assets/video.mp4?download=1']){const bad=structuredClone(mixed);bad.pages.recognitions.entries[0].images=[path];assert.throws(()=>validateContent(bad));}
 const {galleryFileKind}=await import('../site/admin/gallery-upload.mjs');
 assert.equal(galleryFileKind({name:'clip.MP4',type:'video/mp4',size:1024}),'mp4');
 assert.equal(galleryFileKind({name:'clip.webm',type:'',size:1024}),'webm');
 assert.equal(galleryFileKind({name:'photo.png',type:'image/png',size:1024}),'image');
 for(const file of [{name:'clip.mp4',type:'video/mp4',size:51*1024*1024},{name:'clip.mp4',type:'video/mp4',size:0},{name:'clip.mp4',type:'text/html',size:1024},{name:'clip.mov',type:'video/quicktime',size:1024}])assert.throws(()=>galleryFileKind(file));
-console.log('Mixed gallery passed: ordered image/video data, SSR controls, video thumbnails, supported formats and upload limits.');
+console.log('Mixed gallery passed: ordered image/video data, SSR controls, no thumbnails, supported formats and upload limits.');

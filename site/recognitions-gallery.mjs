@@ -11,14 +11,14 @@ export function galleryView(h,data,selected=0,slide=0,select=()=>{},change=()=>{
      images.length>0?h('div',{className:'recognition-controls'},
       h('button',{type:'button',disabled:images.length<2,'aria-label':'上一张图片',onClick:()=>change((index-1+images.length)%images.length)},h('span',{className:'recognition-chevron recognition-chevron-left','aria-hidden':true})),
       h('button',{type:'button',disabled:images.length<2,'aria-label':'下一张图片',onClick:()=>change((index+1)%images.length)},h('span',{className:'recognition-chevron recognition-chevron-right','aria-hidden':true}))):null),
-    images.length>0?h('div',{className:'recognition-thumbs',key:item.id,'data-dragging':!!motion.dragging,'aria-label':'选择预览图片'},...images.map((src,i)=>h('button',{key:src+'-'+i,type:'button','aria-label':'查看第 '+(i+1)+' 张图片','aria-pressed':i===index,style:{'--gallery-weight':Math.max(0,1-Math.abs(i-(motion.position??index)))},onClick:()=>change(i)},isGalleryVideo(src)?h('video',{src:src+'#t=0.01',muted:true,playsInline:true,preload:'metadata','aria-hidden':true}):h('img',{src,alt:'',loading:'lazy'}),isGalleryVideo(src)?h('span',{className:'recognition-video-badge','aria-hidden':true}):null))):null),
+    ),
    h('div',{className:'recognition-directory','aria-label':'作品目录'},
     ...entries.map((row,i)=>h('button',{key:row.id,type:'button',className:'recognition-row','aria-pressed':i===selected,onClick:()=>select(i)},
      h('span',{className:'recognition-award'},row.award),h('span',{className:'recognition-project'},row.project),h('span',{className:'recognition-date'},row.date))),
     entries.length?null:h('p',{className:'recognition-empty'},'暂无目录'))));
 }
 
-// Keep the main slide, selected thumbnail and strip position in one state.
+// Keep the selected media and drag position in one state.
 export function galleryPlayer(React,jsx,data){
  const [selected,setSelected]=React.useState(0),[slide,setSlide]=React.useState(0),[motion,setMotion]=React.useState({dragging:false,position:0});
  const ref=React.useRef(null),gesture=React.useRef(null),images=data.entries[selected]?.images||[];
@@ -50,14 +50,7 @@ export function galleryPlayer(React,jsx,data){
   observer.observe(frame);document.addEventListener('visibilitychange',play);
   return()=>{disposed=true;observer.disconnect();document.removeEventListener('visibilitychange',play);active.pause();try{active.currentTime=0;}catch{}};
  },[selected,slide]);
- React.useLayoutEffect(()=>{
-  const strip=ref.current?.querySelector('.recognition-thumbs');if(!strip)return;
-  let frame,start;const tick=time=>{
-   start??=time;const buttons=[...strip.children],low=Math.floor(position),high=Math.ceil(position),a=buttons[low],b=buttons[high];
-   if(a&&b){const centerA=a.offsetLeft+a.offsetWidth/2,centerB=b.offsetLeft+b.offsetWidth/2;strip.scrollLeft=centerA+(centerB-centerA)*(position-low)-strip.clientWidth/2;}
-   if(time-start<500)frame=requestAnimationFrame(tick);
-  };frame=requestAnimationFrame(tick);return()=>cancelAnimationFrame(frame);
- },[selected,slide,position,motion.dragging]);
+
  const h=(tag,props,...children)=>jsx(tag,{...props,...(children.length?{children:children.length===1?children[0]:children}:{})});
  return galleryView(h,data,selected,slide,value=>{gesture.current=null;setSelected(value);setSlide(0);setMotion({dragging:false,position:0});},change,{ref,position,dragging:motion.dragging,down,move,up,cancel});
 }
