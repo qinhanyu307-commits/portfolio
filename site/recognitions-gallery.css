@@ -4,13 +4,13 @@
 #recognitions .recognition-preview{position:sticky;top:88px;min-width:0}
 #recognitions .recognition-frame{position:relative;height:clamp(320px,80vh,1000px);background:#000;border:0;display:flex;align-items:center;justify-content:center;overflow:hidden;box-sizing:border-box}
 #recognitions .recognition-image,#recognitions .recognition-video{display:block;max-width:100%;width:100%;height:100%;object-fit:contain}
-/* Compensate the portfolio root inversion so the glass controls stay dark. */
+/* Keep the light circular controls in their original colors under root inversion. */
 #recognitions .recognition-controls{position:absolute;top:50%;left:20px;right:20px;transform:translateY(-50%);display:flex;align-items:center;justify-content:space-between;pointer-events:none;filter:invert(1)}
-#recognitions .recognition-controls button{pointer-events:auto;display:grid;place-items:center;width:35px;height:35px;flex:0 0 35px;padding:0;border:1px solid rgba(255,255,255,.16);border-radius:50%;background:linear-gradient(135deg,rgba(255,255,255,.065),rgba(255,255,255,.01) 55%),rgba(24,25,26,.82);color:#fff;box-shadow:inset 0 1px 1px rgba(255,255,255,.12),inset 0 -1px 2px rgba(0,0,0,.35),0 3px 12px rgba(0,0,0,.18);backdrop-filter:blur(18px) saturate(145%);-webkit-backdrop-filter:blur(18px) saturate(145%);transition:background-color .25s,transform .3s cubic-bezier(.22,1,.36,1),box-shadow .3s;cursor:pointer}
-#recognitions .recognition-controls button:hover{background-color:rgba(48,49,50,.88);transform:scale(1.06);box-shadow:inset 0 1px 2px rgba(255,255,255,.22),0 5px 20px rgba(0,0,0,.25)}
+#recognitions .recognition-controls button{pointer-events:auto;display:grid;place-items:center;width:35px;height:35px;flex:0 0 35px;padding:0;border:0;border-radius:50%;background:#efefef;color:#000;box-shadow:none;transition:background-color .2s,transform .2s;cursor:pointer}
+#recognitions .recognition-controls button:hover{background:#e6e6e6;transform:scale(1.06);box-shadow:none}
 #recognitions .recognition-controls button:active{transform:scale(.95)}
-#recognitions .recognition-chevron{display:block;width:10px;height:10px;border-left:1.5px solid #fff;border-bottom:1.5px solid #fff;border-radius:1px}
-#recognitions .recognition-chevron-left{transform:translateX(1.5px) rotate(45deg)}#recognitions .recognition-chevron-right{transform:translateX(-1.5px) rotate(225deg)}
+#recognitions .recognition-chevron{display:block;width:58%;height:58%;border:0;background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M8%204l8%208-8%208%22%20fill%3D%22none%22%20stroke%3D%22%23000%22%20stroke-width%3D%223%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") center/contain no-repeat}
+#recognitions .recognition-chevron-left{transform:scaleX(-1)}#recognitions .recognition-chevron-right{transform:none}
 #recognitions button{cursor:pointer}#recognitions button:focus-visible,#recognitions .recognition-frame:focus-visible{outline:2px solid #fafafa;outline-offset:3px}
 /* The reference strip uses equal-height rounded cards that widen on hover. */
 #recognitions .recognition-thumbs{display:flex;gap:8px;align-items:center;overflow-x:auto;margin-top:0;padding:24px 8px 20px;background:#fff;scrollbar-width:thin;scrollbar-color:#ccc transparent;overscroll-behavior-x:contain}
@@ -23,7 +23,7 @@
 #recognitions .recognition-row span{white-space:pre-wrap;overflow-wrap:anywhere;min-width:0}#recognitions .recognition-row .recognition-date{text-align:right}
 #recognitions .recognition-row .recognition-award{color:#fafafa}#recognitions .recognition-row[aria-pressed=true]{background:#151515;color:#fafafa;box-shadow:inset 3px 0 #fafafa;padding-left:12px;padding-right:12px}
 #recognitions .recognition-row:hover{background:#101010}#recognitions .recognition-empty{color:#777;font-size:15px;padding:20px;text-align:center}
-@media(max-width:767px){#recognitions.recognition-gallery{padding:88px 16px 40px}#recognitions .recognition-grid{grid-template-columns:minmax(0,1fr);gap:24px}#recognitions .recognition-preview{top:72px;z-index:2;background:#000;padding-bottom:8px}#recognitions .recognition-frame{height:clamp(220px,38vh,380px)}#recognitions .recognition-heading{margin-bottom:24px}#recognitions .recognition-row{font-size:13px;gap:10px;padding-top:14px;padding-bottom:14px}#recognitions .recognition-controls{left:12px;right:12px}#recognitions .recognition-controls button{width:23px;height:23px;flex-basis:23px}#recognitions .recognition-chevron{width:6.5px;height:6.5px}#recognitions .recognition-thumbs{padding-top:18px;padding-bottom:16px}#recognitions .recognition-thumbs button{flex-basis:52px;height:78px}#recognitions .recognition-thumbs button:hover,#recognitions .recognition-thumbs button:focus-visible{flex-basis:80px}}
+@media(max-width:767px){#recognitions.recognition-gallery{padding:88px 16px 40px}#recognitions .recognition-grid{grid-template-columns:minmax(0,1fr);gap:24px}#recognitions .recognition-preview{top:72px;z-index:2;background:#000;padding-bottom:8px}#recognitions .recognition-frame{height:clamp(220px,38vh,380px)}#recognitions .recognition-heading{margin-bottom:24px}#recognitions .recognition-row{font-size:13px;gap:10px;padding-top:14px;padding-bottom:14px}#recognitions .recognition-controls{left:12px;right:12px}#recognitions .recognition-controls button{width:23px;height:23px;flex-basis:23px}#recognitions .recognition-chevron{width:58%;height:58%}#recognitions .recognition-thumbs{padding-top:18px;padding-bottom:16px}#recognitions .recognition-thumbs button{flex-basis:52px;height:78px}#recognitions .recognition-thumbs button:hover,#recognitions .recognition-thumbs button:focus-visible{flex-basis:80px}}
 
 @media(prefers-reduced-motion:reduce){#recognitions .recognition-controls button,#recognitions .recognition-thumbs button{transition:none}}
 
@@ -33,7 +33,7 @@
 #recognitions .recognition-frame{touch-action:pan-y;cursor:grab;user-select:none}
 #recognitions .recognition-frame[data-dragging=true]{cursor:grabbing}
 #recognitions .recognition-frame[data-dragging=true] .recognition-track{transition:none}
-#recognitions .recognition-controls button:disabled{opacity:.35;cursor:default;transform:none;box-shadow:inset 0 1px 1px rgba(255,255,255,.1)}
+#recognitions .recognition-controls button:disabled{opacity:.35;cursor:default;transform:none;box-shadow:none}
 #recognitions .recognition-thumbs{position:relative;scroll-behavior:auto}
 #recognitions .recognition-thumbs button,#recognitions .recognition-thumbs button:hover,#recognitions .recognition-thumbs button:focus-visible{flex-basis:calc(60px + 30px * var(--gallery-weight,0));box-shadow:none}
 #recognitions .recognition-thumbs[data-dragging=true] button{transition:none}
