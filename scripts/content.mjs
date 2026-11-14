@@ -11,7 +11,7 @@ export function renderContent(text,rel,content,defaults){
   const projects=content.projects;
   if(rel===chunk){
     const works=arrayAt(text,'g=',';function h()',text.indexOf('4312:'));
-    const next=works.data.map((p,i)=>({...p,titleLines:[projects[i].title1,projects[i].title2],description:projects[i].description,cover:projects[i].cover,icon:projects[i].icon,video:projects[i].video,previewPlaybackRate:projects[i].id==='grateful'?1.2:1,href:projects[i].href,linkTarget:projects[i].linkTarget||'_blank'}));
+    const next=works.data.map((p,i)=>({...p,titleLines:[projects[i].title1,projects[i].title2],description:projects[i].description,cover:projects[i].cover,icon:projects[i].icon,video:projects[i].video,previewPlaybackRate:projects[i].id==='grateful'?1.44:1,href:projects[i].href,linkTarget:projects[i].linkTarget||'_blank'}));
     text=text.slice(0,works.from)+JSON.stringify(next)+text.slice(works.end);
     const catalog=arrayAt(text,'f=',',p=[',text.indexOf('6527:'));
     text=text.slice(0,catalog.from)+JSON.stringify(catalogEntries(content).map(p=>({award:p.title,project:p.description,date:''})))+text.slice(catalog.end);
