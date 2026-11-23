@@ -14,7 +14,7 @@ const sample=structuredClone(migrated);sample.pages.recognitions.entries=[{id:'t
 const modern=structuredClone(sample),expectedImages=structuredClone(modern.pages.recognitions.entries[0].images);
 assert.deepEqual(validateContent(modern).pages.recognitions.entries[0].images,expectedImages);
 assert.equal(modern.pages.recognitions.entries[0].image,expectedImages[0]);
-const html=renderRecognitions(await fs.readFile(new URL('index.html',root),'utf8'),'index.html',sample);const galleryHtml=html.slice(html.indexOf('<section id="recognitions"'),html.indexOf('</section>',html.indexOf('<section id="recognitions"')));assert(html.includes('第一行\n第二行 &lt; &amp; &quot;'));assert(html.includes('项目\n说明'));assert(!galleryHtml.includes('>1 / 2<'));assert(!galleryHtml.includes('recognition-controls'));assert(galleryHtml.includes('role="listbox"'));assert(!html.slice(html.indexOf('<section id="recognitions"'),html.indexOf('</section>',html.indexOf('<section id="recognitions"'))).includes('SoDA'));
+const html=renderRecognitions(await fs.readFile(new URL('index.html',root),'utf8'),'index.html',sample);const galleryHtml=html.slice(html.indexOf('<section id="recognitions"'),html.indexOf('</section>',html.indexOf('<section id="recognitions"')));assert(html.includes('第一行\n第二行 &lt; &amp; &quot;'));assert(html.includes('项目\n说明'));assert(!galleryHtml.includes('>1 / 2<'));assert(galleryHtml.includes('recognition-controls'));assert(galleryHtml.includes('role="listbox"'));assert(!html.slice(html.indexOf('<section id="recognitions"'),html.indexOf('</section>',html.indexOf('<section id="recognitions"'))).includes('SoDA'));
 const rel='_next/static/chunks/app/page-52bc2242563ce759.js';const js=renderRecognitions(await fs.readFile(new URL(rel,root),'utf8'),rel,sample);new vm.Script(js);assert(js.includes(JSON.stringify(sample.pages.recognitions.entries)));assert(js.includes('setSelection'));assert(js.includes("addEventListener('wheel'"));
 const empty=structuredClone(sample);empty.pages.recognitions.entries=[];validateContent(empty);assert(renderRecognitions(await fs.readFile(new URL('index.html',root),'utf8'),'index.html',empty).includes('暂无目录'));
 for(const change of [v=>v.pages.recognitions.entries.push({...v.pages.recognitions.entries[0]}),v=>v.pages.recognitions.entries[0].images=['/assets/../bad.png'],v=>v.pages.recognitions.entries[0].images=Array(21).fill('/assets/test.jpg'),v=>v.pages.recognitions.entries=Array(101).fill(v.pages.recognitions.entries[0])]){const bad=structuredClone(sample);change(bad);assert.throws(()=>validateContent(bad));}
@@ -26,15 +26,18 @@ const h=(tag,props,...children)=>({tag,props,children});
 const flatten=node=>node&&typeof node==='object'?[node,...node.children.flat(Infinity).flatMap(flatten)]:[];
 const single=flatten(galleryView(h,viewData,2));
 assert.equal(single.filter(n=>n.props?.className==='recognition-thumbs').length,0);
-assert.equal(single.filter(n=>n.tag==='button').length,0);
+assert.equal(single.filter(n=>n.tag==='button'&&n.props.disabled).length,2);
 const options=single.filter(n=>n.props?.role==='option');
 assert.equal(options.length,3);assert.equal(options[2].props['aria-selected'],true);
-assert.equal(single.find(n=>n.props?.className==='recognition-track').props.style.transform,'translate3d(0,-300%,0)');
+assert.equal(single.find(n=>n.props?.className==='recognition-track').props.style.transform,'translate3d(0,-200%,0)');
 const second=flatten(galleryView(h,viewData,0,1));
-assert.equal(second.find(n=>n.props?.className==='recognition-track').props.style.transform,'translate3d(0,-100%,0)');
+assert.equal(second.find(n=>n.props?.className==='recognition-track').props.style.transform,'translate3d(0,0%,0)');
+assert.equal(second.find(n=>n.props?.className==='recognition-media-track').props.style.transform,'translate3d(-100%,0,0)');
+const changes=[];const arrows=flatten(galleryView(h,viewData,0,0,undefined,value=>changes.push(value))).filter(n=>n.tag==='button');
+arrows.forEach(button=>button.props.onClick());assert.deepEqual(changes,[1,1]);
 assert.equal(second.filter(n=>n.props?.['data-current']===true).length,1);
 assert.equal(single.find(n=>n.props?.className==='recognition-grid').children[0].props.className,'recognition-directory');
-console.log('Wheel gallery passed: directory precedes preview, labels retained, no click targets, multiple images and empty entries preserve vertical order.');
+console.log('Wheel gallery passed: directory precedes preview, labels retained, wheel directory, mirrored arrow controls, horizontal image paging and vertical entry order.');
 
 // An ordered gallery can mix images and videos without discarding legacy media.
 const mixed=structuredClone(sample);
