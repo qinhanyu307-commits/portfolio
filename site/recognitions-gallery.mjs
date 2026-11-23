@@ -31,7 +31,7 @@ export function galleryPlayer(React,jsx,data){
  const savedSlides=React.useRef({});savedSlides.current[selected]=slide;
  React.useEffect(()=>{
   const section=ref.current;if(!section)return;
-  let total=0,lastWheel=0,lockedUntil=0,touch=null;
+  let total=0,lastWheel=0,lockedUntil=0,touch=null,wheelGesture=null;
   const next=direction=>{
    const entry=current.current.entry+direction;
    return entry>=0&&entry<data.entries.length?{entry,slide:0}:null;
@@ -48,36 +48,42 @@ export function galleryPlayer(React,jsx,data){
    const left=box.left+(box.width-w)/2,top=box.top+(box.height-h)/2;
    return event.clientX>=left&&event.clientX<=left+w&&event.clientY>=top&&event.clientY<=top+h;
   };
-  // A directory row spans a whole column, but only its actual text is interactive.
+  // A small halo makes text easy to target without capturing the blank column.
   const overDirectoryText=event=>{
-   const text=event.target.closest('[data-directory-wheel]');if(!text)return false;
-   const walker=document.createTreeWalker(text,NodeFilter.SHOW_TEXT),range=document.createRange();
-   for(let node=walker.nextNode();node;node=walker.nextNode()){
-    if(!node.textContent.trim())continue;
-    range.selectNodeContents(node);
-    for(const box of range.getClientRects())if(event.clientX>=box.left&&event.clientX<=box.right&&event.clientY>=box.top&&event.clientY<=box.bottom)return true;
+   const directory=section.querySelector('.recognition-directory'),bounds=directory.getBoundingClientRect();
+   if(event.clientX<bounds.left-4||event.clientX>bounds.right)return false;
+   const range=document.createRange();
+   for(const text of directory.querySelectorAll('[data-directory-wheel]')){
+    const walker=document.createTreeWalker(text,NodeFilter.SHOW_TEXT);
+    for(let node=walker.nextNode();node;node=walker.nextNode()){
+     if(!node.textContent.trim())continue;
+     range.selectNodeContents(node);
+     for(const box of range.getClientRects())if(event.clientX>=box.left-12&&event.clientX<=box.right+12&&event.clientY>=box.top-8&&event.clientY<=box.bottom+8)return true;
+    }
    }
    return false;
   };
   const commit=value=>{current.current=value;setSelection(value);};
   const wheel=event=>{
    if(event.ctrlKey)return;
-   if(overArtwork(event)){event.preventDefault();event.stopPropagation();return;}
+   if(overArtwork(event)){wheelGesture=null;event.preventDefault();event.stopPropagation();return;}
    // Mobile layouts omit Lenis and contain native body scroll chaining.
    const scrollPage=()=>{if(!window.__lenis&&Math.abs(event.deltaY)>=Math.abs(event.deltaX)){event.preventDefault();event.stopPropagation();window.scrollBy({top:event.deltaY*(event.deltaMode===1?16:event.deltaMode===2?innerHeight:1),behavior:'instant'});}};
-   // Empty space scrolls the page; only directory text switches entries.
-   if(!overDirectoryText(event)||Math.abs(event.deltaX)>Math.abs(event.deltaY)){scrollPage();return;}
-   const bounds=section.getBoundingClientRect();if(bounds.top>innerHeight*.45||bounds.bottom<innerHeight*.55){scrollPage();return;}
-   const now=performance.now(),direction=Math.sign(event.deltaY);if(!direction)return;
-   const value=next(direction);
-   // At either end let the page continue scrolling naturally.
-   if(!value){total=0;if(now<lockedUntil){event.preventDefault();event.stopPropagation();}else scrollPage();return;}
+   const now=performance.now();
+   const continuing=wheelGesture&&now-wheelGesture.time<180&&Math.hypot(event.clientX-wheelGesture.x,event.clientY-wheelGesture.y)<16;
+   const overText=overDirectoryText(event);
+   if(!overText&&!continuing){wheelGesture=null;total=0;scrollPage();return;}
+   // Consume every wheel event over text, even at the first/last entry.
    event.preventDefault();event.stopPropagation();
+   if(!continuing){total=0;lockedUntil=0;window.__lenis?.scrollTo(window.scrollY,{immediate:true,force:true});}
+   if(overText)wheelGesture={x:event.clientX,y:event.clientY,time:now};else wheelGesture.time=now;
+   const direction=Math.sign(event.deltaY);if(!direction)return;
+   const value=next(direction);if(!value){total=0;return;}
    if(now<lockedUntil){lastWheel=now;return;}
-   if(now-lastWheel>160||Math.sign(total)!==direction)total=0;
+   if(now-lastWheel>180||Math.sign(total)!==direction)total=0;
    lastWheel=now;total+=event.deltaY*(event.deltaMode===1?16:event.deltaMode===2?innerHeight:1);
-   if(Math.abs(total)<40)return;
-   total=0;lockedUntil=now+620;commit(value);
+   if(Math.abs(total)<8)return;
+   total=0;lockedUntil=now+360;commit(value);
   };
   const start=event=>{if(event.touches.length===1&&event.target.closest('.recognition-row'))touch={x:event.touches[0].clientX,y:event.touches[0].clientY,delta:0};};
   const move=event=>{if(!touch||event.touches.length!==1)return;const dx=event.touches[0].clientX-touch.x,dy=touch.y-event.touches[0].clientY;if(Math.abs(dy)>Math.abs(dx)&&Math.abs(dy)>12&&next(Math.sign(dy))){touch.delta=dy;event.preventDefault();}};
