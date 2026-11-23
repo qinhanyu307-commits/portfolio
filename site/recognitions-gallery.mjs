@@ -48,6 +48,17 @@ export function galleryPlayer(React,jsx,data){
    const left=box.left+(box.width-w)/2,top=box.top+(box.height-h)/2;
    return event.clientX>=left&&event.clientX<=left+w&&event.clientY>=top&&event.clientY<=top+h;
   };
+  // A directory row spans a whole column, but only its actual text is interactive.
+  const overDirectoryText=event=>{
+   const row=event.target.closest('.recognition-row');if(!row)return false;
+   const walker=document.createTreeWalker(row,NodeFilter.SHOW_TEXT),range=document.createRange();
+   for(let node=walker.nextNode();node;node=walker.nextNode()){
+    if(!node.textContent.trim())continue;
+    range.selectNodeContents(node);
+    for(const box of range.getClientRects())if(event.clientX>=box.left&&event.clientX<=box.right&&event.clientY>=box.top&&event.clientY<=box.bottom)return true;
+   }
+   return false;
+  };
   const commit=value=>{current.current=value;setSelection(value);};
   const wheel=event=>{
    if(event.ctrlKey)return;
@@ -55,7 +66,7 @@ export function galleryPlayer(React,jsx,data){
    // Mobile layouts omit Lenis and contain native body scroll chaining.
    const scrollPage=()=>{if(!window.__lenis&&Math.abs(event.deltaY)>=Math.abs(event.deltaX)){event.preventDefault();event.stopPropagation();window.scrollBy({top:event.deltaY*(event.deltaMode===1?16:event.deltaMode===2?innerHeight:1),behavior:'instant'});}};
    // Empty space scrolls the page; only directory text switches entries.
-   if(!event.target.closest('.recognition-row')||Math.abs(event.deltaX)>Math.abs(event.deltaY)){scrollPage();return;}
+   if(!overDirectoryText(event)||Math.abs(event.deltaX)>Math.abs(event.deltaY)){scrollPage();return;}
    const bounds=section.getBoundingClientRect();if(bounds.top>innerHeight*.45||bounds.bottom<innerHeight*.55){scrollPage();return;}
    const now=performance.now(),direction=Math.sign(event.deltaY);if(!direction)return;
    const value=next(direction);
