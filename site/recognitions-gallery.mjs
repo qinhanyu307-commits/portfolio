@@ -48,18 +48,24 @@ export function galleryPlayer(React,jsx,data){
    const left=box.left+(box.width-w)/2,top=box.top+(box.height-h)/2;
    return event.clientX>=left&&event.clientX<=left+w&&event.clientY>=top&&event.clientY<=top+h;
   };
-  // A small halo makes text easy to target without capturing the blank column.
-  const overDirectoryText=event=>{
-   const directory=section.querySelector('.recognition-directory'),bounds=directory.getBoundingClientRect();
-   if(event.clientX<bounds.left-4||event.clientX>bounds.right)return false;
+  // Each entry has an invisible rectangle around its title, metadata and gaps.
+  // Size short entries consistently while keeping the middle column empty.
+  const overDirectoryBox=point=>{
+   const directory=section.querySelector('.recognition-directory'),column=directory.getBoundingClientRect();
    const range=document.createRange();
-   for(const text of directory.querySelectorAll('[data-directory-wheel]')){
-    const walker=document.createTreeWalker(text,NodeFilter.SHOW_TEXT);
-    for(let node=walker.nextNode();node;node=walker.nextNode()){
-     if(!node.textContent.trim())continue;
-     range.selectNodeContents(node);
-     for(const box of range.getClientRects())if(event.clientX>=box.left-12&&event.clientX<=box.right+12&&event.clientY>=box.top-8&&event.clientY<=box.bottom+8)return true;
+   for(const row of directory.querySelectorAll('.recognition-row')){
+    const box=row.getBoundingClientRect();let textRight=box.left,textTop=box.top,textBottom=box.bottom;
+    for(const text of row.querySelectorAll('[data-directory-wheel]')){
+     const walker=document.createTreeWalker(text,NodeFilter.SHOW_TEXT);
+     for(let node=walker.nextNode();node;node=walker.nextNode()){
+      if(!node.textContent.trim())continue;
+      range.selectNodeContents(node);
+      for(const line of range.getClientRects()){textRight=Math.max(textRight,line.right);textTop=Math.min(textTop,line.top);textBottom=Math.max(textBottom,line.bottom);}
+     }
     }
+    const left=Math.max(column.left,box.left-4);
+    const width=Math.min(column.right-left,Math.max(220,innerWidth*.225,textRight-left+20));
+    if(point.clientX>=left&&point.clientX<=left+width&&point.clientY>=textTop-8&&point.clientY<=textBottom+8)return true;
    }
    return false;
   };
@@ -71,12 +77,12 @@ export function galleryPlayer(React,jsx,data){
    const scrollPage=()=>{if(!window.__lenis&&Math.abs(event.deltaY)>=Math.abs(event.deltaX)){event.preventDefault();event.stopPropagation();window.scrollBy({top:event.deltaY*(event.deltaMode===1?16:event.deltaMode===2?innerHeight:1),behavior:'instant'});}};
    const now=performance.now();
    const continuing=wheelGesture&&now-wheelGesture.time<180&&Math.hypot(event.clientX-wheelGesture.x,event.clientY-wheelGesture.y)<16;
-   const overText=overDirectoryText(event);
-   if(!overText&&!continuing){wheelGesture=null;total=0;scrollPage();return;}
-   // Consume every wheel event over text, even at the first/last entry.
+   const overBox=overDirectoryBox(event);
+   if(!overBox&&!continuing){wheelGesture=null;total=0;scrollPage();return;}
+   // Consume the wheel throughout an entry box, including its blank spaces.
    event.preventDefault();event.stopPropagation();
    if(!continuing){total=0;lockedUntil=0;window.__lenis?.scrollTo(window.scrollY,{immediate:true,force:true});}
-   if(overText)wheelGesture={x:event.clientX,y:event.clientY,time:now};else wheelGesture.time=now;
+   if(overBox)wheelGesture={x:event.clientX,y:event.clientY,time:now};else wheelGesture.time=now;
    const direction=Math.sign(event.deltaY);if(!direction)return;
    const value=next(direction);if(!value){total=0;return;}
    if(now<lockedUntil){lastWheel=now;return;}
@@ -85,7 +91,7 @@ export function galleryPlayer(React,jsx,data){
    if(Math.abs(total)<8)return;
    total=0;lockedUntil=now+360;commit(value);
   };
-  const start=event=>{if(event.touches.length===1&&event.target.closest('.recognition-row'))touch={x:event.touches[0].clientX,y:event.touches[0].clientY,delta:0};};
+  const start=event=>{if(event.touches.length===1&&overDirectoryBox(event.touches[0]))touch={x:event.touches[0].clientX,y:event.touches[0].clientY,delta:0};};
   const move=event=>{if(!touch||event.touches.length!==1)return;const dx=event.touches[0].clientX-touch.x,dy=touch.y-event.touches[0].clientY;if(Math.abs(dy)>Math.abs(dx)&&Math.abs(dy)>12&&next(Math.sign(dy))){touch.delta=dy;event.preventDefault();}};
   const end=()=>{if(touch&&Math.abs(touch.delta)>40){const value=next(Math.sign(touch.delta));if(value)commit(value);}touch=null;};
   section.addEventListener('wheel',wheel,{passive:false});
