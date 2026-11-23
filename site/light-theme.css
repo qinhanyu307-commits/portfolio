@@ -73,3 +73,26 @@ footer .footer-name { display:block; flex-shrink:0; font-family:"Portfolio Name"
   white-space: nowrap;
   vertical-align: baseline;
 }
+
+/* Dark catalog, featured projects and recognition gallery within the light site. */
+main > #awards,
+#work,
+#recognitions.recognition-gallery {
+  filter: invert(1) !important;
+  background: #000 !important;
+  color: #fafafa;
+}
+/* These sections cancel the root inversion, so media needs no compensation. */
+#work#work img, #work#work video,
+#recognitions .recognition-image, #recognitions .recognition-video,
+#work#work div:has(> img),
+#recognitions .recognition-controls,
+#work .work-view-cursor {
+  filter: none !important;
+}
+#awards#awards .award-directory-row > span:nth-child(2),
+#work p,
+#recognitions .recognition-row {
+  color: #ccc !important;
+}
+#recognitions .recognition-row[aria-pressed=true] { color: #fafafa !important; }
