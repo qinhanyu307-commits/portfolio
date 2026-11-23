@@ -34,3 +34,8 @@
 #recognitions .recognition-chevron-left{transform:scaleX(-1)}
 @media(max-width:767px){#recognitions .recognition-controls{left:8px;right:8px}#recognitions .recognition-controls button{width:23px;height:23px;flex-basis:23px}}
 @media(prefers-reduced-motion:reduce){#recognitions .recognition-media-track,#recognitions .recognition-controls button{transition:none}}
+
+/* Blank column space never participates in directory input hit testing. */
+#recognitions .recognition-directory,#recognitions .recognition-row,#recognitions .recognition-details{pointer-events:none}
+#recognitions [data-directory-wheel]{pointer-events:auto}
+#recognitions .recognition-award{width:fit-content;max-width:100%}

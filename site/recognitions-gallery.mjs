@@ -7,8 +7,8 @@ export function galleryView(h,data,selected=0,slide=0,select=()=>{},change=()=>{
   h('div',{className:'recognition-grid'},
    h('div',{className:'recognition-directory',role:'listbox',tabIndex:0,'aria-label':'作品目录，使用滚轮或上下方向键切换','aria-activedescendant':entries.length?'recognition-option-'+selected:undefined,onKeyDown:motion.key},
     ...entries.map((row,i)=>h('div',{key:row.id,id:'recognition-option-'+i,className:'recognition-row',role:'option','aria-selected':i===selected,'data-active':i===selected},
-     h('span',{className:'recognition-award'},row.award),
-     h('div',{className:'recognition-details'},h('span',{className:'recognition-project'},row.project),h('span',{className:'recognition-date'},row.date)))),
+     h('span',{className:'recognition-award','data-directory-wheel':true},row.award),
+     h('div',{className:'recognition-details'},h('span',{className:'recognition-project','data-directory-wheel':true},row.project),h('span',{className:'recognition-date','data-directory-wheel':true},row.date)))),
     entries.length?null:h('p',{className:'recognition-empty'},'暂无目录')),
    h('div',{className:'recognition-preview'},
     h('div',{className:'recognition-frame',role:'region',tabIndex:0,'aria-label':'作品预览，点击左右箭头翻页',onKeyDown:motion.key},
@@ -50,8 +50,8 @@ export function galleryPlayer(React,jsx,data){
   };
   // A directory row spans a whole column, but only its actual text is interactive.
   const overDirectoryText=event=>{
-   const row=event.target.closest('.recognition-row');if(!row)return false;
-   const walker=document.createTreeWalker(row,NodeFilter.SHOW_TEXT),range=document.createRange();
+   const text=event.target.closest('[data-directory-wheel]');if(!text)return false;
+   const walker=document.createTreeWalker(text,NodeFilter.SHOW_TEXT),range=document.createRange();
    for(let node=walker.nextNode();node;node=walker.nextNode()){
     if(!node.textContent.trim())continue;
     range.selectNodeContents(node);
