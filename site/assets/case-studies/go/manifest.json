@@ -1,66 +1,96 @@
 {
-  "source": "go-app-redesign-uiux.pdf",
-  "sha256": "ce18f4cc807426042a2fde65a380be9a9a5b6b1b7e81cc5236de5833a8c18760",
+  "source": "新建文件夹.zip",
+  "encoding": "Original JPEG files copied byte-for-byte; no resizing or recompression",
   "parts": [
     {
       "part": 1,
+      "source": "1-1.jpg",
+      "file": "originals/01-a3d5efbd5e57.jpg",
       "width": 1920,
       "height": 5985,
-      "tiles": 4
+      "sha256": "a3d5efbd5e57f8f9e10946ebb84743068e67d387452c329a8eb7a35e2d56ba16",
+      "bytes": 2010684
     },
     {
       "part": 2,
+      "source": "购票链路1.jpg",
+      "file": "originals/02-432cf37a205e.jpg",
       "width": 1920,
       "height": 8633,
-      "tiles": 6
+      "sha256": "432cf37a205e636baa77340e6984a9a59c465d1b29abc77e69d822dc94d2767c",
+      "bytes": 2514646
     },
     {
       "part": 3,
+      "source": "购票链路2.jpg",
+      "file": "originals/03-bb0dcd724905.jpg",
       "width": 1920,
       "height": 3671,
-      "tiles": 3
+      "sha256": "bb0dcd72490588e222ec9396f03510a4c31ded28251620b7e7399dfe45a9ecf1",
+      "bytes": 895582
     },
     {
       "part": 4,
+      "source": "购票链路3.jpg",
+      "file": "originals/04-ce88f61e92b9.jpg",
       "width": 1920,
       "height": 12206,
-      "tiles": 8
+      "sha256": "ce88f61e92b9b893e1a66a8e9ff62679cb9504f1ec2a882a24c4ad16487cec01",
+      "bytes": 3441331
     },
     {
       "part": 5,
+      "source": "社区链路1.jpg",
+      "file": "originals/05-68fe2ee42817.jpg",
       "width": 1920,
       "height": 13348,
-      "tiles": 9
+      "sha256": "68fe2ee428174d6d52705b197b4be285ddef7b19758b1f5994ac6b86150be5ac",
+      "bytes": 3563521
     },
     {
       "part": 6,
+      "source": "社区链路2.jpg",
+      "file": "originals/06-dc90d7e0929d.jpg",
       "width": 1920,
       "height": 4923,
-      "tiles": 4
+      "sha256": "dc90d7e0929d53996280968de60024e9b09818f5324c07900179b38fe98beb29",
+      "bytes": 1853368
     },
     {
       "part": 7,
+      "source": "社区链路3.jpg",
+      "file": "originals/07-9e4db78feab3.jpg",
       "width": 1920,
       "height": 23044,
-      "tiles": 15
+      "sha256": "9e4db78feab36de6bc44ad8d3df3b68405a46d2312549b9af5f6208e53f60381",
+      "bytes": 6825201
     },
     {
       "part": 8,
+      "source": "视觉1.jpg",
+      "file": "originals/08-d464385e9887.jpg",
       "width": 1920,
       "height": 11291,
-      "tiles": 8
+      "sha256": "d464385e9887eccc5afdb7cce6219c5cb4d90c3803e0395f81441d5919627e37",
+      "bytes": 2231464
     },
     {
       "part": 9,
+      "source": "视觉2.jpg",
+      "file": "originals/09-681f20fb72c8.jpg",
       "width": 1920,
       "height": 4036,
-      "tiles": 3
+      "sha256": "681f20fb72c8dccc086ff8042753ca6879399c54e574b5a3009a10ffd4cff45e",
+      "bytes": 978320
     },
     {
       "part": 10,
+      "source": "视觉3.jpg",
+      "file": "originals/10-476aeafcd762.jpg",
       "width": 1920,
       "height": 10218,
-      "tiles": 7
+      "sha256": "476aeafcd762d4d4b49f2865ec0bcf73acb9beae1352a5bf00c454d460912053",
+      "bytes": 4568680
     }
   ]
 }
