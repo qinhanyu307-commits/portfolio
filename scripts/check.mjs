@@ -10,6 +10,8 @@ for(const file of walk(docs).filter(f=>/\.(?:js|mjs)$/.test(f))){const r=spawnSy
 const html=fs.readFileSync(path.join(docs,'index.html'),'utf8');
 for(const match of html.matchAll(/(?:src|href)="(\/port\/[^"?#]+)(?:\?[^"#]*)?"/g)){const rel=match[1].slice('/portfolio/'.length);if(!fs.existsSync(path.join(docs,rel)))failures.push('Missing resource: '+rel)}
 if(/static\/[^"\\\s]+\.(?:js|css)(?=\\")/.test(html))failures.push('Hydration chunk reference is missing a deployment revision.');
+const player=html.match(/src="[^"\s]*\/(project-player-[a-f0-9]{12}\.js)(?:\?[^"\s]*)?"/);
+if(!player||!fs.existsSync(path.join(docs,player[1])))failures.push('Versioned project viewer script missing.');
 const layout=fs.readFileSync(path.join(docs,'_next/static/chunks/app/layout-6d0f10cc5e82d4d4.js'),'utf8');
 if(layout.includes('api.hsforms.com')||layout.includes('api.ipify.org'))failures.push('Original form service remains');
 if(!layout.includes('mailto:1810438404@qq.com'))failures.push('Public contact email missing');

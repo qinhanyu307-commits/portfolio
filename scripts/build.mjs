@@ -45,7 +45,7 @@ function transform(text,rel){
   text=text.replaceAll('++hellohello — Design & Technology Agency','Lu Kehao — Portfolio').replaceAll('++hellohello — Design &amp; Technology Agency','Lu Kehao — Portfolio');
   text=text.replace(/\+\+hellohello[^\"\n<>]{0,30}Technology Agency/g,'Lu Kehao — Portfolio');
   if(rel.endsWith('.mjs'))text=text.replace(/(from\s*['"])(\.[^'"]+\.mjs)(['"])/g,(_,a,b,c)=>a+b+'?v='+revision+c);
-  if(rel==='index.html')text=text.replace('</head>','<script src="'+base+'/project-player.js" defer></script></head>');
+  if(rel==='index.html')text=text.replace('</head>','<script src="'+base+'/project-player-'+revision+'.js" defer></script></head>');
   // Hydration reads escaped chunk URLs separately from ordinary script tags.
   if(rel.endsWith('.html'))text=text.replace(/(static\/[^"\\\s]+\.(?:js|css))(?=\\")/g,'$1?v='+revision);
   if(rel.endsWith('.html'))text=text.replace(/((?:src|href)=")([^"\s]+\.(?:js|mjs|css)(?:\?[^"\s]*)?)(")/g,(_,a,url,c)=>url.startsWith('http')?a+url+c:a+url+(url.includes('?')?'&amp;':'?')+'v='+revision+c);
@@ -58,6 +58,8 @@ function transform(text,rel){
   return text;
 }
 for(const rel of files){const src=path.join(source,rel),dest=path.join(output,rel);await fs.mkdir(path.dirname(dest),{recursive:true});if(/\.(?:html|css|js|mjs|json|svg)$/.test(rel))await fs.writeFile(dest,transform(await fs.readFile(src,'utf8'),rel));else await fs.copyFile(src,dest)}
+// A fresh filename prevents cached viewers from retaining an older transition.
+await fs.copyFile(path.join(output,'project-player.js'),path.join(output,'project-player-'+revision+'.js'));
 await fs.writeFile(path.join(output,'.nojekyll'),'');
 await fs.writeFile(path.join(output,'now-playing.json'),'null\n');
 await fs.writeFile(path.join(output,'site.webmanifest'),JSON.stringify({name:'Lu Kehao Portfolio',short_name:'Lu Kehao',start_url:base+'/',display:'browser',background_color:'#ffffff',theme_color:'#ffffff'}));

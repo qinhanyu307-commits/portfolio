@@ -62,19 +62,17 @@
  const tick=()=>new Promise(resolve=>requestAnimationFrame(resolve));
  function parse(value){try{const url=new URL(value,location.href);return url.origin===location.origin&&url.pathname===base+'watch/go/'?url:null;}catch{return null;}}
  function record(node,property,value){saved.styles.push({node,property,value:node.style.getPropertyValue(property),priority:node.style.getPropertyPriority(property)});node.style.setProperty(property,value,'important');}
- function panels(){
-  const wipe=document.createElement('div');wipe.className='go-case-wipe';wipe.setAttribute('aria-hidden','true');
-  wipe.style.cssText='position:absolute;inset:0;z-index:2;overflow:hidden;pointer-events:none';
-  const panel=document.createElement('div');panel.className='go-case-wipe-panel';panel.style.cssText='position:absolute;inset:0;background:#ff3b8d;transform:translateY(100%)';wipe.append(panel);
-  return wipe;
+ function colorSheet(){
+  const sheet=document.createElement('div');sheet.className='go-case-wipe-sheet';sheet.dataset.goWipeSheet='true';sheet.setAttribute('aria-hidden','true');
+  sheet.style.cssText='position:absolute;inset:0;z-index:2;background:#ff3b8d;clip-path:inset(100% 0 0 0);pointer-events:none';
+  return sheet;
  }
  async function wipe(cover){
-  const nodes=[...shell.querySelectorAll('.go-case-wipe-panel')];
-  if(reduced.matches){nodes.forEach(node=>{node.style.transform=cover?'translateY(0)':'translateY(-100%)';});return;}
-  await Promise.all(nodes.map(node=>{
-   node.getAnimations().forEach(animation=>animation.cancel());
-   return node.animate([{transform:cover?'translateY(100%)':'translateY(0)'},{transform:cover?'translateY(0)':'translateY(-100%)'}],{duration:cover?440:460,easing:'cubic-bezier(.76,0,.24,1)',fill:'forwards'}).finished;
-  }));
+  const sheet=shell.querySelector('[data-go-wipe-sheet]');
+  const from=cover?'inset(100% 0 0 0)':'inset(0 0 0 0)',to=cover?'inset(0 0 0 0)':'inset(0 0 100% 0)';
+  sheet.getAnimations().forEach(animation=>animation.cancel());
+  if(reduced.matches){sheet.style.clipPath=to;return;}
+  await sheet.animate([{clipPath:from},{clipPath:to}],{duration:cover?440:460,easing:'cubic-bezier(.76,0,.24,1)',fill:'forwards'}).finished;
  }
  async function show(url,push=true,position=null){
   if(shell||document.getElementById('project-video-overlay'))return;
@@ -92,7 +90,7 @@
   study=document.createElement('iframe');study.title='走起GO · UI/UX 项目案例';study.style.cssText='display:block;width:100%;height:100%;border:0;opacity:0';
   const loaded=new Promise(resolve=>study.addEventListener('load',resolve,{once:true}));
   const embedded=new URL(url);embedded.searchParams.set('embedded','1');if(revision)embedded.searchParams.set('v',revision);study.src=embedded.href;
-  shell.append(study,panels());document.body.append(shell);phase='opening';shell.dataset.phase=phase;closePending=false;
+  shell.append(study,colorSheet());document.body.append(shell);phase='opening';shell.dataset.phase=phase;closePending=false;
   await Promise.all([wipe(true),Promise.race([loaded,new Promise(resolve=>setTimeout(resolve,4500))])]);
   shell.style.background='#000';study.style.opacity='1';study.contentWindow?.postMessage({type:'portfolio-go-case-enter'},location.origin);
   await wipe(false);phase='open';shell.dataset.phase=phase;study.focus();if(closePending)hide();
