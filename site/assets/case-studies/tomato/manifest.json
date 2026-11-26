@@ -1,0 +1,60 @@
+{
+  "source": "新建文件夹 (2).zip",
+  "encoding": "Original JPEG files copied byte-for-byte; no resizing or recompression",
+  "parts": [
+    {
+      "part": 1,
+      "source": "运营排版·上1.jpg",
+      "file": "originals/01-fe2a7379e9ad.jpg",
+      "width": 1920,
+      "height": 4843,
+      "sha256": "fe2a7379e9ad956ef51c14be3a65af57c1cce200b1f4c6562ab6679b1e81108a",
+      "bytes": 2777884
+    },
+    {
+      "part": 2,
+      "source": "运营排版·上2.jpg",
+      "file": "originals/02-92534f0a1c16.jpg",
+      "width": 1920,
+      "height": 4993,
+      "sha256": "92534f0a1c16b465cf0ca002d84be8cf66ebe65c27b5709e3742eaf9b73a2754",
+      "bytes": 2731698
+    },
+    {
+      "part": 3,
+      "source": "运营排版·上3.jpg",
+      "file": "originals/03-42c5971c07a7.jpg",
+      "width": 1920,
+      "height": 4875,
+      "sha256": "42c5971c07a73c261fd0c1593d7a1532f0a2c0c3b1a30c69452c897f3a5b6ac0",
+      "bytes": 4110485
+    },
+    {
+      "part": 4,
+      "source": "运营排版·下1.jpg",
+      "file": "originals/04-1c1a09ab01d2.jpg",
+      "width": 1920,
+      "height": 7430,
+      "sha256": "1c1a09ab01d2f07b118baf2637f3d0b53dfa0d20b206e5336d4efac84a0426b9",
+      "bytes": 5634584
+    },
+    {
+      "part": 5,
+      "source": "运营排版·下2.jpg",
+      "file": "originals/05-f14f70b6f2d2.jpg",
+      "width": 1920,
+      "height": 4632,
+      "sha256": "f14f70b6f2d2051b9b3d6f5acc30b3ba9f14eb0b467f18251136b6436978eed5",
+      "bytes": 3355826
+    },
+    {
+      "part": 6,
+      "source": "运营排版·下3.jpg",
+      "file": "originals/06-1ba81d85579b.jpg",
+      "width": 1920,
+      "height": 5988,
+      "sha256": "1ba81d85579b799cec5eb291d2e9d80e18f25757fd13eaac8cd998d65f0011aa",
+      "bytes": 5309143
+    }
+  ]
+}
