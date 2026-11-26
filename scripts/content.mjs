@@ -15,6 +15,14 @@ export function renderContent(text,rel,content,defaults){
     text=text.slice(0,works.from)+JSON.stringify(next)+text.slice(works.end);
     const catalog=arrayAt(text,'f=',',p=[',text.indexOf('6527:'));
     text=text.slice(0,catalog.from)+JSON.stringify(catalogEntries(content).map(p=>({award:p.title,project:p.description,date:''})))+text.slice(catalog.end);
+    // Preserve LOOKIE's paragraph breaks as real line breaks before SplitText runs.
+    const workStart=text.indexOf('4312:');
+    const nextModule=/\},\d+:\(/g;nextModule.lastIndex=workStart;
+    const workEnd=nextModule.exec(text)?.index??text.length;
+    const workText=text.slice(workStart,workEnd);
+    const paragraphChildren='e.slug==="alchemy"?e.description.split("\\n").flatMap((line,index)=>index?[(0,n.jsx)("br",{},"description-break-"+index),line]:[line]):e.description';
+    if((workText.match(/children:e\.description/g)||[]).length!==2)throw Error('作品简介模板数量不一致。');
+    text=text.slice(0,workStart)+workText.replaceAll('children:e.description','children:'+paragraphChildren)+text.slice(workEnd);
     text=text.replace('src:e.video,muted:!0','src:e.video||void 0,muted:!0');
     text=text.replace('r&&(r.currentTime=0,r.play().catch(()=>{}),l.Ay.to(r,{opacity:1,duration:.4})),n&&l.Ay.to(n,{opacity:0,duration:.4})','r&&g[e].video&&(l.Ay.killTweensOf(r),n&&l.Ay.killTweensOf(n),r.muted=!0,r.playbackRate=g[e].previewPlaybackRate||1,r.play().catch(()=>{}),l.Ay.to(r,{opacity:1,duration:.4})),g[e].video&&n&&l.Ay.to(n,{opacity:0,duration:.4})');
     text=text.replace('t&&l.Ay.to(t,{opacity:0,duration:.4,onComplete:()=>t.pause()}),r&&l.Ay.to(r,{opacity:1,duration:.4})','t&&(l.Ay.killTweensOf(t),t.pause(),l.Ay.to(t,{opacity:0,duration:.4})),r&&(l.Ay.killTweensOf(r),l.Ay.to(r,{opacity:1,duration:.4}))');
