@@ -1,5 +1,6 @@
 {
   "source": "新建文件夹.zip",
+  "archiveSha256": "e964d87b5a0d5ecee71851c3c4afce3d55d75ea6b92658f4f13cc06dbd677bf6",
   "encoding": "Original JPEG files copied byte-for-byte; no resizing or recompression",
   "parts": [
     {
@@ -68,11 +69,11 @@
     {
       "part": 8,
       "source": "视觉1.jpg",
-      "file": "originals/08-d464385e9887.jpg",
+      "file": "originals/08-fb2067280e50.jpg",
       "width": 1920,
       "height": 11291,
-      "sha256": "d464385e9887eccc5afdb7cce6219c5cb4d90c3803e0395f81441d5919627e37",
-      "bytes": 2231464
+      "sha256": "fb2067280e50a623d3e7fc183149a9cdcad831181d62c04b4082f401869af29f",
+      "bytes": 2909757
     },
     {
       "part": 9,
@@ -86,11 +87,11 @@
     {
       "part": 10,
       "source": "视觉3.jpg",
-      "file": "originals/10-476aeafcd762.jpg",
+      "file": "originals/10-d83ae58a93e2.jpg",
       "width": 1920,
       "height": 10218,
-      "sha256": "476aeafcd762d4d4b49f2865ec0bcf73acb9beae1352a5bf00c454d460912053",
-      "bytes": 4568680
+      "sha256": "d83ae58a93e28c62eef1bc3f8f4f02d2d526e5e7473e18e414c8b7b286f5125c",
+      "bytes": 4597207
     }
   ]
 }
