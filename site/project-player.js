@@ -53,18 +53,20 @@
   window.addEventListener('keydown',event=>{if(event.key==='Escape'&&overlay){event.preventDefault();back();}});
 })();
 
-// Go opens as a web case study behind the full-width pink color wipe.
+// Web case studies open behind a single full-screen sheet in their project color.
 (() => {
  const previousOpen=window.__PORTFOLIO_OPEN_VIDEO__;
  const script=new URL(document.currentScript.src),base=new URL('./',script).pathname,revision=script.searchParams.get('v');
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  let shell=null,study=null,saved=null,phase='idle',closePending=false;
  const tick=()=>new Promise(resolve=>requestAnimationFrame(resolve));
- function parse(value){try{const url=new URL(value,location.href);return url.origin===location.origin&&url.pathname===base+'watch/go/'?url:null;}catch{return null;}}
+ const cases={go:{color:'#ff3b8d',label:'走起GO 项目案例',title:'走起GO · UI/UX 项目案例'},yadea:{color:'#20c9cf',label:'雅迪 项目案例',title:'雅迪 · 车机壁纸设计'}};
+ const caseKey=url=>url.pathname.split('/').filter(Boolean).at(-1);
+ function parse(value){try{const url=new URL(value,location.href);return url.origin===location.origin&&Object.keys(cases).some(key=>url.pathname===base+'watch/'+key+'/')?url:null;}catch{return null;}}
  function record(node,property,value){saved.styles.push({node,property,value:node.style.getPropertyValue(property),priority:node.style.getPropertyPriority(property)});node.style.setProperty(property,value,'important');}
- function colorSheet(){
+ function colorSheet(color){
   const sheet=document.createElement('div');sheet.className='go-case-wipe-sheet';sheet.dataset.goWipeSheet='true';sheet.setAttribute('aria-hidden','true');
-  sheet.style.cssText='position:absolute;inset:0;z-index:2;background:#ff3b8d;clip-path:inset(100% 0 0 0);pointer-events:none';
+  sheet.style.cssText='position:absolute;inset:0;z-index:2;clip-path:inset(100% 0 0 0);pointer-events:none';sheet.style.background=color;
   return sheet;
  }
  async function wipe(cover){
@@ -76,6 +78,7 @@
  }
  async function show(url,push=true,position=null){
   if(shell||document.getElementById('project-video-overlay'))return;
+  const key=caseKey(url),config=cases[key];
   const main=document.querySelector('main');
   saved={x:position?.x??scrollX,y:position?.y??scrollY,main,inert:main?.inert,focus:document.activeElement,styles:[]};
   const scrollbar=innerWidth-document.documentElement.clientWidth;
@@ -83,14 +86,14 @@
   for(const node of [document.documentElement,document.body])for(const property of ['overflow-x','overflow-y'])record(node,property,'hidden');
   if(scrollbar>0)record(document.body,'padding-right',(parseFloat(getComputedStyle(document.body).paddingRight)+scrollbar)+'px');
   if(main)main.inert=true;
-  if(push){const current=new URL(location.href);current.hash='case-study=go';const state={...history.state,portfolioGoCase:url.href,portfolioGoPosition:{x:saved.x,y:saved.y}};delete state.portfolioVideo;delete state.portfolioVideoPosition;history.pushState(state,'',current);}
-  shell=document.createElement('div');shell.id='project-video-overlay';shell.dataset.kind='go-case';shell.setAttribute('role','dialog');shell.setAttribute('aria-modal','true');shell.setAttribute('aria-label','走起GO 项目案例');
-  // Cancel the site's root inversion for both the pink wipe and the web page.
+  if(push){const current=new URL(location.href);current.hash='case-study='+key;const state={...history.state,portfolioGoCase:url.href,portfolioGoPosition:{x:saved.x,y:saved.y}};delete state.portfolioVideo;delete state.portfolioVideoPosition;history.pushState(state,'',current);}
+  shell=document.createElement('div');shell.id='project-video-overlay';shell.dataset.kind=key+'-case';shell.setAttribute('role','dialog');shell.setAttribute('aria-modal','true');shell.setAttribute('aria-label',config.label);
+  // Cancel the site's root inversion for the color sheet and case artwork.
   shell.style.cssText='position:fixed;inset:0;width:100%;height:100dvh;z-index:2147483647;background:transparent;filter:invert(1);overflow:hidden';
-  study=document.createElement('iframe');study.title='走起GO · UI/UX 项目案例';study.style.cssText='display:block;width:100%;height:100%;border:0;opacity:0';
+  study=document.createElement('iframe');study.title=config.title;study.style.cssText='display:block;width:100%;height:100%;border:0;opacity:0';
   const loaded=new Promise(resolve=>study.addEventListener('load',resolve,{once:true}));
   const embedded=new URL(url);embedded.searchParams.set('embedded','1');if(revision)embedded.searchParams.set('v',revision);study.src=embedded.href;
-  shell.append(study,colorSheet());document.body.append(shell);phase='opening';shell.dataset.phase=phase;closePending=false;
+  shell.append(study,colorSheet(config.color));document.body.append(shell);phase='opening';shell.dataset.phase=phase;closePending=false;
   await Promise.all([wipe(true),Promise.race([loaded,new Promise(resolve=>setTimeout(resolve,4500))])]);
   shell.style.background='#000';study.style.opacity='1';study.contentWindow?.postMessage({type:'portfolio-go-case-enter'},location.origin);
   await wipe(false);phase='open';shell.dataset.phase=phase;study.focus();if(closePending)hide();

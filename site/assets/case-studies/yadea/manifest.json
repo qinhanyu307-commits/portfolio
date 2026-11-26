@@ -1,0 +1,33 @@
+{
+  "source": "新建文件夹.zip",
+  "encoding": "Original JPEG files copied byte-for-byte; no resizing or recompression",
+  "parts": [
+    {
+      "part": 1,
+      "source": "雅迪1.jpg",
+      "file": "originals/01-d04034597df7.jpg",
+      "width": 1920,
+      "height": 16248,
+      "sha256": "d04034597df746afa6123a3957444a716577307a9095468e9e7d8e2937f92204",
+      "bytes": 8010008
+    },
+    {
+      "part": 2,
+      "source": "2.jpg",
+      "file": "originals/02-d62895764e5b.jpg",
+      "width": 1920,
+      "height": 9759,
+      "sha256": "d62895764e5bbc1f089787649b6bd2f2fdf9cb96e55aa8c20a7e85cde2251f3d",
+      "bytes": 5520908
+    },
+    {
+      "part": 3,
+      "source": "3.jpg",
+      "file": "originals/03-2b9d6ffc4df4.jpg",
+      "width": 1920,
+      "height": 9857,
+      "sha256": "2b9d6ffc4df433351dd085911bb85e770930439ba5746d6212ffd642eed2a471",
+      "bytes": 7133065
+    }
+  ]
+}
