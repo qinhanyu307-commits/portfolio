@@ -60,7 +60,7 @@
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  let shell=null,study=null,saved=null,phase='idle',closePending=false;
  const tick=()=>new Promise(resolve=>requestAnimationFrame(resolve));
- const cases={go:{color:'#ff3b8d',label:'走起GO 项目案例',title:'走起GO · UI/UX 项目案例'},yadea:{color:'#20c9cf',label:'雅迪 项目案例',title:'雅迪 · 车机壁纸设计'},tomato:{color:'#C2F376',hold:450,label:'番茄小说 项目案例',title:'番茄小说 · APP运营活动'}};
+ const cases={go:{color:'#ff3b8d',label:'走起GO 项目案例',title:'走起GO · UI/UX 项目案例'},yadea:{color:'#20c9cf',label:'雅迪 项目案例',title:'雅迪 · 车机壁纸设计'},tomato:{color:'#C2F376',hold:450,label:'番茄小说 项目案例',title:'番茄小说 · APP运营活动'},lookie:{color:'#FF8A3D',hold:450,label:'LOOKIE 品牌升级视频',title:'LOOKIE · 品牌升级视频'}};
  const caseKey=url=>url.pathname.split('/').filter(Boolean).at(-1);
  function parse(value){try{const url=new URL(value,location.href);return url.origin===location.origin&&Object.keys(cases).some(key=>url.pathname===base+'watch/'+key+'/')?url:null;}catch{return null;}}
  function record(node,property,value){saved.styles.push({node,property,value:node.style.getPropertyValue(property),priority:node.style.getPropertyPriority(property)});node.style.setProperty(property,value,'important');}
@@ -94,7 +94,7 @@
   shell=document.createElement('div');shell.id='project-video-overlay';shell.dataset.kind=key+'-case';shell.setAttribute('role','dialog');shell.setAttribute('aria-modal','true');shell.setAttribute('aria-label',config.label);
   // Cancel the site's root inversion for the color sheet and case artwork.
   shell.style.cssText='position:fixed;inset:0;width:100%;height:100dvh;z-index:2147483647;background:transparent;filter:invert(1);overflow:hidden';
-  study=document.createElement('iframe');study.title=config.title;study.style.cssText='display:block;width:100%;height:100%;border:0;opacity:0';
+  study=document.createElement('iframe');study.title=config.title;study.allow='autoplay; fullscreen; picture-in-picture';study.allowFullscreen=true;study.style.cssText='display:block;width:100%;height:100%;border:0;opacity:0';
   const loaded=new Promise(resolve=>study.addEventListener('load',resolve,{once:true}));
   const embedded=new URL(url);embedded.searchParams.set('embedded','1');if(revision)embedded.searchParams.set('v',revision);study.src=embedded.href;
   shell.append(study,colorSheet(config.color));document.body.append(shell);phase='opening';shell.dataset.phase=phase;closePending=false;
