@@ -60,7 +60,7 @@
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  let shell=null,study=null,saved=null,phase='idle',closePending=false;
  const tick=()=>new Promise(resolve=>requestAnimationFrame(resolve));
- const cases={go:{color:'#ff3b8d',label:'走起GO 项目案例',title:'走起GO · UI/UX 项目案例'},yadea:{color:'#20c9cf',label:'雅迪 项目案例',title:'雅迪 · 车机壁纸设计'},tomato:{color:'#52d96b',label:'番茄小说 项目案例',title:'番茄小说 · APP运营活动'}};
+ const cases={go:{color:'#ff3b8d',label:'走起GO 项目案例',title:'走起GO · UI/UX 项目案例'},yadea:{color:'#20c9cf',label:'雅迪 项目案例',title:'雅迪 · 车机壁纸设计'},tomato:{color:'#52d96b',hold:450,label:'番茄小说 项目案例',title:'番茄小说 · APP运营活动'}};
  const caseKey=url=>url.pathname.split('/').filter(Boolean).at(-1);
  function parse(value){try{const url=new URL(value,location.href);return url.origin===location.origin&&Object.keys(cases).some(key=>url.pathname===base+'watch/'+key+'/')?url:null;}catch{return null;}}
  function record(node,property,value){saved.styles.push({node,property,value:node.style.getPropertyValue(property),priority:node.style.getPropertyPriority(property)});node.style.setProperty(property,value,'important');}
@@ -75,6 +75,10 @@
   sheet.getAnimations().forEach(animation=>animation.cancel());
   if(reduced.matches){sheet.style.clipPath=to;return;}
   await sheet.animate([{clipPath:from},{clipPath:to}],{duration:cover?440:460,easing:'cubic-bezier(.76,0,.24,1)',fill:'forwards'}).finished;
+ }
+ async function holdFullColor(){
+  const duration=cases[caseKey(new URL(study.src))]?.hold||0;
+  if(duration)await new Promise(resolve=>setTimeout(resolve,duration));
  }
  async function show(url,push=true,position=null){
   if(shell||document.getElementById('project-video-overlay'))return;
@@ -95,13 +99,14 @@
   const embedded=new URL(url);embedded.searchParams.set('embedded','1');if(revision)embedded.searchParams.set('v',revision);study.src=embedded.href;
   shell.append(study,colorSheet(config.color));document.body.append(shell);phase='opening';shell.dataset.phase=phase;closePending=false;
   await Promise.all([wipe(true),Promise.race([loaded,new Promise(resolve=>setTimeout(resolve,4500))])]);
+  await holdFullColor();
   shell.style.background='#000';study.style.opacity='1';study.contentWindow?.postMessage({type:'portfolio-go-case-enter'},location.origin);
   await wipe(false);phase='open';shell.dataset.phase=phase;study.focus();if(closePending)hide();
  }
  async function hide(){
   if(!shell||phase==='closing')return;
   if(phase==='opening'){closePending=true;return;}
-  phase='closing';shell.dataset.phase=phase;await wipe(true);
+  phase='closing';shell.dataset.phase=phase;await wipe(true);await holdFullColor();
   const previous=saved;
   study.style.opacity='0';shell.style.background='transparent';
   for(const {node,property,value,priority} of previous.styles){if(value)node.style.setProperty(property,value,priority);else node.style.removeProperty(property);}
