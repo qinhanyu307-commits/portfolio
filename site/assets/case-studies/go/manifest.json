@@ -1,0 +1,66 @@
+{
+  "source": "go-app-redesign-uiux.pdf",
+  "sha256": "ce18f4cc807426042a2fde65a380be9a9a5b6b1b7e81cc5236de5833a8c18760",
+  "parts": [
+    {
+      "part": 1,
+      "width": 1920,
+      "height": 5985,
+      "tiles": 4
+    },
+    {
+      "part": 2,
+      "width": 1920,
+      "height": 8633,
+      "tiles": 6
+    },
+    {
+      "part": 3,
+      "width": 1920,
+      "height": 3671,
+      "tiles": 3
+    },
+    {
+      "part": 4,
+      "width": 1920,
+      "height": 12206,
+      "tiles": 8
+    },
+    {
+      "part": 5,
+      "width": 1920,
+      "height": 13348,
+      "tiles": 9
+    },
+    {
+      "part": 6,
+      "width": 1920,
+      "height": 4923,
+      "tiles": 4
+    },
+    {
+      "part": 7,
+      "width": 1920,
+      "height": 23044,
+      "tiles": 15
+    },
+    {
+      "part": 8,
+      "width": 1920,
+      "height": 11291,
+      "tiles": 8
+    },
+    {
+      "part": 9,
+      "width": 1920,
+      "height": 4036,
+      "tiles": 3
+    },
+    {
+      "part": 10,
+      "width": 1920,
+      "height": 10218,
+      "tiles": 7
+    }
+  ]
+}
