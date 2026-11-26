@@ -53,7 +53,7 @@
   window.addEventListener('keydown',event=>{if(event.key==='Escape'&&overlay){event.preventDefault();back();}});
 })();
 
-// Go opens as a web case study behind the reference's staggered color wipe.
+// Go opens as a web case study behind the full-width pink color wipe.
 (() => {
  const previousOpen=window.__PORTFOLIO_OPEN_VIDEO__;
  const script=new URL(document.currentScript.src),base=new URL('./',script).pathname,revision=script.searchParams.get('v');
@@ -65,15 +65,15 @@
  function panels(){
   const wipe=document.createElement('div');wipe.className='go-case-wipe';wipe.setAttribute('aria-hidden','true');
   wipe.style.cssText='position:absolute;inset:0;z-index:2;overflow:hidden;pointer-events:none';
-  for(let index=0;index<2;index++){const panel=document.createElement('div');panel.className='go-case-wipe-panel';panel.style.cssText='position:absolute;top:0;bottom:0;width:50.1%;background:#ff3b8d;transform:translateY(100%);'+(index?'right:0':'left:0');wipe.append(panel);}
+  const panel=document.createElement('div');panel.className='go-case-wipe-panel';panel.style.cssText='position:absolute;inset:0;background:#ff3b8d;transform:translateY(100%)';wipe.append(panel);
   return wipe;
  }
  async function wipe(cover){
   const nodes=[...shell.querySelectorAll('.go-case-wipe-panel')];
   if(reduced.matches){nodes.forEach(node=>{node.style.transform=cover?'translateY(0)':'translateY(-100%)';});return;}
-  await Promise.all(nodes.map((node,index)=>{
+  await Promise.all(nodes.map(node=>{
    node.getAnimations().forEach(animation=>animation.cancel());
-   return node.animate([{transform:cover?'translateY(100%)':'translateY(0)'},{transform:cover?'translateY(0)':'translateY(-100%)'}],{duration:cover?440:460,delay:index?0:80,easing:'cubic-bezier(.76,0,.24,1)',fill:'forwards'}).finished;
+   return node.animate([{transform:cover?'translateY(100%)':'translateY(0)'},{transform:cover?'translateY(0)':'translateY(-100%)'}],{duration:cover?440:460,easing:'cubic-bezier(.76,0,.24,1)',fill:'forwards'}).finished;
   }));
  }
  async function show(url,push=true,position=null){
