@@ -38,7 +38,10 @@ export function renderContent(text,rel,content,defaults){
   section('work',part=>{
     const pairs=[];
     defaults.projects.forEach((old,i)=>{const p=projects[i];for(const k of ['title1','title2','description','cover','icon'])if(old[k])pairs.push([esc(old[k]),esc(p[k])]);if(old.video)pairs.push(['src="'+esc(old.video)+'"',p.video?'src="'+esc(p.video)+'"':'']);pairs.push([esc(old.title1+' '+old.title2),esc(p.title1+' '+p.title2)]);});
-    return swap(part,pairs);
+    let rendered=swap(part,pairs);
+    const lookie=projects.find(project=>project.id==='alchemy');
+    if(lookie)rendered=rendered.replaceAll(esc(lookie.description),lookie.description.split('\n').map(esc).join('<br/>'));
+    return rendered;
   });
   section('awards',part=>{
     part=swap(part,defaults.projects.flatMap((old,i)=>['catalogTitle','catalogDescription'].map(k=>[esc(old[k]),esc(projects[i][k])])));
