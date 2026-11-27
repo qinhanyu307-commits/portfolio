@@ -13,15 +13,14 @@
    vec2 turn(vec2 p,vec2 pivot,float angle){float s=sin(angle),c=cos(angle);p-=pivot;return pivot+mat2(c,s,-s,c)*p;}
    void main(){
     vec2 p=vec2(1490.,45.)+vec2(uv.x,1.-uv.y)*vec2(420.,410.);
-    // Deform one continuous image, including the whole arm, with no cut at the wrist.
+    // Move the whole body rigidly; a spatial falloff here stretches the face and torso.
     float wave=sin(time*3.49066);
-    vec2 q=p;
-    float arm=exp(-pow(length((p-vec2(1557.,163.))/vec2(69.,99.)),2.)*1.35);
+    vec2 q=turn(p,vec2(1720.,390.),sin(time*1.74533)*.036);
+    q.y-=sin(time*1.74533+.4)*3.84;
+    // Bend only the raised arm back to its shoulder, with no separate wrist layer.
+    // The arm influence is exactly zero across the face and main body.
+    float arm=(1.-smoothstep(1580.,1610.,q.x))*(1.-smoothstep(195.,250.,q.y));
     q=turn(q,vec2(1578.,248.),wave*.13*arm);
-    // Gentle coordinated sway rather than a rigidly stationary body.
-    float body=exp(-pow(length((p-vec2(1730.,235.))/vec2(195.,235.)),4.));
-    q=turn(q,vec2(1720.,390.),sin(time*1.74533)*.03*body);
-    q.y-=sin(time*1.74533+.4)*3.2*body;
     // Pin the original frosted panel's straight and curved boundaries in place.
     float edge=p.x<1668.?abs(p.y-295.):p.y<395.?abs(length(p-vec2(1668.,395.))-100.):abs(p.x-1768.);
     float pin=smoothstep(2.,24.,edge);
