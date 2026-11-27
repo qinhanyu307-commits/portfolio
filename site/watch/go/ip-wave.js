@@ -15,8 +15,8 @@
     vec2 p=vec2(1490.,45.)+vec2(uv.x,1.-uv.y)*vec2(420.,410.);
     // Move the whole body rigidly; a spatial falloff here stretches the face and torso.
     float wave=sin(time*3.49066);
-    vec2 q=turn(p,vec2(1720.,390.),sin(time*1.74533)*.036);
-    q.y-=sin(time*1.74533+.4)*3.84;
+    vec2 q=turn(p,vec2(1720.,390.),sin(time*1.74533)*.0432);
+    q.y-=sin(time*1.74533+.4)*4.608;
     // Bend only the raised arm back to its shoulder, with no separate wrist layer.
     // The arm influence is exactly zero across the face and main body.
     float arm=(1.-smoothstep(1580.,1610.,q.x))*(1.-smoothstep(195.,250.,q.y));
