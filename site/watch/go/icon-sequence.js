@@ -19,9 +19,21 @@
   icons.forEach((icon,index)=>{
    const [x,y,w,h]=icon.grey,item=document.createElement('span');item.className='icon-sequence-item';item.dataset.icon=icon.name;Object.assign(item.style,{left:(x-750)/650*100+'%',top:(y-2560)/110*100+'%',width:w/650*100+'%',height:h/110*100+'%'});
    const grey=document.createElement('img'),pink=document.createElement('img');grey.src=crop(icon.grey);pink.src=crop(icon.selected,true,icon.bg);grey.alt=pink.alt='';grey.className='icon-sequence-grey';pink.className='icon-sequence-pink';item.append(grey,pink);stage.append(item);
-   const offsets=[0,.025,.15,.19,1],options={duration:8000,delay:index*1600,iterations:Infinity,easing:'linear',fill:'both'};
+   const offsets=[0,.0125,.15,.19,1],options={duration:8000,delay:index*1600,iterations:Infinity,easing:'linear',fill:'both'};
    animations.push(grey.animate(offsets.map((offset,i)=>({offset,opacity:[1,0,0,1,1][i]})),options));
-   animations.push(pink.animate(offsets.map((offset,i)=>({offset,opacity:[0,1,1,0,0][i],transform:['scale(.94)','scale(1.06)','scale(1)','scale(.98)','scale(.94)'][i]})),options));
+   // A quick overshoot, compression and smaller rebound, as in the reference video.
+   // The bounce finishes before the selected icon holds, then fades back to grey.
+   animations.push(pink.animate([
+    {offset:0,opacity:0,transform:'translateY(0) scale(.96)'},
+    {offset:.0125,opacity:1,transform:'translateY(-10%) scale(1.18)',easing:'ease-in-out'},
+    {offset:.025,opacity:1,transform:'translateY(2%) scale(.9)',easing:'ease-in-out'},
+    {offset:.04,opacity:1,transform:'translateY(-5%) scale(1.1)',easing:'ease-in-out'},
+    {offset:.055,opacity:1,transform:'translateY(0) scale(.98)',easing:'ease-out'},
+    {offset:.07,opacity:1,transform:'translateY(0) scale(1)'},
+    {offset:.15,opacity:1,transform:'translateY(0) scale(1)'},
+    {offset:.19,opacity:0,transform:'translateY(0) scale(.98)'},
+    {offset:1,opacity:0,transform:'translateY(0) scale(.96)'}
+   ],options));
   });
   animations.forEach(a=>a.pause());part.classList.add('has-icon-sequence');part.append(stage);
   let visible=false;const reduced=matchMedia('(prefers-reduced-motion: reduce)');
