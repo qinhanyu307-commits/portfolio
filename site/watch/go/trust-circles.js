@@ -26,33 +26,51 @@
     if(squared>circle.r*circle.r)pink=false;
    }
    if(!nearOutline)continue;
-   // Keep the type's edge pixels without retaining the surrounding static arc.
-   if(x>=1280&&x<=1555&&worldY>=4765&&worldY<=4875){
-    let nearType=false;
-    for(let dy=-2;dy<=2&&!nearType;dy++)for(let dx=-2;dx<=2;dx++){const sample=((y+dy)*width+x+dx)*4;if(source[sample]>220&&source[sample+1]>220&&source[sample+2]>220){nearType=true;break;}}
-    if(nearType)continue;
-   }
    data[at]=pink?251:background[0];data[at+1]=pink?171:background[1];data[at+2]=pink?206:background[2];data[at+3]=255;
   }
   ctx.putImageData(cover,0,0);return canvas;
  }
+ function wrappedLabel(){
+  const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;canvas.className='trust-label-layer';
+  canvas.setAttribute('role','img');canvas.setAttribute('aria-label','建立视觉可信度 · Visual Credibility');
+  canvas.style.cssText=`position:absolute;left:0;top:${top/art.naturalHeight*100}%;width:100%;height:auto;pointer-events:none;z-index:2`;
+  const ctx=canvas.getContext('2d');
+  const render=complete=>{
+   ctx.clearRect(0,0,width,height);const patch=ctx.createImageData(290,120);
+   for(let y=0;y<120;y++)for(let x=0;x<290;x++){
+    const at=(y*290+x)*4,onOutline=circles.some(c=>Math.abs(Math.hypot(x+1280-c.x,y+4765-c.y)-c.r)<6);
+    if(!complete&&onOutline)continue;
+    patch.data[at]=patch.data[at+1]=patch.data[at+2]=18;patch.data[at+3]=255;
+   }
+   ctx.putImageData(patch,1280,4765-top);
+   if(complete){
+    ctx.save();ctx.beginPath();ctx.rect(1280,4765-top,290,120);ctx.clip();ctx.strokeStyle='#949494';ctx.lineWidth=3;
+    for(const circle of circles){ctx.beginPath();ctx.arc(circle.x,circle.y-top,circle.r,circle.start*Math.PI/180,circle.end*Math.PI/180);ctx.stroke();}ctx.restore();
+   }
+   ctx.fillStyle='#f3f3f3';ctx.font='700 36px Arial, "Microsoft YaHei", sans-serif';ctx.fillText('建立视觉可信',1290,4817-top);ctx.fillText('度',1290,4857-top);
+   ctx.font='26px Arial, sans-serif';ctx.fillText('Visual Credibility',1290,4898-top);
+  };
+  part.classList.add('has-trust-circles');part.append(canvas);render(true);return render;
+ }
  async function mount(){
   await art.decode();if(part.querySelector('.trust-circle-stage'))return;
+  const renderLabel=wrappedLabel();
   if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
   const stage=document.createElement('div');stage.className='trust-circle-stage';stage.style.top=(top/art.naturalHeight*100)+'%';stage.dataset.state='ready';stage.dataset.duration='4000';stage.setAttribute('aria-hidden','true');
   const svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox',`0 0 ${width} ${height}`);
   const paths=circles.map(circle=>{const path=document.createElementNS(ns,'path');for(const [key,value] of Object.entries({d:pathFor(circle),fill:'none',stroke:'#929292','stroke-width':3,pathLength:1,'stroke-dasharray':'1 1','stroke-dashoffset':1}))path.setAttribute(key,value);svg.append(path);return path;});
+  renderLabel(false);
   stage.append(outlineCover(),svg);part.classList.add('has-trust-circles');part.append(stage);
   let armed=true,run=0,animations=[];
   const cancel=()=>{run++;animations.forEach(animation=>animation.cancel());animations=[];};
   const play=()=>{
    cancel();const currentRun=run;
-   stage.classList.remove('is-complete');stage.dataset.state='playing';stage.dataset.startedAt=String(performance.now());delete stage.dataset.finishedAt;
+   renderLabel(false);stage.classList.remove('is-complete');stage.dataset.state='playing';stage.dataset.startedAt=String(performance.now());delete stage.dataset.finishedAt;
    stage.dataset.playCount=String(Number(stage.dataset.playCount||0)+1);
    animations=paths.map((path,index)=>path.animate([{strokeDashoffset:1,opacity:.35},{strokeDashoffset:0,opacity:1}],{duration:circles[index].duration,delay:circles[index].delay,easing:'cubic-bezier(.25,.1,.25,1)',fill:'both',iterations:1}));
    Promise.all(animations.map(animation=>animation.finished)).then(()=>{
     if(currentRun!==run)return;
-    stage.dataset.state='complete';stage.dataset.finishedAt=String(performance.now());stage.classList.add('is-complete');cancel();
+    renderLabel(true);stage.dataset.state='complete';stage.dataset.finishedAt=String(performance.now());stage.classList.add('is-complete');cancel();
    }).catch(()=>{/* Leaving the viewport cancels this run; the next visit starts fresh. */});
   };
   const visibility=new IntersectionObserver(entries=>{
