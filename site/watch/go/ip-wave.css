@@ -1,0 +1,7 @@
+.has-ip-wave{position:relative}
+.ip-wave-stage{position:absolute;left:78.6458333333%;width:7.8125%;aspect-ratio:150 / 130;pointer-events:none}
+.ip-wave-stage svg{display:block;width:100%;height:100%;overflow:visible}
+.ip-wave-hand{transform-origin:0 0;animation:ip-wave-hello 1.8s ease-in-out infinite;animation-play-state:paused;will-change:transform}
+.ip-wave-stage.is-waving .ip-wave-hand{animation-play-state:running}
+@keyframes ip-wave-hello{0%,100%{transform:rotate(-12deg)}25%{transform:rotate(20deg)}50%{transform:rotate(-14deg)}75%{transform:rotate(18deg)}}
+@media(prefers-reduced-motion:reduce){.ip-wave-hand{animation:none;transform:none;will-change:auto}}
