@@ -1,86 +1,53 @@
 (() => {
  const part=document.getElementById('part-4'),art=part?.querySelector('img');if(!art)return;
- const top=4380,width=1920,height=1410,ns='http://www.w3.org/2000/svg';
+ const ns='http://www.w3.org/2000/svg',width=1680,height=1355;
  const circles=[
-  {x:762.620,y:5037.848,r:541.458,start:157,end:450,delay:0,duration:3400},
-  {x:1303.423,y:4932.403,r:262.673,start:-90,end:270,delay:400,duration:3200},
-  {x:1312.658,y:5314.565,r:383.056,start:45,end:356,delay:1000,duration:3000}
+  {x:642.62,y:624,r:541.458,start:157,end:450,delay:0,duration:3400},
+  {x:1192.658,y:507,r:284.5,start:-90,end:270,delay:400,duration:3200},
+  {x:1192.658,y:899.565,r:383.056,start:46,end:356,delay:1000,duration:3000}
  ];
+ const node=(tag,attributes={})=>{const e=document.createElementNS(ns,tag);for(const [key,value] of Object.entries(attributes))e.setAttribute(key,value);return e;};
  function pathFor(circle){
-  const point=angle=>{const t=angle*Math.PI/180;return [circle.x+Math.cos(t)*circle.r,circle.y-top+Math.sin(t)*circle.r];};
+  const point=angle=>{const t=angle*Math.PI/180;return [circle.x+Math.cos(t)*circle.r,circle.y+Math.sin(t)*circle.r];};
   const arc=(angle,large)=>`A${circle.r} ${circle.r} 0 ${large} 1 ${point(angle).join(' ')}`;
   return `M${point(circle.start).join(' ')} `+(circle.end-circle.start>=360?arc(circle.start+180,0)+' '+arc(circle.end,0):arc(circle.end,1));
  }
- // Mask each complete outline band, including dark JPEG fringes, before drawing it again.
- function outlineCover(){
-  const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;
-  const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.drawImage(art,0,top,width,height,0,0,width,height);
-  const source=ctx.getImageData(0,0,width,height).data,cover=ctx.createImageData(width,height),data=cover.data;
-  const background=source.slice((100*width+400)*4,(100*width+400)*4+3);
-  for(let y=0;y<height;y++)for(let x=0;x<width;x++){
-   const at=(y*width+x)*4,worldY=y+top;
-   let nearOutline=false,pink=true;
-   for(const circle of circles){
-    const dx=x-circle.x,dy=worldY-circle.y,squared=dx*dx+dy*dy;
-    if(squared>(circle.r-12)**2&&squared<(circle.r+12)**2)nearOutline=true;
-    if(squared>circle.r*circle.r)pink=false;
-   }
-   if(!nearOutline)continue;
-   data[at]=pink?251:background[0];data[at+1]=pink?171:background[1];data[at+2]=pink?206:background[2];data[at+3]=255;
-  }
-  ctx.putImageData(cover,0,0);return canvas;
- }
- function wrappedLabel(){
-  const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;canvas.className='trust-label-layer';
-  canvas.setAttribute('role','img');canvas.setAttribute('aria-label','建立视觉可信度 · Visual Credibility');
-  canvas.style.cssText=`position:absolute;left:0;top:${top/art.naturalHeight*100}%;width:100%;height:auto;pointer-events:none;z-index:2`;
-  const ctx=canvas.getContext('2d');
-  const render=complete=>{
-   ctx.clearRect(0,0,width,height);const patch=ctx.createImageData(290,120);
-   for(let y=0;y<120;y++)for(let x=0;x<290;x++){
-    const at=(y*290+x)*4,onOutline=circles.some(c=>Math.abs(Math.hypot(x+1280-c.x,y+4765-c.y)-c.r)<6);
-    if(!complete&&onOutline)continue;
-    patch.data[at]=patch.data[at+1]=patch.data[at+2]=18;patch.data[at+3]=255;
-   }
-   ctx.putImageData(patch,1280,4765-top);
-   if(complete){
-    ctx.save();ctx.beginPath();ctx.rect(1280,4765-top,290,120);ctx.clip();ctx.strokeStyle='#949494';ctx.lineWidth=3;
-    for(const circle of circles){ctx.beginPath();ctx.arc(circle.x,circle.y-top,circle.r,circle.start*Math.PI/180,circle.end*Math.PI/180);ctx.stroke();}ctx.restore();
-   }
-   ctx.fillStyle='#f3f3f3';ctx.font='700 36px Arial, "Microsoft YaHei", sans-serif';ctx.fillText('建立视觉可信',1290,4817-top);ctx.fillText('度',1290,4857-top);
-   ctx.font='26px Arial, sans-serif';ctx.fillText('Visual Credibility',1290,4898-top);
-  };
-  part.classList.add('has-trust-circles');part.append(canvas);render(true);return render;
+ function text(svg,value,x,y,size,weight=400){
+  const e=node('text',{x,y,fill:'#f3f3f3','font-family':'Arial, Microsoft YaHei, sans-serif','font-size':size,'font-weight':weight});e.textContent=value;svg.append(e);
  }
  async function mount(){
   await art.decode();if(part.querySelector('.trust-circle-stage'))return;
-  const renderLabel=wrappedLabel();
-  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-  const stage=document.createElement('div');stage.className='trust-circle-stage';stage.style.top=(top/art.naturalHeight*100)+'%';stage.dataset.state='ready';stage.dataset.duration='4000';stage.setAttribute('aria-hidden','true');
-  const svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox',`0 0 ${width} ${height}`);
-  const paths=circles.map(circle=>{const path=document.createElementNS(ns,'path');for(const [key,value] of Object.entries({d:pathFor(circle),fill:'none',stroke:'#929292','stroke-width':3,pathLength:1,'stroke-dasharray':'1 1','stroke-dashoffset':1}))path.setAttribute(key,value);svg.append(path);return path;});
-  renderLabel(false);
-  stage.append(outlineCover(),svg);part.classList.add('has-trust-circles');part.append(stage);
+  const stage=document.createElement('div');stage.className='trust-circle-stage';stage.style.top=(4415/art.naturalHeight*100)+'%';stage.dataset.state='ready';stage.dataset.duration='4000';
+  const svg=node('svg',{viewBox:`0 0 ${width} ${height}`,role:'img','aria-label':'信息多维度透明化、建立视觉可信度、增强交易安全提醒，共同提升用户信任感'});
+  svg.append(node('rect',{width,height,fill:'#000'}),node('rect',{width,height,rx:110,fill:'#121212'}));
+  const defs=node('defs');circles.forEach((circle,index)=>{const clip=node('clipPath',{id:`trust-overlap-${index}`});clip.append(node('circle',{cx:circle.x,cy:circle.y,r:circle.r}));defs.append(clip);});svg.append(defs);
+  const overlap=node('g',{'clip-path':'url(#trust-overlap-0)'}),middle=node('g',{'clip-path':'url(#trust-overlap-1)'}),fill=node('rect',{width,height,fill:'#fbabce','clip-path':'url(#trust-overlap-2)'});middle.append(fill);overlap.append(middle);svg.append(overlap);
+  svg.append(node('path',{d:'M750 507C752 525 762 529 789 531C762 533 752 537 750 555C748 537 738 533 711 531C738 529 748 525 750 507',fill:'#444'}),node('path',{d:'M1455 812C1458 844 1467 849 1480 852C1467 855 1458 860 1455 892C1452 860 1443 855 1430 852C1443 849 1452 844 1455 812',fill:'#aaa'}));
+  const paths=circles.map(circle=>{const path=node('path',{class:'trust-circle-outline',d:pathFor(circle),fill:'none',stroke:'#949494','stroke-width':3,pathLength:1,'stroke-dasharray':'1 1','stroke-dashoffset':1});svg.append(path);return path;});
+  text(svg,'信息多维度透明化',423,667,36,700);text(svg,'Information Transparency',423,715,26);
+  text(svg,'建立视觉可信度',1169,398,36,700);text(svg,'Visual Credibility',1169,440,26);
+  text(svg,'提升用户',1017,636,36,700);text(svg,'信任感',1017,690,36,700);
+  text(svg,'增强交易安全提醒',1130,990,36,700);text(svg,'Safety Reminder',1130,1037,26);
+  stage.append(svg);part.classList.add('has-trust-circles');part.append(stage);
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){paths.forEach(path=>path.setAttribute('stroke-dashoffset',0));stage.dataset.state='complete';return;}
   let armed=true,run=0,animations=[];
   const cancel=()=>{run++;animations.forEach(animation=>animation.cancel());animations=[];};
   const play=()=>{
-   cancel();const currentRun=run;
-   renderLabel(false);stage.classList.remove('is-complete');stage.dataset.state='playing';stage.dataset.startedAt=String(performance.now());delete stage.dataset.finishedAt;
+   cancel();const currentRun=run;paths.forEach(path=>path.setAttribute('stroke-dashoffset',1));
+   stage.dataset.state='playing';stage.dataset.startedAt=String(performance.now());delete stage.dataset.finishedAt;
    stage.dataset.playCount=String(Number(stage.dataset.playCount||0)+1);
    animations=paths.map((path,index)=>path.animate([{strokeDashoffset:1,opacity:.35},{strokeDashoffset:0,opacity:1}],{duration:circles[index].duration,delay:circles[index].delay,easing:'cubic-bezier(.25,.1,.25,1)',fill:'both',iterations:1}));
    Promise.all(animations.map(animation=>animation.finished)).then(()=>{
     if(currentRun!==run)return;
-    renderLabel(true);stage.dataset.state='complete';stage.dataset.finishedAt=String(performance.now());stage.classList.add('is-complete');cancel();
-   }).catch(()=>{/* Leaving the viewport cancels this run; the next visit starts fresh. */});
+    paths.forEach(path=>path.setAttribute('stroke-dashoffset',0));stage.dataset.state='complete';stage.dataset.finishedAt=String(performance.now());cancel();
+   }).catch(()=>{/* Leaving the viewport resets this run; the next visit starts fresh. */});
   };
   const visibility=new IntersectionObserver(entries=>{
    for(const entry of entries){
-    if(!entry.isIntersecting){
-     armed=true;
-     if(stage.dataset.state==='playing'){cancel();stage.dataset.state='ready';}
-    }else if(armed&&entry.intersectionRatio>=.25){armed=false;play();}
+    if(!entry.isIntersecting){armed=true;if(stage.dataset.state==='playing'){cancel();stage.dataset.state='ready';}}
+    else if(armed&&entry.intersectionRatio>=.25){armed=false;play();}
    }
   },{threshold:[0,.25]});visibility.observe(stage);
  }
- const ready=new IntersectionObserver(entries=>{if(!entries.some(entry=>entry.isIntersecting))return;ready.disconnect();mount().catch(()=>{/* The original illustration remains available if enhancement fails. */});},{rootMargin:'1200px'});ready.observe(part);
+ const ready=new IntersectionObserver(entries=>{if(!entries.some(entry=>entry.isIntersecting))return;ready.disconnect();mount().catch(()=>{/* Keep the existing illustration if enhancement fails. */});},{rootMargin:'1200px'});ready.observe(part);
 })();
