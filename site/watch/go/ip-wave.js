@@ -20,8 +20,8 @@
     q=turn(q,vec2(1578.,248.),wave*.13*arm);
     // Gentle coordinated sway rather than a rigidly stationary body.
     float body=exp(-pow(length((p-vec2(1730.,235.))/vec2(195.,235.)),4.));
-    q=turn(q,vec2(1720.,390.),sin(time*1.74533)*.012*body);
-    q.y-=sin(time*1.74533+.4)*1.4*body;
+    q=turn(q,vec2(1720.,390.),sin(time*1.74533)*.03*body);
+    q.y-=sin(time*1.74533+.4)*3.2*body;
     // Pin the original frosted panel's straight and curved boundaries in place.
     float edge=p.x<1668.?abs(p.y-295.):p.y<395.?abs(length(p-vec2(1668.,395.))-100.):abs(p.x-1768.);
     float pin=smoothstep(2.,24.,edge);
