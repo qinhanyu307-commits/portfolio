@@ -1,0 +1,8 @@
+.has-case-ribbons{position:relative}
+.case-ribbons{position:absolute;left:0;top:19.084% /* 1950 / 10218 */;width:100%;aspect-ratio:1920 / 470;overflow:hidden;pointer-events:none;isolation:isolate}
+.case-ribbons svg{display:block;width:100%;height:100%;overflow:hidden}
+.case-ribbon-ink{animation:case-ribbon-scroll 8s linear infinite;animation-play-state:paused;will-change:transform}
+.case-ribbon-ink--black{animation-direction:reverse}
+.case-ribbons.is-running .case-ribbon-ink{animation-play-state:running}
+@keyframes case-ribbon-scroll{from{transform:translateX(0)}to{transform:translateX(-400px)}}
+@media(prefers-reduced-motion:reduce){.case-ribbons .case-ribbon-ink{animation:none;will-change:auto}}
