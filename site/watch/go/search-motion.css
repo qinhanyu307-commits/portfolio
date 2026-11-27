@@ -1,0 +1,9 @@
+.has-search-motion{position:relative}
+.case-search-motion{position:absolute;left:5.2083333333%;width:89.5833333333%;aspect-ratio:1720 / 130;pointer-events:none}
+.case-search-motion svg{display:block;width:100%;height:100%;overflow:visible}
+.case-search-key{transform-box:fill-box;transform-origin:center}
+.case-search-typed{white-space:pre}
+.case-search-caret{opacity:0}
+.case-search-motion.is-typing .case-search-caret{animation:case-search-caret-blink .6s step-end infinite}
+@keyframes case-search-caret-blink{0%,100%{opacity:1}50%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.case-search-motion.is-typing .case-search-caret{animation:none}}
