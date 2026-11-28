@@ -14,15 +14,11 @@ function startDashboardCarousel(screen) {
     if (!visible || document.hidden || changing) return;
 
     slides[next].loading = 'eager';
-    const pendingImage = slides[next].decode().catch(() => {});
     timer = setTimeout(async () => {
       if (!visible || document.hidden) return;
       changing = true;
-      await pendingImage;
-      if (visible && !document.hidden) {
-        if (slides[next].naturalWidth) await showSlide(next);
-        next = (next + 1) % slides.length;
-      }
+      if (slides[next].naturalWidth) await showSlide(next);
+      next = (next + 1) % slides.length;
       changing = false;
       schedule();
     }, 2500);
@@ -31,12 +27,12 @@ function startDashboardCarousel(screen) {
   async function showSlide(next) {
     const outgoing = slides[index];
     const incoming = slides[next];
-    if (!reducedMotion.matches) {
+    if (outgoing !== incoming && !reducedMotion.matches && typeof incoming.animate === 'function') {
       incoming.dataset.incoming = '';
       const options = {duration: 500, easing: 'cubic-bezier(.4, 0, .2, 1)', fill: 'forwards'};
       const exit = outgoing.animate([{transform: 'translateY(0)'}, {transform: 'translateY(-100%)'}], options);
       const enter = incoming.animate([{transform: 'translateY(100%)'}, {transform: 'translateY(0)'}], options);
-      await Promise.all([exit.finished, enter.finished]);
+      await Promise.allSettled([exit.finished, enter.finished]);
       delete incoming.dataset.incoming;
       exit.cancel();
       enter.cancel();
@@ -46,12 +42,20 @@ function startDashboardCarousel(screen) {
     index = next;
   }
 
-  document.addEventListener('visibilitychange', schedule);
-  const observer = new IntersectionObserver(([entry]) => {
-    visible = entry.intersectionRatio >= .35;
+  // Use the case page's viewport, including when it is embedded in the portfolio.
+  function updateVisibility() {
+    const {top, bottom, height} = screen.getBoundingClientRect();
+    const inView = height > 0 && bottom > 0 && top < window.innerHeight;
+    if (visible === inView) return;
+    visible = inView;
     schedule();
-  }, {root: document, threshold: .35});
-  observer.observe(screen);
+  }
+
+  document.addEventListener('visibilitychange', schedule);
+  window.addEventListener('scroll', updateVisibility, {passive: true});
+  window.addEventListener('resize', updateVisibility);
+  window.addEventListener('pageshow', updateVisibility);
+  updateVisibility();
 }
 
 document.querySelectorAll('.dashboard-wallpapers').forEach(startDashboardCarousel);
