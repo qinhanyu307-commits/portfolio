@@ -26,7 +26,7 @@
       }
       changing = false;
       schedule();
-    }, 4000);
+    }, 2500);
   }
 
   async function showSlide(next) {
