@@ -1,5 +1,4 @@
-(() => {
-  const screen = document.getElementById('dashboard-wallpapers');
+function startDashboardCarousel(screen) {
   const slides = [...screen.querySelectorAll('img')];
   if (slides.length < 2) return;
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
@@ -53,4 +52,6 @@
     schedule();
   }, {root: document, threshold: .35});
   observer.observe(screen);
-})();
+}
+
+document.querySelectorAll('.dashboard-wallpapers').forEach(startDashboardCarousel);

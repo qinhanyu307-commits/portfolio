@@ -1,7 +1,12 @@
-.dashboard-wallpapers-link {
-  display: inline-block;
+.dashboard-wallpapers-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem 1.5rem;
   margin-top: 1.5rem;
   font-size: .875rem;
+}
+
+.dashboard-wallpapers-links a {
   text-decoration: underline;
   text-underline-offset: .2em;
 }
@@ -16,6 +21,14 @@
   overflow: hidden;
   background: #080808;
   scroll-margin-top: 88px;
+}
+
+.dashboard-wallpapers--compact {
+  top: 27.06%;
+  left: 10.47%;
+  width: 51.15%;
+  aspect-ratio: 982 / 556;
+  clip-path: url(#compact-dashboard-shape);
 }
 
 .dashboard-wallpapers img {
