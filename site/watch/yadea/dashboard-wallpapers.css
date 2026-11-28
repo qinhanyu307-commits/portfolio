@@ -1,3 +1,11 @@
+.dashboard-wallpapers-link {
+  display: inline-block;
+  margin-top: 1.5rem;
+  font-size: .875rem;
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+
 .dashboard-wallpapers {
   position: absolute;
   /* Screen bounds within the 1920 × 8640 visible portion of part 3. */
