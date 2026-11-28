@@ -101,7 +101,9 @@
   await Promise.all([wipe(true),Promise.race([loaded,new Promise(resolve=>setTimeout(resolve,4500))])]);
   await holdFullColor();
   shell.style.background='#000';study.style.opacity='1';study.contentWindow?.postMessage({type:'portfolio-go-case-enter'},location.origin);
-  await wipe(false);phase='open';shell.dataset.phase=phase;study.focus();if(closePending)hide();
+  await wipe(false);phase='open';shell.dataset.phase=phase;
+  if(document.activeElement!==study)study.focus({preventScroll:true});
+  if(closePending)hide();
  }
  async function hide(){
   if(!shell||phase==='closing')return;
