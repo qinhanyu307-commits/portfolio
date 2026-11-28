@@ -5,33 +5,6 @@
   position: relative;
 }
 
-.case-canva-link {
-  position: absolute;
-  /* Align with the subtitle in the 1920 × 5985 case artwork. */
-  top: 84.65%;
-  right: 7.5%;
-  transform: translateY(-50%);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 44px;
-  padding: 0 1em;
-  border: 1px solid #fbabce;
-  border-radius: 999px;
-  background: #121212;
-  color: #fff;
-  font-size: clamp(.875rem, 1.25vw, 1.125rem);
-  font-weight: 700;
-  white-space: nowrap;
-  scroll-margin-block: 88px;
-}
-
-.case-canva-link:hover,
-.case-canva-link:focus-visible {
-  background: #fbabce;
-  color: #121212;
-}
-
 .case-research-links {
   position: absolute;
   /* Align with the “为什么要改版” heading in the first artwork. */
