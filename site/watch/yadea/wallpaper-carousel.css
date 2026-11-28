@@ -1,0 +1,114 @@
+.yadea-case-ending {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1920 / 8640;
+  background: #000;
+}
+
+.yadea-case-ending > img {
+  position: absolute;
+  inset: 0;
+}
+
+.wallpaper-carousel {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: min(56vw, 85vh);
+  overflow: hidden;
+  background: #000;
+  scroll-margin-top: 64px;
+}
+
+.wallpaper-carousel-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 1;
+}
+
+.wallpaper-carousel video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 66%;
+  aspect-ratio: 16 / 9;
+  transform: translate(-50%, -50%) scale(.625);
+  border-radius: clamp(6px, 1vw, 20px);
+  object-fit: contain;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform .55s ease, opacity .55s ease;
+  -webkit-box-reflect: below 3px linear-gradient(transparent 80%, rgb(255 255 255 / 22%));
+}
+
+.wallpaper-carousel video[data-position="previous"] {
+  transform: translate(-94%, -50%) scale(.625);
+  opacity: .62;
+}
+
+.wallpaper-carousel video[data-position="next"] {
+  transform: translate(-6%, -50%) scale(.625);
+  opacity: .62;
+}
+
+.wallpaper-carousel video[data-position="current"] {
+  z-index: 1;
+  transform: translate(-50%, -50%);
+  opacity: 1;
+}
+
+.wallpaper-carousel-toggle {
+  position: absolute;
+  z-index: 2;
+  right: 1rem;
+  bottom: 1rem;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid #666;
+  border-radius: 50%;
+  color: #fff;
+  background: #181818;
+  cursor: pointer;
+}
+
+.wallpaper-carousel-toggle::before {
+  content: '';
+  width: 12px;
+  height: 14px;
+  border-inline: 4px solid currentColor;
+}
+
+.wallpaper-carousel-toggle[data-paused="true"]::before {
+  width: 0;
+  height: 0;
+  border: 0;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 11px solid currentColor;
+}
+
+.wallpaper-carousel-toggle:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+@media (hover: hover) {
+  .wallpaper-carousel-toggle:not([data-paused="true"]) {
+    opacity: 0;
+  }
+
+  .wallpaper-carousel:hover .wallpaper-carousel-toggle,
+  .wallpaper-carousel-toggle:focus-visible {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wallpaper-carousel video {
+    transition: none;
+  }
+}
