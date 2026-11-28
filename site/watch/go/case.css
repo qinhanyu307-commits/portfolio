@@ -27,3 +27,12 @@
   text-underline-offset: .2em;
   white-space: nowrap;
 }
+
+.case-artwork-crop {
+  overflow: hidden;
+}
+
+.case-artwork-crop > .case-part {
+  /* Start this 1920px-wide artwork at row 1520, before the icon section. */
+  margin-top: -79.166667%;
+}
