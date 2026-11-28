@@ -31,3 +31,26 @@
   background: #fbabce;
   color: #121212;
 }
+
+.case-research-links {
+  position: absolute;
+  /* Align with the “为什么要改版” heading in the first artwork. */
+  top: 62.65%;
+  right: 7.5%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: clamp(.5rem, 2vw, 2rem);
+  font-size: clamp(.875rem, 1.25vw, 1.125rem);
+  font-weight: 700;
+  scroll-margin-block: 88px;
+}
+
+.case-research-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  text-decoration: underline;
+  text-underline-offset: .2em;
+  white-space: nowrap;
+}
