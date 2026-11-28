@@ -167,6 +167,17 @@
             "/assets/videos/recognitions/liantou-operation-02.mp4"
           ],
           "image": "/assets/videos/recognitions/liantou-operation-01.mp4"
+        },
+        {
+          "id": "tencent-arcane-illustration",
+          "award": "腾讯互娱双城之战插画",
+          "project": "-",
+          "date": "May,2024",
+          "images": [
+            "/assets/images/recognitions/arcane-illustration.jpg",
+            "/assets/images/recognitions/arcane-exhibition.jpg"
+          ],
+          "image": "/assets/images/recognitions/arcane-illustration.jpg"
         }
       ]
     },
